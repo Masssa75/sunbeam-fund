@@ -8,19 +8,30 @@ export default function Header() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     // Get initial user
-    auth.getUser().then(user => {
+    auth.getUser().then(async user => {
       setUser(user)
+      if (user?.email) {
+        const adminStatus = await auth.isAdmin(user.email)
+        setIsAdmin(adminStatus)
+      }
       setLoading(false)
     }).catch(() => {
       setLoading(false)
     })
 
     // Listen to auth changes
-    const { data: { subscription } } = auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = auth.onAuthStateChange(async (event, session) => {
       setUser(session?.user || null)
+      if (session?.user?.email) {
+        const adminStatus = await auth.isAdmin(session.user.email)
+        setIsAdmin(adminStatus)
+      } else {
+        setIsAdmin(false)
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -63,7 +74,27 @@ export default function Header() {
               <span className="text-sm text-gray-500">Not signed in</span>
             )}
           </div>
-          <div>
+          <div className="flex items-center gap-4">
+            {user && isAdmin && (
+              <div className="flex items-center gap-2 text-sm">
+                <a
+                  href="/"
+                  className={`px-3 py-1 rounded ${
+                    window.location.pathname === '/' ? 'bg-gray-200' : 'hover:bg-gray-100'
+                  }`}
+                >
+                  Admin View
+                </a>
+                <a
+                  href="/investor"
+                  className={`px-3 py-1 rounded ${
+                    window.location.pathname === '/investor' ? 'bg-gray-200' : 'hover:bg-gray-100'
+                  }`}
+                >
+                  Investor View
+                </a>
+              </div>
+            )}
             {user ? (
               <button
                 onClick={handleSignOut}
