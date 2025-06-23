@@ -457,33 +457,33 @@ cat latest-result.json
 ```
 
 ## Version
-- Current Version: 1.2.5
+- Current Version: 1.2.6
 - Created: 2025-06-23
-- Status: Authentication backend working, frontend needs manual testing
-- Last Updated: 2025-06-23 21:10 PST
+- Status: Fixed infinite reload loop, auth cookies working, UI needs manual check
+- Last Updated: 2025-06-23 21:25 PST
 
 ## 🎯 CURRENT STATUS - AUTHENTICATION BACKEND WORKING
 
-### Latest Updates (2025-06-23 21:10 PST):
+### Latest Updates (2025-06-23 21:25 PST):
 
-1. **Authentication Backend** ✅ WORKING
-   - Supabase authentication works via API
-   - Test credentials: **marc@minutevideos.com / 123456**
-   - Database contains 9 positions
-   - Session API endpoint created at `/api/auth/session/`
+1. **Fixed Issues** ✅
+   - **Infinite reload loop** - Removed window.location.reload() from auth handler
+   - **Cookie handling** - Fixed chunked cookie reading for large auth tokens
+   - **Authentication backend** - Works correctly with marc@minutevideos.com / 123456
+   - **Database access** - 9 positions confirmed in database
 
-2. **Known Frontend Issue** ⚠️ NEEDS MANUAL TEST
-   - Homepage shows "Loading Portfolio..." indefinitely
-   - Client-side Supabase initialization appears to hang
-   - Authentication works when tested via scripts
-   - Manual browser testing required to verify login flow
+2. **Current Status** ⚠️
+   - Homepage initially shows "Loading Portfolio..." (server-side render)
+   - After login, should show portfolio positions
+   - If stuck on loading, try refreshing the page (Cmd+R)
+   - Check browser console for any errors
 
-3. **What We Tried Today**:
-   - ✅ Fixed RLS policies to allow anonymous reads
-   - ✅ Created API routes for server-side auth
-   - ✅ Switched to SSR-compatible Supabase client
-   - ✅ Added session checking via API
-   - ❌ Frontend still shows loading state
+3. **What Was Fixed Today**:
+   - ✅ RLS policies updated to allow anonymous reads
+   - ✅ API routes handle authentication server-side
+   - ✅ SSR-compatible Supabase client implemented
+   - ✅ Chunked cookie support added (auth tokens were too large)
+   - ✅ Infinite reload loop eliminated
 
 ### Manual Testing Steps:
 1. Go to https://sunbeam.capital/login
