@@ -30,18 +30,34 @@ export default function LoginPage() {
     try {
       if (mode === 'signin') {
         console.log('[Login] Attempting sign in for:', email)
-        const result = await auth.signIn(email, password)
-        console.log('[Login] Sign in result:', result)
+        
+        let result;
+        try {
+          result = await auth.signIn(email, password)
+          console.log('[Login] Sign in result:', result)
+        } catch (signInError: any) {
+          console.error('[Login] Sign in error:', signInError)
+          throw signInError
+        }
         
         // Check if we actually got a session
-        const session = await auth.getSession()
-        console.log('[Login] Session after sign in:', session ? 'Found' : 'Not found')
+        let session;
+        try {
+          session = await auth.getSession()
+          console.log('[Login] Session after sign in:', session ? 'Found' : 'Not found')
+        } catch (sessionError: any) {
+          console.error('[Login] Session check error:', sessionError)
+          throw new Error('Failed to verify session after sign in. Please try again.')
+        }
         
         if (!session) {
           throw new Error('Sign in succeeded but no session was created. Please try again.')
         }
         
         console.log('[Login] Sign in successful, redirecting...')
+        clearTimeout(timeoutId) // Clear the timeout
+        setLoading(false) // Stop the loading state
+        
         // Use router.push for client-side navigation
         router.push('/')
         // Also refresh the page after a short delay to ensure session is loaded
