@@ -5,10 +5,18 @@ type Position = Database['public']['Tables']['positions']['Row']
 type PositionInsert = Database['public']['Tables']['positions']['Insert']
 type PositionUpdate = Database['public']['Tables']['positions']['Update']
 
+// Helper to check if Supabase is configured
+function ensureSupabase() {
+  if (!supabase) {
+    throw new Error('Supabase is not configured')
+  }
+  return supabase
+}
+
 export const portfolioService = {
   // Get all positions
   async getPositions(): Promise<Position[]> {
-    const { data, error } = await supabase
+    const { data, error } = await ensureSupabase()
       .from('positions')
       .select('*')
       .order('entry_date', { ascending: false })
@@ -23,7 +31,7 @@ export const portfolioService = {
 
   // Get active positions (no exit date)
   async getActivePositions(): Promise<Position[]> {
-    const { data, error } = await supabase
+    const { data, error } = await ensureSupabase()
       .from('positions')
       .select('*')
       .is('exit_date', null)
@@ -39,7 +47,7 @@ export const portfolioService = {
 
   // Add new position
   async addPosition(position: PositionInsert): Promise<Position> {
-    const { data, error } = await supabase
+    const { data, error } = await ensureSupabase()
       .from('positions')
       .insert(position)
       .select()
@@ -60,7 +68,7 @@ export const portfolioService = {
 
   // Update position
   async updatePosition(id: string, updates: PositionUpdate): Promise<Position> {
-    const { data, error } = await supabase
+    const { data, error } = await ensureSupabase()
       .from('positions')
       .update(updates)
       .eq('id', id)
@@ -83,7 +91,7 @@ export const portfolioService = {
 
   // Delete position
   async deletePosition(id: string): Promise<void> {
-    const { error } = await supabase
+    const { error } = await ensureSupabase()
       .from('positions')
       .delete()
       .eq('id', id)
@@ -116,7 +124,7 @@ export const portfolioService = {
       }
     }
 
-    const { error } = await supabase
+    const { error } = await ensureSupabase()
       .from('portfolio_snapshots')
       .insert(snapshot)
 
@@ -128,7 +136,7 @@ export const portfolioService = {
 
   // Get snapshots
   async getSnapshots(limit = 12): Promise<any[]> {
-    const { data, error } = await supabase
+    const { data, error } = await ensureSupabase()
       .from('portfolio_snapshots')
       .select('*')
       .order('snapshot_date', { ascending: false })
@@ -144,7 +152,7 @@ export const portfolioService = {
 
   // Log audit entry
   async logAudit(action: string, entityType: string | null, entityId: string | null, details: any): Promise<void> {
-    const { error } = await supabase
+    const { error } = await ensureSupabase()
       .from('audit_log')
       .insert({
         action,
