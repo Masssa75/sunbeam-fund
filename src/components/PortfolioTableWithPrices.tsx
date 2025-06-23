@@ -2,17 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { searchCoins, getMultipleCoinPrices, getCoinPrice, getHistoricalPrice, CoinPrice } from '@/lib/coingecko'
+import { storage, type Position as StoredPosition } from '@/lib/storage'
 
-interface Position {
-  id: string
-  project_id: string
-  project_name: string
-  symbol: string
-  amount: number
-  cost_basis: number
-  entry_date: string
-  exit_date?: string
-  notes?: string
+interface Position extends StoredPosition {
   current_price?: number
   current_value?: number
   profit_loss?: number
@@ -29,6 +21,14 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [editingPosition, setEditingPosition] = useState<Position | null>(null)
   const [loading, setLoading] = useState(false)
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
+
+  // Load positions from localStorage on mount
+  useEffect(() => {
+    const savedPositions = storage.getPositions()
+    if (savedPositions.length > 0) {
+      setPositions(savedPositions as Position[])
+    }
+  }, [])
 
   // Fetch prices for all positions
   const fetchPrices = async () => {
@@ -71,8 +71,17 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     }
   }, [positions.length])
 
-  // Notify parent of position changes
+  // Save to localStorage and notify parent of position changes
   useEffect(() => {
+    if (positions.length > 0 || storage.getPositions().length > 0) {
+      // Only save base position data, not calculated fields
+      const positionsToSave = positions.map(({ 
+        id, project_id, project_name, symbol, amount, cost_basis, entry_date, exit_date, notes 
+      }) => ({
+        id, project_id, project_name, symbol, amount, cost_basis, entry_date, exit_date, notes
+      }))
+      storage.savePositions(positionsToSave)
+    }
     onPositionsChange?.(positions)
   }, [positions, onPositionsChange])
 
