@@ -28,36 +28,39 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [error, setError] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
+  // Check authentication and load positions
+  const checkAuthAndLoadPositions = async () => {
+    console.log('[PortfolioTable] Checking authentication...')
+    setLoading(true)
+    
+    try {
+      // First check authentication via API
+      const sessionResponse = await fetch('/api/auth/session/')
+      const sessionData = await sessionResponse.json()
+      
+      setIsAuthenticated(sessionData.authenticated)
+      console.log('[PortfolioTable] Auth check:', sessionData.authenticated ? 'Authenticated' : 'Not authenticated')
+      
+      if (sessionData.authenticated) {
+        // Load positions if authenticated
+        console.log('[PortfolioTable] Loading positions...')
+        const savedPositions = await portfolioService.getPositions()
+        console.log('[PortfolioTable] Loaded positions:', savedPositions.length)
+        
+        if (savedPositions.length > 0) {
+          setPositions(savedPositions as Position[])
+        }
+      }
+    } catch (error) {
+      console.error('[PortfolioTable] Error:', error)
+      setError(error instanceof Error ? error.message : 'Failed to load portfolio')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // Load positions from Supabase on mount
   useEffect(() => {
-    const checkAuthAndLoadPositions = async () => {
-      console.log('[PortfolioTable] Checking authentication...')
-      
-      try {
-        // First check authentication via API
-        const sessionResponse = await fetch('/api/auth/session/')
-        const sessionData = await sessionResponse.json()
-        
-        setIsAuthenticated(sessionData.authenticated)
-        console.log('[PortfolioTable] Auth check:', sessionData.authenticated ? 'Authenticated' : 'Not authenticated')
-        
-        if (sessionData.authenticated) {
-          // Load positions if authenticated
-          console.log('[PortfolioTable] Loading positions...')
-          const savedPositions = await portfolioService.getPositions()
-          console.log('[PortfolioTable] Loaded positions:', savedPositions.length)
-          
-          if (savedPositions.length > 0) {
-            setPositions(savedPositions as Position[])
-          }
-        }
-      } catch (error) {
-        console.error('[PortfolioTable] Error:', error)
-        setError(error instanceof Error ? error.message : 'Failed to load portfolio')
-      } finally {
-        setLoading(false)
-      }
-    }
     checkAuthAndLoadPositions()
   }, [])
 
@@ -93,8 +96,8 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       setIsAuthenticated(!!session)
       
       if (event === 'SIGNED_IN' && session) {
-        // Reload the page to ensure fresh state
-        window.location.reload()
+        // Load positions when user signs in
+        checkAuthAndLoadPositions()
       }
     })
 
