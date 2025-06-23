@@ -10,6 +10,25 @@ export const portfolioService = {
   async getPositions(): Promise<Position[]> {
     console.log('[PortfolioService] getPositions() called')
     
+    // In production, use API route to avoid client-side Supabase issues
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+      console.log('[PortfolioService] Using API route for production')
+      try {
+        const response = await fetch('/api/positions')
+        if (!response.ok) {
+          const error = await response.json()
+          throw new Error(error.error || 'Failed to fetch positions')
+        }
+        const data = await response.json()
+        console.log('[PortfolioService] Successfully fetched positions via API:', data.length)
+        return data
+      } catch (err) {
+        console.error('[PortfolioService] API route error:', err)
+        throw err
+      }
+    }
+    
+    // For development or server-side, use direct Supabase
     try {
       const { data, error } = await supabase
         .from('positions')

@@ -26,21 +26,40 @@ if (typeof window !== 'undefined') {
   }
 }
 
-// Create client even with empty values to avoid null errors
-// The actual connection will fail gracefully with proper error messages
-export const supabase = createClient<Database>(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key'
-)
+// Singleton pattern to prevent multiple instances
+let supabaseInstance: ReturnType<typeof createClient<Database>> | null = null
+let supabaseAdminInstance: ReturnType<typeof createClient<Database>> | null = null
+
+// Create singleton client
+export const supabase = (() => {
+  if (!supabaseInstance) {
+    supabaseInstance = createClient<Database>(
+      supabaseUrl || 'https://placeholder.supabase.co',
+      supabaseAnonKey || 'placeholder-key',
+      {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false
+        }
+      }
+    )
+  }
+  return supabaseInstance
+})()
 
 // For server-side operations (Edge Functions, API routes)
-export const supabaseAdmin = createClient<Database>(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  serviceRoleKey || 'placeholder-service-key',
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
+export const supabaseAdmin = (() => {
+  if (!supabaseAdminInstance) {
+    supabaseAdminInstance = createClient<Database>(
+      supabaseUrl || 'https://placeholder.supabase.co',
+      serviceRoleKey || 'placeholder-service-key',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    )
   }
-)
+  return supabaseAdminInstance
+})()
