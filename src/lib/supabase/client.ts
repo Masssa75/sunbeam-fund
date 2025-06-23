@@ -1,28 +1,35 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from './types'
 
-// Provide fallback values for build time when env vars might not be available
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-key'
+// Use environment variables with proper fallbacks
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
-// Only create clients if we have real values (not placeholders)
-const hasValidConfig = supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
+// Log configuration status for debugging
+if (typeof window !== 'undefined') {
+  console.log('Supabase config:', {
+    hasUrl: !!supabaseUrl,
+    hasAnonKey: !!supabaseAnonKey,
+    url: supabaseUrl?.substring(0, 30) + '...'
+  })
+}
 
-export const supabase = hasValidConfig 
-  ? createClient<Database>(supabaseUrl, supabaseAnonKey)
-  : null as any
+// Create client even with empty values to avoid null errors
+// The actual connection will fail gracefully with proper error messages
+export const supabase = createClient<Database>(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  supabaseAnonKey || 'placeholder-key'
+)
 
 // For server-side operations (Edge Functions, API routes)
-export const supabaseAdmin = hasValidConfig && serviceRoleKey !== 'placeholder-service-key'
-  ? createClient<Database>(
-      supabaseUrl,
-      serviceRoleKey,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
-  : null as any
+export const supabaseAdmin = createClient<Database>(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  serviceRoleKey || 'placeholder-service-key',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+)

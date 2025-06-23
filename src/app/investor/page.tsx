@@ -1,5 +1,6 @@
 import InvestorDashboard from '@/components/InvestorDashboard'
 import VersionBadge from '@/components/VersionBadge'
+import Link from 'next/link'
 
 export default function InvestorPage() {
   return (
@@ -11,12 +12,12 @@ export default function InvestorPage() {
             <p className="text-lg text-gray-600">Portfolio Performance Overview</p>
           </div>
           <div className="flex gap-2">
-            <a href="/" className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+            <Link href="/" className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
               Admin View
-            </a>
-            <a href="/investor" className="px-4 py-2 bg-blue-500 text-white rounded">
+            </Link>
+            <Link href="/investor" className="px-4 py-2 bg-blue-500 text-white rounded">
               Investor View
-            </a>
+            </Link>
           </div>
         </div>
         <InvestorDashboard />
