@@ -99,10 +99,18 @@ export const auth = {
     return data
   },
 
-  // Check if user is admin (you can customize this based on your needs)
-  async isAdmin(userId: string): Promise<boolean> {
-    // For now, all authenticated users are admins
-    // Later you can check user metadata or a roles table
-    return true
+  // Check if user is admin
+  async isAdmin(userEmail: string): Promise<boolean> {
+    if (!supabase) {
+      return false
+    }
+    
+    const { data, error } = await supabase
+      .from('admin_users')
+      .select('user_email')
+      .eq('user_email', userEmail)
+      .single()
+    
+    return !error && !!data
   }
 }

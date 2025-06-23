@@ -34,9 +34,9 @@ export async function middleware(req: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession()
 
-  // Protected routes
-  const protectedPaths = ['/admin', '/portfolio']
-  const isProtectedPath = protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))
+  // Protected routes (including homepage since it accesses portfolio data)
+  const protectedPaths = ['/', '/admin', '/portfolio']
+  const isProtectedPath = protectedPaths.some(path => req.nextUrl.pathname === path || (path !== '/' && req.nextUrl.pathname.startsWith(path)))
 
   // Redirect to login if accessing protected route without session
   if (isProtectedPath && !session) {

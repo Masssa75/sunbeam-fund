@@ -328,16 +328,20 @@ CREATE TABLE reports (
 
 ## 🚨 CURRENT ISSUES TO FIX (NEXT INSTANCE)
 
-### Privacy Error on sunbeam.capital - IN PROGRESS
-- **Issue**: SSL/Privacy error when accessing https://sunbeam.capital (NET::ERR_CERT_COMMON_NAME_INVALID)
-- **Status**: Opened Netlify dashboard for manual SSL provisioning
-- **Site Details**:
-  - Netlify Site: starlit-mousse-8fa18a
-  - Site ID: f4f02cc0-7275-4b0c-97eb-340df38f4292
-  - Domain: sunbeam.capital (DNS verified working)
-  - SSL Status: false (certificate not provisioned)
-- **Fix**: Need to manually provision SSL certificate in Netlify dashboard
-- **Script Created**: `/scripts/fix-ssl.js` to open dashboard
+### ✅ SSL Issue - FIXED
+- **Issue**: SSL/Privacy error when accessing https://sunbeam.capital
+- **Resolution**: SSL certificate provisioned successfully, site now loads with HTTPS
+
+### 🚨 Environment Variables Issue - IN PROGRESS
+- **Issue**: "Invalid API key" error on signup page
+- **Cause**: Supabase environment variables not set in Netlify
+- **Status**: Need to manually add env vars to Netlify dashboard
+- **Required Variables**:
+  1. `NEXT_PUBLIC_SUPABASE_URL`: https://gualxudgbmpuhjbumfeh.supabase.co
+  2. `NEXT_PUBLIC_SUPABASE_ANON_KEY`: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+- **Scripts Created**: 
+  - `/scripts/add-env-vars.js` - Opens Netlify env vars page
+  - `/scripts/copy-env-vars.sh` - Shows exact values to copy
 
 ## 📋 CURRENT PROJECT STATE (v1.1.0)
 
