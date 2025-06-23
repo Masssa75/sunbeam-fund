@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { searchCoins, getMultipleCoinPrices, getCoinPrice, getHistoricalPrice, CoinPrice } from '@/lib/coingecko'
 import { portfolioService } from '@/lib/supabase/portfolio'
-import { supabase } from '@/lib/supabase/client'
+import { createSupabaseBrowser } from '@/lib/supabase/client-browser'
 import type { Database } from '@/lib/supabase/types'
 
 type StoredPosition = Database['public']['Tables']['positions']['Row']
@@ -79,6 +79,8 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
   // Monitor auth state changes
   useEffect(() => {
+    const supabase = createSupabaseBrowser()
+    
     // Check initial auth state
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsAuthenticated(!!session)

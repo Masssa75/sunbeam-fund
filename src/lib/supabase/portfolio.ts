@@ -1,4 +1,4 @@
-import { supabase } from './client'
+import { createSupabaseBrowser } from './client-browser'
 import type { Database } from './types'
 
 type Position = Database['public']['Tables']['positions']['Row']
@@ -6,11 +6,26 @@ type PositionInsert = Database['public']['Tables']['positions']['Insert']
 type PositionUpdate = Database['public']['Tables']['positions']['Update']
 
 export const portfolioService = {
+  // Get Supabase client
+  getClient() {
+    if (typeof window !== 'undefined') {
+      return createSupabaseBrowser()
+    }
+    // For server-side, we'll create a new instance each time
+    // This is not ideal but works for now
+    const { createClient } = require('@supabase/supabase-js')
+    return createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
+    )
+  },
   // Get all positions
   async getPositions(): Promise<Position[]> {
     console.log('[PortfolioService] getPositions() called')
     
     try {
+      const supabase = this.getClient()
+      
       // Check if user is authenticated first
       const { data: { session }, error: authError } = await supabase.auth.getSession()
       
@@ -50,6 +65,8 @@ export const portfolioService = {
   // Get active positions (no exit date)
   async getActivePositions(): Promise<Position[]> {
     console.log('[PortfolioService] getActivePositions() called')
+    
+    const supabase = this.getClient()
     
     // Check authentication first
     const { data: { session }, error: authError } = await supabase.auth.getSession()
