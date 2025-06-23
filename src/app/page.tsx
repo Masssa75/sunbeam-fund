@@ -1,4 +1,5 @@
 import Dashboard from '@/components/Dashboard'
+import VersionBadge from '@/components/VersionBadge'
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
         <p className="text-lg mb-8 text-gray-600">Crypto portfolio tracking and reporting system</p>
         <Dashboard />
       </div>
+      <VersionBadge />
     </main>
   )
 }
