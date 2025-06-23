@@ -28,6 +28,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [error, setError] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [authChecked, setAuthChecked] = useState(false) // Track if we've checked auth
+  const [mounted, setMounted] = useState(false) // Track if component is mounted
 
   // Check authentication and load positions
   const checkAuthAndLoadPositions = async () => {
@@ -73,10 +74,17 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     }
   }
 
+  // Track mount status
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Load positions from Supabase on mount
   useEffect(() => {
-    checkAuthAndLoadPositions()
-  }, [])
+    if (mounted) {
+      checkAuthAndLoadPositions()
+    }
+  }, [mounted])
 
   // Monitor auth state changes
   useEffect(() => {
@@ -213,11 +221,17 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
   // Debug logging
   console.log('[PortfolioTable] Render state:', {
+    mounted,
     loading,
     authChecked,
     isAuthenticated,
     positionsCount: positions.length
   })
+
+  // Don't render anything until mounted to avoid hydration issues
+  if (!mounted) {
+    return null
+  }
 
   // Show loading state
   if (loading && !authChecked && positions.length === 0) {
