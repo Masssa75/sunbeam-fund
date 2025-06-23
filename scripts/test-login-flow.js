@@ -1,84 +1,90 @@
-const { createClient } = require('@supabase/supabase-js')
+const https = require('https');
+const { parse } = require('url');
 
-const supabaseUrl = 'https://gualxudgbmpuhjbumfeh.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
+// Test credentials
+const email = 'marc@minutevideos.com';
+const password = '123456';
+
+// Function to make HTTPS request
+function makeRequest(options, postData = null) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => data += chunk);
+      res.on('end', () => resolve({ 
+        statusCode: res.statusCode, 
+        headers: res.headers, 
+        data,
+        cookies: res.headers['set-cookie'] || []
+      }));
+    });
+    req.on('error', reject);
+    if (postData) req.write(postData);
+    req.end();
+  });
+}
 
 async function testLoginFlow() {
-  console.log('Testing login flow...\n')
-  
-  // Create a client with session persistence
-  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true
-    }
-  })
-  
+  console.log('Testing login flow on production...\n');
+
   try {
-    // 1. Test authentication
-    console.log('1. Testing authentication with marc@minutevideos.com...')
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email: 'marc@minutevideos.com',
-      password: '123456'
-    })
-    
-    if (authError) {
-      console.error('   ❌ Authentication failed:', authError.message)
-      return
-    }
-    
-    console.log('   ✅ Authentication successful')
-    console.log('   Session token:', authData.session?.access_token?.substring(0, 20) + '...')
-    
-    // 2. Test fetching positions with auth
-    console.log('\n2. Fetching positions with authenticated session...')
-    const { data: positions, error: posError } = await supabase
-      .from('positions')
-      .select('*')
-      .order('entry_date', { ascending: false })
-    
-    if (posError) {
-      console.error('   ❌ Failed to fetch positions:', posError.message)
-    } else {
-      console.log('   ✅ Successfully fetched', positions.length, 'positions')
-      if (positions.length > 0) {
-        console.log('   First position:', positions[0].project_name)
-      }
-    }
-    
-    // 3. Test session persistence
-    console.log('\n3. Testing session persistence...')
-    const { data: { session } } = await supabase.auth.getSession()
-    if (session) {
-      console.log('   ✅ Session is persisted')
-      console.log('   User:', session.user.email)
-    } else {
-      console.log('   ❌ Session not persisted')
-    }
-    
-    // 4. Test production API route with auth
-    console.log('\n4. Testing production API route with auth token...')
-    const apiResponse = await fetch('https://sunbeam.capital/api/positions/', {
+    // Step 1: Login
+    console.log('1. Attempting login...');
+    const loginData = JSON.stringify({ email, password });
+    const loginResult = await makeRequest({
+      hostname: 'sunbeam.capital',
+      path: '/api/auth/login/',
+      method: 'POST',
       headers: {
-        'Cookie': `sb-gualxudgbmpuhjbumfeh-auth-token=${authData.session?.access_token}`
+        'Content-Type': 'application/json',
+        'Content-Length': loginData.length
       }
-    })
+    }, loginData);
+
+    console.log('   Status:', loginResult.statusCode);
+    console.log('   Response:', loginResult.data);
+    console.log('   Cookies set:', loginResult.cookies.length);
     
-    if (apiResponse.ok) {
-      const apiData = await apiResponse.json()
-      console.log('   ✅ API returned', apiData.length, 'positions')
-    } else {
-      console.log('   ❌ API returned status:', apiResponse.status)
+    // Extract cookies
+    const cookies = loginResult.cookies.map(c => c.split(';')[0]).join('; ');
+    console.log('   Cookie string:', cookies.substring(0, 100) + '...\n');
+
+    // Step 2: Test /api/positions/ with cookies
+    console.log('2. Testing /api/positions/ with auth cookies...');
+    const positionsResult = await makeRequest({
+      hostname: 'sunbeam.capital',
+      path: '/api/positions/',
+      method: 'GET',
+      headers: {
+        'Cookie': cookies
+      }
+    });
+
+    console.log('   Status:', positionsResult.statusCode);
+    const positions = JSON.parse(positionsResult.data);
+    console.log('   Positions returned:', positions.length);
+    if (positions.length > 0) {
+      console.log('   First position:', positions[0].project_name);
     }
-    
-    // 5. Sign out
-    console.log('\n5. Signing out...')
-    await supabase.auth.signOut()
-    console.log('   ✅ Signed out successfully')
-    
+    console.log('');
+
+    // Step 3: Test /api/auth/session with cookies
+    console.log('3. Testing /api/auth/session...');
+    const sessionResult = await makeRequest({
+      hostname: 'sunbeam.capital',
+      path: '/api/auth/session/',
+      method: 'GET',
+      headers: {
+        'Cookie': cookies
+      }
+    });
+
+    console.log('   Status:', sessionResult.statusCode);
+    console.log('   Session data:', sessionResult.data);
+
   } catch (error) {
-    console.error('\n❌ Unexpected error:', error.message)
+    console.error('Error:', error);
   }
 }
 
-testLoginFlow()
+testLoginFlow();

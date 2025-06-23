@@ -42,10 +42,12 @@ export default function LoginPage() {
         }
         
         console.log('[Login] Sign in successful, redirecting...')
-        // Small delay to ensure session is saved
+        // Use router.push for client-side navigation
+        router.push('/')
+        // Also refresh the page after a short delay to ensure session is loaded
         setTimeout(() => {
-          window.location.href = '/'
-        }, 100)
+          router.refresh()
+        }, 500)
       } else if (mode === 'signup') {
         const data = await auth.signUp(email, password)
         if (data?.user?.identities?.length === 0) {
