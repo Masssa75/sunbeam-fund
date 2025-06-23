@@ -35,9 +35,26 @@ export const portfolioService = {
       }
     }
     
-    // For server-side, return empty array (auth should be handled by API route)
-    console.log('[PortfolioService] Server-side call - returning empty array')
-    return []
+    // For server-side, fetch directly without auth check (RLS handles it)
+    console.log('[PortfolioService] Server-side call - fetching positions')
+    
+    try {
+      const { data, error } = await supabase
+        .from('positions')
+        .select('*')
+        .order('entry_date', { ascending: false })
+
+      if (error) {
+        console.error('[PortfolioService] Error fetching positions:', error)
+        throw error
+      }
+
+      console.log('[PortfolioService] Successfully fetched positions:', data?.length || 0)
+      return data || []
+    } catch (err) {
+      console.error('[PortfolioService] Caught error in getPositions:', err)
+      throw err
+    }
   },
 
   // Get active positions (no exit date)
