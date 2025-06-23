@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { searchCoins, getMultipleCoinPrices, getCoinPrice, getHistoricalPrice, CoinPrice } from '@/lib/coingecko'
 import { portfolioService } from '@/lib/supabase/portfolio'
-import { createSupabaseBrowser } from '@/lib/supabase/client-browser'
+import { createBrowserClient } from '@supabase/ssr'
 import type { Database } from '@/lib/supabase/types'
 
 type StoredPosition = Database['public']['Tables']['positions']['Row']
@@ -66,7 +66,10 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
   // Monitor auth state changes
   useEffect(() => {
-    const supabase = createSupabaseBrowser()
+    const supabase = createBrowserClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
+    )
     
     // Check initial auth state
     supabase.auth.getSession().then(({ data: { session } }) => {
