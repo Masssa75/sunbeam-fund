@@ -42,6 +42,19 @@ async function testProductionLogin() {
       console.log('   Page shows: Authentication Required');
     } else if (pageContent.includes('Portfolio Overview')) {
       console.log('   Page shows: Portfolio Overview (authenticated)');
+    } else if (pageContent.includes('Sunbeam Fund Management')) {
+      console.log('   Page shows: Sunbeam Fund Management (main title)');
+      // Check for specific components
+      if (pageContent.includes('PortfolioTableWithPrices')) {
+        console.log('   Contains: PortfolioTableWithPrices component');
+      }
+      // Show a snippet of the body content
+      const bodyStart = pageContent.indexOf('<body');
+      const bodyEnd = pageContent.indexOf('</body>');
+      if (bodyStart > -1 && bodyEnd > -1) {
+        const bodyContent = pageContent.substring(bodyStart, Math.min(bodyStart + 500, bodyEnd));
+        console.log('   Body snippet:', bodyContent.replace(/\s+/g, ' ').substring(0, 200) + '...');
+      }
     }
 
     // 2. Test the session API directly
