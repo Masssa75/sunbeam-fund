@@ -9,10 +9,10 @@ async function testAuth() {
   console.log('Testing authentication...\n')
   
   // Test sign in with the admin user
-  console.log('1. Testing sign in with marc@cyrator.com:')
+  console.log('1. Testing sign in with marc@minutevideos.com:')
   const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-    email: 'marc@cyrator.com',
-    password: 'sunbeam2025!'
+    email: 'marc@minutevideos.com',
+    password: '123456'
   })
   
   if (signInError) {
