@@ -261,23 +261,49 @@ CREATE TABLE reports (
 
 ## Next Steps Priority
 
-### Phase 1: Supabase Integration ✅ (Next)
-1. Database tables for positions, snapshots, reports
-2. Replace localStorage with cloud storage
-3. Enable multi-device access
-4. Historical data tracking
+### Phase 1: Supabase Integration ✅ (Next Instance)
+1. **Create new Supabase project** (keep it separate from porta)
+   - Go to https://app.supabase.com
+   - Create project named "sunbeam-fund"
+   - Copy new credentials to .env
+2. **Database Schema**
+   ```sql
+   -- Already in /supabase/schema.sql
+   - positions table (portfolio holdings)
+   - portfolio_snapshots (historical values)
+   - reports (monthly reports)
+   - users (for auth)
+   ```
+3. **Migrate from localStorage**
+   - Create Supabase client
+   - Add CRUD operations for positions
+   - Sync existing localStorage data
+   - Keep localStorage as offline fallback
+4. **Authentication Setup**
+   - Enable Supabase Auth
+   - Add login page for admin
+   - Protect portfolio management routes
+   - Set up user roles (admin, investor)
 
-### Phase 2: Authentication
-1. Supabase Auth for admin access
-2. Separate investor portal with limited access
-3. Role-based permissions
+### Phase 2: Historical Data & Snapshots
+1. Automated monthly snapshots
+2. Historical price tracking
+3. Performance analytics
+4. Comparison charts
 
 ### Phase 3: Twitter Monitoring
 1. Copy working implementation from porta
 2. Set up Edge Functions
 3. Configure cron jobs
+4. AI importance scoring
 
-### Phase 4: Telegram Integration
+### Phase 4: Investor Portal
+1. Separate /investor route
+2. Read-only portfolio view
+3. Monthly report access
+4. Performance dashboard
+
+### Phase 5: Telegram Integration
 1. Notifications for important updates
 2. Monthly report distribution
 3. Command interface
