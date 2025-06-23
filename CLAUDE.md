@@ -347,7 +347,63 @@ CREATE TABLE reports (
 - ✅ No more infinite loading states
 - ✅ Error handling is graceful even if Supabase isn't configured
 
-## 📋 CURRENT PROJECT STATE (v1.2.1)
+## 📋 CURRENT PROJECT STATE (v1.2.2)
+
+### 🚨 LOADING ISSUE STATUS (PARTIALLY RESOLVED)
+
+#### What We've Done Today:
+1. **Added comprehensive error logging** throughout the app
+2. **Fixed Supabase client** to always return an instance (no more null)
+3. **Added hardcoded Supabase credentials** as fallback
+4. **Fixed RLS policies** via API to allow anonymous reads
+5. **Created debug tools**:
+   - `/src/components/DebugPanel.tsx` - Test Supabase connection
+   - `/scripts/test-supabase-direct.js` - Direct connection test
+   - `/scripts/run-sql-api.js` - Fix RLS via API
+   - `/api/test-db` and `/api/debug` endpoints
+
+#### What We Discovered:
+- ✅ Supabase configuration is correct (hardcoded values work)
+- ✅ RLS policies were blocking anonymous reads (FIXED in database)
+- ✅ Service role key can read 9 positions successfully
+- ✅ Anonymous key can now read positions (tested locally)
+- ❌ BUT: Production site still shows "Loading..." 
+
+#### Next Steps to Try:
+1. **Check if Netlify has env vars** - The hardcoded values should work, but check Netlify dashboard
+2. **Clear browser cache** - Force refresh with Cmd+Shift+R
+3. **Check browser Network tab** for failed requests
+4. **Use the Debug Panel** - Click "Test Supabase Connection" button
+5. **Check if it's a CORS issue** - Supabase might be blocking requests from sunbeam.capital
+6. **Try adding auth** - Maybe the app needs a default user session
+
+### 📊 MONTHLY REPORT DESIGN STATUS
+
+#### Completed:
+- ✅ Created 6 HTML mockups in `/mockups/` folder
+- ✅ Selected design: `monthly-report-v6-enhanced.html`
+- ✅ Features implemented in mockup:
+  - Pie chart showing top 4 holdings + "Others"
+  - Investment thesis one-liners for each project
+  - No individual amounts/values shown
+  - Market commentary section
+  - Individual investor performance calculations
+  - Investment philosophy statement
+
+#### Report Design Decisions:
+1. **Show only top 4 holdings** individually (Kaspa, Bittensor, Sui, Toncoin)
+2. **Group remaining 8 positions** as "Other Holdings (39%)"
+3. **Include investment thesis** for each position to focus on long-term
+4. **Hide sensitive data**: No cost basis, token amounts, or individual P&L
+
+#### Next Steps for Reports:
+1. Convert HTML mockup to React component
+2. Integrate with real portfolio data
+3. Add PDF export functionality
+4. Create automated monthly generation
+5. Set up email distribution
+
+## 📋 CURRENT PROJECT STATE (v1.2.2)
 
 ### What's Working:
 - ✅ Full Supabase integration (no localStorage)
@@ -401,10 +457,39 @@ cat latest-result.json
 ```
 
 ## Version
-- Current Version: 1.2.1
+- Current Version: 1.2.2
 - Created: 2025-06-23
-- Status: Deployed successfully - loading issue fixed!
-- Last Updated: 2025-06-23 16:30 PST
+- Status: Loading issue partially fixed (works locally, not in production)
+- Last Updated: 2025-06-23 19:10 PST
+
+## 🔍 IMPORTANT DEBUG INFO FOR NEXT SESSION
+
+### The Loading Issue:
+- **Symptom**: Still shows "Loading Portfolio..." in production
+- **Local**: Works perfectly (can read 9 positions)
+- **Production**: Hangs after calling getPositions()
+
+### Key Files Created Today:
+1. `/src/components/DebugPanel.tsx` - Has a button to test Supabase
+2. `/scripts/test-supabase-direct.js` - Tests connection directly
+3. `/scripts/run-sql-api.js` - Fixed RLS policies
+4. `/mockups/monthly-report-v6-enhanced.html` - Final report design
+
+### What's Likely Wrong:
+1. **CORS issue** - Supabase might block sunbeam.capital domain
+2. **Build issue** - Something different in production build
+3. **Timing issue** - RLS fix might not have propagated
+4. **Auth issue** - Maybe needs authenticated context
+
+### Quick Test for Next Session:
+```bash
+# Test if anonymous access works
+node scripts/test-supabase-direct.js
+
+# If it shows 9 positions, RLS is fine
+# If it shows 0 positions, run:
+node scripts/run-sql-api.js
+```
 
 ## REMEMBER FOR NEXT INSTANCE
 1. You CAN create Supabase projects autonomously
