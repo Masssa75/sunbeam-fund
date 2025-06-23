@@ -27,6 +27,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [authChecked, setAuthChecked] = useState(false) // Track if we've checked auth
 
   // Check authentication and load positions
   const checkAuthAndLoadPositions = async () => {
@@ -38,7 +39,8 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       console.log('[PortfolioTable] Load timeout - showing auth required')
       setLoading(false)
       setIsAuthenticated(false)
-    }, 5000) // 5 second timeout
+      setAuthChecked(true)
+    }, 10000) // 10 second timeout
     
     try {
       // First check authentication via API
@@ -48,6 +50,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       clearTimeout(timeoutId)
       
       setIsAuthenticated(sessionData.authenticated)
+      setAuthChecked(true)
       console.log('[PortfolioTable] Auth check:', sessionData.authenticated ? 'Authenticated' : 'Not authenticated')
       
       if (sessionData.authenticated) {
@@ -64,6 +67,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       clearTimeout(timeoutId)
       console.error('[PortfolioTable] Error:', error)
       setError(error instanceof Error ? error.message : 'Failed to load portfolio')
+      setAuthChecked(true)
     } finally {
       setLoading(false)
     }
@@ -80,37 +84,19 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
     )
-    
-    // Check initial auth state
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsAuthenticated(!!session)
-      if (session) {
-        // Reload positions if we just authenticated
-        const loadPositions = async () => {
-          setLoading(true)
-          try {
-            const savedPositions = await portfolioService.getPositions()
-            if (savedPositions.length > 0) {
-              setPositions(savedPositions as Position[])
-            }
-          } catch (error) {
-            console.error('[PortfolioTable] Error reloading after auth:', error)
-          } finally {
-            setLoading(false)
-          }
-        }
-        loadPositions()
-      }
-    })
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('[PortfolioTable] Auth state changed:', event, !!session)
-      setIsAuthenticated(!!session)
       
       if (event === 'SIGNED_IN' && session) {
-        // Load positions when user signs in
+        // Reload the entire auth check when user signs in
         checkAuthAndLoadPositions()
+      } else if (event === 'SIGNED_OUT') {
+        setIsAuthenticated(false)
+        setPositions([])
+        setAuthChecked(true)
+        setLoading(false)
       }
     })
 
@@ -225,8 +211,16 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const totalProfitLoss = totalValue - totalCost
   const totalProfitLossPercent = totalCost > 0 ? (totalProfitLoss / totalCost) * 100 : 0
 
+  // Debug logging
+  console.log('[PortfolioTable] Render state:', {
+    loading,
+    authChecked,
+    isAuthenticated,
+    positionsCount: positions.length
+  })
+
   // Show loading state
-  if (loading && positions.length === 0) {
+  if (loading && !authChecked && positions.length === 0) {
     return (
       <div className="w-full">
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
@@ -242,8 +236,8 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     )
   }
   
-  // Show login prompt if not authenticated and not loading
-  if (!loading && !isAuthenticated && positions.length === 0) {
+  // Show login prompt if not authenticated after auth check
+  if (authChecked && !isAuthenticated && positions.length === 0) {
     return (
       <div className="w-full">
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
