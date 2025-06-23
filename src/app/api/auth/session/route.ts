@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 
 export async function GET() {
   try {
@@ -12,13 +12,30 @@ export async function GET() {
       {
         cookies: {
           get(name: string) {
-            return cookieStore.get(name)?.value
+            // Handle chunked cookies
+            const cookie = cookieStore.get(name)
+            if (cookie) return cookie.value
+            
+            // Check for chunked cookies (.0, .1, etc)
+            const chunks: string[] = []
+            for (let i = 0; ; i++) {
+              const chunk = cookieStore.get(`${name}.${i}`)
+              if (!chunk) break
+              chunks.push(chunk.value)
+            }
+            
+            if (chunks.length > 0) {
+              return chunks.join('')
+            }
+            
+            return undefined
           },
-          set(name: string, value: string, options: CookieOptions) {
-            cookieStore.set({ name, value, ...options })
+          set(name: string, value: string, options: any) {
+            // For server components, we can't set cookies in GET requests
+            // This is okay - we only need to read them
           },
-          remove(name: string, options: CookieOptions) {
-            cookieStore.set({ name, value: '', ...options })
+          remove(name: string, options: any) {
+            // For server components, we can't remove cookies in GET requests
           },
         },
       }

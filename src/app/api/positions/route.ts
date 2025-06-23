@@ -18,13 +18,29 @@ export async function GET() {
       {
         cookies: {
           get(name: string) {
-            return cookieStore.get(name)?.value
+            // Handle chunked cookies
+            const cookie = cookieStore.get(name)
+            if (cookie) return cookie.value
+            
+            // Check for chunked cookies (.0, .1, etc)
+            const chunks: string[] = []
+            for (let i = 0; ; i++) {
+              const chunk = cookieStore.get(`${name}.${i}`)
+              if (!chunk) break
+              chunks.push(chunk.value)
+            }
+            
+            if (chunks.length > 0) {
+              return chunks.join('')
+            }
+            
+            return undefined
           },
           set(name: string, value: string, options: CookieOptions) {
-            cookieStore.set({ name, value, ...options })
+            // For server components, we can't set cookies in GET requests
           },
           remove(name: string, options: CookieOptions) {
-            cookieStore.set({ name, value: '', ...options })
+            // For server components, we can't remove cookies in GET requests
           },
         },
       }
