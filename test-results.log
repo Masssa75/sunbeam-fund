@@ -1,0 +1,56 @@
+🧪 Starting full E2E browser test...
+
+1. Testing Homepage (https://sunbeam.capital)
+   - Navigating to homepage...
+   Browser console: [PortfolioTable] Render state: {mounted: false, loading: true, authChecked: false, isAuthenticated: false, positionsCount: 0}
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: true, authChecked: false, isAuthenticated: false, positionsCount: 0}
+   Browser console: [PortfolioTable] Checking authentication...
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: true, authChecked: false, isAuthenticated: false, positionsCount: 0}
+   Browser console: [PortfolioTable] Initial session check: false
+   Browser console: [PortfolioTable] Auth state changed: INITIAL_SESSION false
+   Browser console: [PortfolioTable] Auth check: Not authenticated
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: false, authChecked: true, isAuthenticated: false, positionsCount: 0}
+   - Waiting for React to render...
+   - Checking page content...
+   ✅ SUCCESS: Shows "Authentication Required"
+   - Screenshot saved: homepage-screenshot.png
+
+2. Testing Login Navigation
+   ✅ Found login link
+   - Clicking login link...
+
+3. Testing Login Page
+   ✅ Login form loaded
+   - Entering credentials...
+   - Screenshot saved: login-form-screenshot.png
+   - Submitting login form...
+   - Waiting for authentication...
+   Browser console: [PortfolioTable] Render state: {mounted: false, loading: true, authChecked: false, isAuthenticated: false, positionsCount: 0}
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: true, authChecked: false, isAuthenticated: false, positionsCount: 0}
+   Browser console: [PortfolioTable] Checking authentication...
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: true, authChecked: false, isAuthenticated: false, positionsCount: 0}
+   Browser console: [PortfolioTable] Initial session check: true
+   Browser console: [PortfolioTable] Auth state changed: INITIAL_SESSION true
+   Browser console: [PortfolioTable] Auth check: Authenticated
+   Browser console: [PortfolioTable] Loading positions...
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: true, authChecked: true, isAuthenticated: true, positionsCount: 0}
+   Browser console: [PortfolioTable] Loaded positions: 9
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: false, authChecked: true, isAuthenticated: true, positionsCount: 9}
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: true, authChecked: true, isAuthenticated: true, positionsCount: 9}
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: true, authChecked: true, isAuthenticated: true, positionsCount: 9}
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: false, authChecked: true, isAuthenticated: true, positionsCount: 9}
+   Browser console: [PortfolioTable] Render state: {mounted: true, loading: false, authChecked: true, isAuthenticated: true, positionsCount: 9}
+
+4. Testing Portfolio Display
+   - Current URL: https://sunbeam.capital/
+   ❓ UNKNOWN STATE
+   Page preview: Sunbeam FundSigned in as: marc@minutevideos.comAdmin ViewInvestor ViewSign out(self.__next_f=self.__next_f||[]).push([0]);self.__next_f.push([2,null])self.__next_f.push([1,"1:HL[\"/_next/static/media/...
+   - Screenshot saved: after-login-screenshot.png
+
+==================================================
+TEST SUMMARY:
+- Homepage loads: ✅
+- Shows auth state: ✅
+- Login form works: ❌
+- Can authenticate: TBD (check screenshots)
+==================================================
