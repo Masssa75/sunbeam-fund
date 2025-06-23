@@ -30,51 +30,35 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
   // Load positions from Supabase on mount
   useEffect(() => {
-    const loadPositions = async () => {
-      console.log('[PortfolioTable] Starting to load positions...')
-      console.log('[PortfolioTable] Window location:', window.location.href)
-      console.log('[PortfolioTable] Supabase config:', {
-        url: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'SET' : 'MISSING',
-        key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'SET' : 'MISSING'
-      })
-      
-      setError(null)
-      
-      // Add timeout to catch hanging requests
-      const timeoutId = setTimeout(() => {
-        console.error('[PortfolioTable] Request timeout after 10 seconds')
-        setError('Request timeout - unable to connect to database')
-        setLoading(false)
-      }, 10000)
+    const checkAuthAndLoadPositions = async () => {
+      console.log('[PortfolioTable] Checking authentication...')
       
       try {
-        console.log('[PortfolioTable] Calling portfolioService.getPositions()')
-        const savedPositions = await portfolioService.getPositions()
-        clearTimeout(timeoutId)
-        console.log('[PortfolioTable] Loaded positions:', savedPositions.length)
+        // First check authentication via API
+        const sessionResponse = await fetch('/api/auth/session/')
+        const sessionData = await sessionResponse.json()
         
-        if (savedPositions.length > 0) {
-          setPositions(savedPositions as Position[])
-        } else {
-          console.log('[PortfolioTable] No positions found, showing empty state')
+        setIsAuthenticated(sessionData.authenticated)
+        console.log('[PortfolioTable] Auth check:', sessionData.authenticated ? 'Authenticated' : 'Not authenticated')
+        
+        if (sessionData.authenticated) {
+          // Load positions if authenticated
+          console.log('[PortfolioTable] Loading positions...')
+          const savedPositions = await portfolioService.getPositions()
+          console.log('[PortfolioTable] Loaded positions:', savedPositions.length)
+          
+          if (savedPositions.length > 0) {
+            setPositions(savedPositions as Position[])
+          }
         }
-        setLoading(false)
       } catch (error) {
-        clearTimeout(timeoutId)
-        console.error('[PortfolioTable] Error loading positions:', error)
-        console.error('[PortfolioTable] Error details:', {
-          name: (error as any)?.name,
-          message: (error as any)?.message,
-          stack: (error as any)?.stack,
-          code: (error as any)?.code,
-          status: (error as any)?.status,
-          statusText: (error as any)?.statusText
-        })
-        setError(error instanceof Error ? error.message : 'Failed to load positions')
+        console.error('[PortfolioTable] Error:', error)
+        setError(error instanceof Error ? error.message : 'Failed to load portfolio')
+      } finally {
         setLoading(false)
       }
     }
-    loadPositions()
+    checkAuthAndLoadPositions()
   }, [])
 
   // Monitor auth state changes
