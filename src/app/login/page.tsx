@@ -23,7 +23,9 @@ export default function LoginPage() {
 
     try {
       if (mode === 'signin') {
+        console.log('Attempting sign in...')
         await auth.signIn(email, password)
+        console.log('Sign in successful, redirecting...')
         router.push('/')
       } else if (mode === 'signup') {
         const { data } = await auth.signUp(email, password)

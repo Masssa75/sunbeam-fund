@@ -4,15 +4,22 @@ export const auth = {
   // Sign in with email and password
   async signIn(email: string, password: string) {
     if (!supabase) {
+      console.error('Supabase client is not initialized')
       throw new Error('Supabase is not configured')
     }
     
+    console.log('Calling Supabase signInWithPassword...')
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
     
-    if (error) throw error
+    if (error) {
+      console.error('Sign in error:', error)
+      throw error
+    }
+    
+    console.log('Sign in response:', data)
     return data
   },
 
