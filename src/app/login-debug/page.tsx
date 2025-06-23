@@ -17,12 +17,33 @@ export default function LoginDebugPage() {
     console.log(`[LoginDebug] ${message}`)
   }
 
+  const testConnectivity = async () => {
+    addLog('Testing connectivity to Supabase...')
+    try {
+      const response = await fetch('https://gualxudgbmpuhjbumfeh.supabase.co/auth/v1/health', {
+        method: 'GET',
+        mode: 'cors',
+      })
+      addLog(`Supabase health check: ${response.ok ? 'OK' : 'Failed'} (${response.status})`)
+      return response.ok
+    } catch (error: any) {
+      addLog(`Connectivity test failed: ${error.message}`)
+      return false
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setLogs([])
     
     try {
+      // Test connectivity first
+      const isConnected = await testConnectivity()
+      if (!isConnected) {
+        addLog('WARNING: Cannot connect to Supabase. Check network/firewall.')
+      }
+
       addLog('Creating Supabase client...')
       const supabase = createBrowserClient(
         'https://gualxudgbmpuhjbumfeh.supabase.co',
@@ -30,10 +51,24 @@ export default function LoginDebugPage() {
       )
       addLog('Supabase client created')
 
-      // Check current session before login
+      // Check current session before login with timeout
       addLog('Checking current session...')
-      const { data: { session: currentSession } } = await supabase.auth.getSession()
-      addLog(`Current session: ${currentSession ? 'Exists' : 'None'}`)
+      try {
+        const sessionPromise = supabase.auth.getSession()
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Session check timed out')), 5000)
+        )
+        
+        const { data: { session: currentSession } } = await Promise.race([
+          sessionPromise,
+          timeoutPromise
+        ]) as any
+        
+        addLog(`Current session: ${currentSession ? 'Exists' : 'None'}`)
+      } catch (sessionError: any) {
+        addLog(`WARNING: Session check failed: ${sessionError.message}`)
+        addLog('Continuing with login attempt...')
+      }
 
       // Attempt sign in
       addLog(`Attempting sign in for: ${email}`)

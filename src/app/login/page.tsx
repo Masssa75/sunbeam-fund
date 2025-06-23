@@ -33,11 +33,29 @@ export default function LoginPage() {
         
         let result;
         try {
+          // Try client-side auth first
           result = await auth.signIn(email, password)
           console.log('[Login] Sign in result:', result)
         } catch (signInError: any) {
-          console.error('[Login] Sign in error:', signInError)
-          throw signInError
+          console.error('[Login] Client auth failed:', signInError)
+          
+          // Fallback to API endpoint
+          console.log('[Login] Trying API endpoint fallback...')
+          const apiResponse = await fetch('/api/auth/login/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          })
+          
+          const apiData = await apiResponse.json()
+          if (!apiData.success) {
+            throw new Error(apiData.error || 'Login failed')
+          }
+          
+          console.log('[Login] API login successful')
+          // Force a page reload to pick up the session
+          window.location.href = '/'
+          return
         }
         
         // Check if we actually got a session
