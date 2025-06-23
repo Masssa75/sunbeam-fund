@@ -10,15 +10,16 @@ export const portfolioService = {
   async getPositions(): Promise<Position[]> {
     console.log('[PortfolioService] getPositions() called')
     
-    // In production, use API route to avoid client-side Supabase issues
-    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
-      console.log('[PortfolioService] Using API route for production')
+    // Always use API route on client side to ensure auth
+    if (typeof window !== 'undefined') {
+      console.log('[PortfolioService] Using API route (client-side)')
+      console.log('[PortfolioService] Environment:', process.env.NODE_ENV)
       try {
         const response = await fetch('/api/positions')
         if (!response.ok) {
           const error = await response.json()
           if (response.status === 401) {
-            console.log('[PortfolioService] User not authenticated')
+            console.log('[PortfolioService] User not authenticated - returning empty array')
             // Return empty array for unauthorized users
             return []
           }
@@ -29,11 +30,22 @@ export const portfolioService = {
         return data
       } catch (err) {
         console.error('[PortfolioService] API route error:', err)
-        throw err
+        // Return empty array on error instead of throwing
+        return []
       }
     }
     
-    // For development or server-side, use direct Supabase
+    // For server-side, check authentication first
+    console.log('[PortfolioService] Using direct Supabase (server-side)')
+    
+    // Check if user is authenticated
+    const { data: { session }, error: authError } = await supabase.auth.getSession()
+    
+    if (authError || !session) {
+      console.log('[PortfolioService] No session - returning empty array')
+      return []
+    }
+    
     try {
       const { data, error } = await supabase
         .from('positions')
@@ -73,6 +85,13 @@ export const portfolioService = {
   // Get active positions (no exit date)
   async getActivePositions(): Promise<Position[]> {
     console.log('[PortfolioService] getActivePositions() called')
+    
+    // Check authentication first
+    const { data: { session }, error: authError } = await supabase.auth.getSession()
+    if (authError || !session) {
+      console.log('[PortfolioService] No session - returning empty array')
+      return []
+    }
     
     try {
       const { data, error } = await supabase
