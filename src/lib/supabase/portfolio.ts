@@ -35,51 +35,9 @@ export const portfolioService = {
       }
     }
     
-    // For server-side, check authentication first
-    console.log('[PortfolioService] Using direct Supabase (server-side)')
-    
-    // Check if user is authenticated
-    const { data: { session }, error: authError } = await supabase.auth.getSession()
-    
-    if (authError || !session) {
-      console.log('[PortfolioService] No session - returning empty array')
-      return []
-    }
-    
-    try {
-      const { data, error } = await supabase
-        .from('positions')
-        .select('*')
-        .order('entry_date', { ascending: false })
-
-      if (error) {
-        console.error('[PortfolioService] Error fetching positions:', error)
-        console.error('[PortfolioService] Error details:', {
-          message: error.message,
-          code: error.code,
-          details: error.details,
-          hint: error.hint,
-          status: (error as any).status,
-          statusText: (error as any).statusText
-        })
-        
-        // Check for common issues
-        if (error.message?.includes('fetch')) {
-          console.error('[PortfolioService] Network/CORS error - cannot reach Supabase')
-        }
-        if (error.code === 'PGRST301') {
-          console.error('[PortfolioService] Authentication error - check RLS policies')
-        }
-        
-        throw error
-      }
-
-      console.log('[PortfolioService] Successfully fetched positions:', data?.length || 0)
-      return data || []
-    } catch (err) {
-      console.error('[PortfolioService] Caught error in getPositions:', err)
-      throw err
-    }
+    // For server-side, return empty array (auth should be handled by API route)
+    console.log('[PortfolioService] Server-side call - returning empty array')
+    return []
   },
 
   // Get active positions (no exit date)
