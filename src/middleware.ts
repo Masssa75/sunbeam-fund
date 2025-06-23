@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
+  let res = NextResponse.next()
   
   // Only check auth if Supabase is properly configured
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -32,11 +32,14 @@ export async function middleware(req: NextRequest) {
     }
   )
 
-  const { data: { session } } = await supabase.auth.getSession()
+  const { data: { session }, error } = await supabase.auth.getSession()
+  
+  // Log for debugging
+  console.log('Middleware - Path:', req.nextUrl.pathname, 'Session:', !!session, 'Error:', error)
 
-  // Protected routes (including homepage since it accesses portfolio data)
-  const protectedPaths = ['/', '/admin', '/portfolio']
-  const isProtectedPath = protectedPaths.some(path => req.nextUrl.pathname === path || (path !== '/' && req.nextUrl.pathname.startsWith(path)))
+  // Protected routes (temporarily removing homepage to debug)
+  const protectedPaths = ['/admin', '/portfolio']
+  const isProtectedPath = protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))
 
   // Redirect to login if accessing protected route without session
   if (isProtectedPath && !session) {
