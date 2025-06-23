@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunbeam Capital - Minimal Report</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: white;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .report-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Minimal header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin: 0;
+        }
+        .header .date {
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        /* Key metrics */
+        .key-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        .metric {
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .metric-value {
+            font-size: 36px;
+            font-weight: 300;
+        }
+        .positive {
+            color: #22c55e;
+        }
+        
+        /* Summary section */
+        .summary {
+            background: #fafafa;
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+        }
+        .summary h2 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .summary p {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+        
+        /* Performance table */
+        .performance-table {
+            width: 100%;
+            margin-bottom: 60px;
+        }
+        .performance-table td {
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .performance-table .label {
+            color: #666;
+        }
+        .performance-table .value {
+            text-align: right;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .total-row {
+            border-top: 2px solid #1a1a1a;
+            border-bottom: none !important;
+            font-weight: 600;
+        }
+        
+        /* Simple footer */
+        .footer {
+            font-size: 13px;
+            color: #9ca3af;
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Minimal Header -->
+        <div class="header">
+            <h1>SUNBEAM CAPITAL</h1>
+            <div class="date">November 2024 Statement</div>
+        </div>
+
+        <!-- Key Metrics Only -->
+        <div class="key-metrics">
+            <div class="metric">
+                <div class="metric-label">Monthly Return</div>
+                <div class="metric-value positive">+30.42%</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Your Net Value</div>
+                <div class="metric-value">$72,366</div>
+            </div>
+        </div>
+
+        <!-- Brief Summary -->
+        <div class="summary">
+            <h2>Investment Summary</h2>
+            <p>
+                Your investment in Sunbeam Capital performed exceptionally well this month, 
+                generating a 30.42% return across our diversified cryptocurrency portfolio. 
+                The fund maintains positions across 12 carefully selected digital assets, 
+                with a focus on established protocols and emerging technologies.
+            </p>
+            <p style="margin-top: 20px;">
+                Market conditions were highly favorable following regulatory developments, 
+                and we expect continued strength in the coming months. We remain committed 
+                to our disciplined investment approach and risk management strategy.
+            </p>
+        </div>
+
+        <!-- Clean Performance Breakdown -->
+        <table class="performance-table">
+            <tr>
+                <td class="label">Investment Value</td>
+                <td class="value">$77,666</td>
+            </tr>
+            <tr>
+                <td class="label">Performance Fee (30%)</td>
+                <td class="value" style="color: #dc2626;">-$5,300</td>
+            </tr>
+            <tr class="total-row">
+                <td class="label">Net Value</td>
+                <td class="value">$72,366</td>
+            </tr>
+        </table>
+
+        <!-- Minimal Footer -->
+        <div class="footer">
+            <p>Ralph Sigg • Account #003</p>
+            <p style="margin-top: 20px;">
+                This statement is confidential and for informational purposes only.<br>
+                Past performance does not guarantee future results.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

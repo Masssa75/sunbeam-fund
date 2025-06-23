@@ -15,6 +15,7 @@ type Position = Database['public']['Tables']['positions']['Row'] & {
 export default function InvestorDashboard() {
   const [positions, setPositions] = useState<Position[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [selectedTimeframe, setSelectedTimeframe] = useState('1M')
   const [showReports, setShowReports] = useState(false)
   
@@ -29,14 +30,20 @@ export default function InvestorDashboard() {
   }, [])
 
   const loadPortfolio = async () => {
+    console.log('[InvestorDashboard] Starting to load portfolio...')
+    setError(null)
     try {
       setLoading(true)
+      console.log('[InvestorDashboard] Calling portfolioService.getActivePositions()')
       const savedPositions = await portfolioService.getActivePositions()
+      console.log('[InvestorDashboard] Loaded active positions:', savedPositions.length)
       
       if (savedPositions.length > 0) {
         // Get current prices
         const coinIds = savedPositions.map(p => p.project_id).filter(Boolean)
+        console.log('[InvestorDashboard] Fetching prices for coins:', coinIds)
         const prices = await getMultipleCoinPrices(coinIds)
+        console.log('[InvestorDashboard] Fetched prices:', Object.keys(prices).length)
         
         // Calculate values
         const positionsWithValues = savedPositions.map(position => {
@@ -59,7 +66,8 @@ export default function InvestorDashboard() {
         setPositions(positionsWithValues)
       }
     } catch (error) {
-      console.error('Error loading portfolio:', error)
+      console.error('[InvestorDashboard] Error loading portfolio:', error)
+      setError(error instanceof Error ? error.message : 'Failed to load portfolio')
     } finally {
       setLoading(false)
     }
@@ -68,7 +76,32 @@ export default function InvestorDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading portfolio...</div>
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+          <div className="flex items-center gap-3">
+            <div className="animate-spin h-5 w-5 border-2 border-yellow-500 border-t-transparent rounded-full"></div>
+            <div>
+              <h3 className="font-semibold text-yellow-800">Loading portfolio...</h3>
+              <p className="text-sm text-yellow-700 mt-1">Fetching positions and current prices</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md">
+          <h3 className="font-semibold text-red-800 mb-2">Failed to Load Portfolio</h3>
+          <p className="text-sm text-red-700 mb-4">Error: {error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Reload Page
+          </button>
+        </div>
       </div>
     )
   }

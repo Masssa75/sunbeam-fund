@@ -1,5 +1,6 @@
 import InvestorDashboard from '@/components/InvestorDashboard'
 import VersionBadge from '@/components/VersionBadge'
+import ErrorBoundary from '@/components/ErrorBoundary'
 
 export default function InvestorPage() {
   return (
@@ -9,7 +10,9 @@ export default function InvestorPage() {
           <h1 className="text-4xl font-bold mb-2">Sunbeam Fund</h1>
           <p className="text-lg text-gray-600">Portfolio Performance Overview</p>
         </div>
-        <InvestorDashboard />
+        <ErrorBoundary>
+          <InvestorDashboard />
+        </ErrorBoundary>
       </div>
       <VersionBadge />
     </main>

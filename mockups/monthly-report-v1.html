@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunbeam Capital - Monthly Report Mockup</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+        .report-container {
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            color: #1a1a1a;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        .header h2 {
+            margin: 10px 0 0 0;
+            font-size: 18px;
+            color: #666;
+            font-weight: normal;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 5px;
+        }
+        .info-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+        .performance-positive {
+            color: #22c55e;
+        }
+        .performance-negative {
+            color: #ef4444;
+        }
+        .highlights {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .portfolio-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .portfolio-table th {
+            background: #f8f8f8;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .portfolio-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .portfolio-table tr:hover {
+            background: #f8f8f8;
+        }
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+        }
+        .disclaimer {
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .report-container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>SUNBEAM CAPITAL</h1>
+            <h2>Monthly Performance Statement</h2>
+            <p style="margin-top: 20px; color: #666;">For the Month Ending: November 2024</p>
+        </div>
+
+        <!-- Investor Information -->
+        <div class="section">
+            <div class="section-title">Investor Information</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <div class="info-label">Name</div>
+                    <div style="font-weight: 600;">Ralph Sigg</div>
+                </div>
+                <div>
+                    <div class="info-label">Account Number</div>
+                    <div style="font-weight: 600;">003</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fund Overview -->
+        <div class="section">
+            <div class="section-title">Fund Overview</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Total Fund Value</div>
+                    <div class="info-value">$199,343</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Your Share Value</div>
+                    <div class="info-value">$77,666</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Performance This Month</div>
+                    <div class="info-value performance-positive">+30.42%</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Year-to-Date Performance</div>
+                    <div class="info-value performance-positive">+29.44%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Holdings -->
+        <div class="section">
+            <div class="section-title">Portfolio Holdings</div>
+            <table class="portfolio-table">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Symbol</th>
+                        <th>Allocation</th>
+                        <th>Value</th>
+                        <th>Monthly Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Kaspa</td>
+                        <td>KAS</td>
+                        <td>25.3%</td>
+                        <td>$50,440</td>
+                        <td class="performance-positive">+42.1%</td>
+                    </tr>
+                    <tr>
+                        <td>Bittensor</td>
+                        <td>TAO</td>
+                        <td>18.7%</td>
+                        <td>$37,287</td>
+                        <td class="performance-positive">+28.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Sui</td>
+                        <td>SUI</td>
+                        <td>15.2%</td>
+                        <td>$30,300</td>
+                        <td class="performance-positive">+35.2%</td>
+                    </tr>
+                    <tr>
+                        <td>Toncoin</td>
+                        <td>TON</td>
+                        <td>12.8%</td>
+                        <td>$25,516</td>
+                        <td class="performance-positive">+22.8%</td>
+                    </tr>
+                    <tr>
+                        <td>Other Holdings</td>
+                        <td>-</td>
+                        <td>28.0%</td>
+                        <td>$55,800</td>
+                        <td class="performance-positive">+25.4%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Market Commentary -->
+        <div class="section">
+            <div class="section-title">Market Commentary & Highlights</div>
+            <div class="highlights">
+                <p><strong>Key Highlights This Month:</strong></p>
+                <ul>
+                    <li>The US elections have ignited the bull market with Trump's landslide victory and crypto-friendly policies</li>
+                    <li>Bitcoin strategic reserve discussions are driving positive sentiment across the market</li>
+                    <li>Regulatory relaxation signals are particularly bullish for altcoins</li>
+                    <li>We're transitioning from "Bitcoin season" to what appears to be the start of "Altcoin season"</li>
+                </ul>
+            </div>
+            
+            <p>The overwhelming highlight this month comes from the broader market dynamics following the US elections. Our portfolio has been growing steadily week by week, with particularly strong performance from our core holdings in Kaspa, Bittensor, and Sui.</p>
+            
+            <p>Based on historical patterns, we anticipate the current bull market to follow a similar trajectory to 2021, potentially lasting 6-12 months. We're positioning the portfolio to capture the upcoming altcoin season while maintaining prudent risk management.</p>
+        </div>
+
+        <!-- Individual Performance -->
+        <div class="section">
+            <div class="section-title">Your Individual Performance</div>
+            <div style="background: #f8f8f8; padding: 20px; border-radius: 5px;">
+                <table style="width: 100%; font-size: 16px;">
+                    <tr>
+                        <td>Value of Your Investment:</td>
+                        <td style="text-align: right; font-weight: bold;">$77,666</td>
+                    </tr>
+                    <tr>
+                        <td>Less: 30% Performance Fee:</td>
+                        <td style="text-align: right; color: #dc2626;">-$5,300</td>
+                    </tr>
+                    <tr style="border-top: 2px solid #333; font-size: 18px; font-weight: bold;">
+                        <td style="padding-top: 10px;">Net Value of Your Investment:</td>
+                        <td style="text-align: right; padding-top: 10px;">$72,366</td>
+                    </tr>
+                </table>
+                <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="info-label">Your Monthly Performance</div>
+                        <div style="font-size: 20px; font-weight: bold;" class="performance-positive">+21.25%</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Your Year-to-Date Performance</div>
+                        <div style="font-size: 20px; font-weight: bold;" class="performance-positive">+20.61%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="disclaimer">
+                <strong>Disclaimer:</strong> This statement is for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Please consult your financial advisor before making any investment decisions.
+            </div>
+            <div>
+                <strong>Confidentiality Notice:</strong> This document is confidential and intended solely for the use of the individual to whom it is addressed. Unauthorized use, disclosure, or copying is strictly prohibited.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

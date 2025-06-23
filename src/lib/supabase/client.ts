@@ -8,11 +8,21 @@ const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
 // Log configuration status for debugging
 if (typeof window !== 'undefined') {
-  console.log('Supabase config:', {
+  console.log('[Supabase Client] Configuration:', {
     hasUrl: !!supabaseUrl,
     hasAnonKey: !!supabaseAnonKey,
-    url: supabaseUrl?.substring(0, 30) + '...'
+    url: supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'NOT SET',
+    environment: process.env.NODE_ENV,
+    isProduction: process.env.NODE_ENV === 'production'
   })
+  
+  // Warn if configuration is missing
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('[Supabase Client] WARNING: Missing configuration!', {
+      supabaseUrl: supabaseUrl || 'MISSING',
+      supabaseAnonKey: supabaseAnonKey ? 'SET' : 'MISSING'
+    })
+  }
 }
 
 // Create client even with empty values to avoid null errors

@@ -8,33 +8,61 @@ type PositionUpdate = Database['public']['Tables']['positions']['Update']
 export const portfolioService = {
   // Get all positions
   async getPositions(): Promise<Position[]> {
-    const { data, error } = await supabase
-      .from('positions')
-      .select('*')
-      .order('entry_date', { ascending: false })
+    console.log('[PortfolioService] getPositions() called')
+    
+    try {
+      const { data, error } = await supabase
+        .from('positions')
+        .select('*')
+        .order('entry_date', { ascending: false })
 
-    if (error) {
-      console.error('Error fetching positions:', error)
-      throw error
+      if (error) {
+        console.error('[PortfolioService] Error fetching positions:', error)
+        console.error('[PortfolioService] Error details:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint
+        })
+        throw error
+      }
+
+      console.log('[PortfolioService] Successfully fetched positions:', data?.length || 0)
+      return data || []
+    } catch (err) {
+      console.error('[PortfolioService] Caught error in getPositions:', err)
+      throw err
     }
-
-    return data || []
   },
 
   // Get active positions (no exit date)
   async getActivePositions(): Promise<Position[]> {
-    const { data, error } = await supabase
-      .from('positions')
-      .select('*')
-      .is('exit_date', null)
-      .order('entry_date', { ascending: false })
+    console.log('[PortfolioService] getActivePositions() called')
+    
+    try {
+      const { data, error } = await supabase
+        .from('positions')
+        .select('*')
+        .is('exit_date', null)
+        .order('entry_date', { ascending: false })
 
-    if (error) {
-      console.error('Error fetching active positions:', error)
-      throw error
+      if (error) {
+        console.error('[PortfolioService] Error fetching active positions:', error)
+        console.error('[PortfolioService] Error details:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint
+        })
+        throw error
+      }
+
+      console.log('[PortfolioService] Successfully fetched active positions:', data?.length || 0)
+      return data || []
+    } catch (err) {
+      console.error('[PortfolioService] Caught error in getActivePositions:', err)
+      throw err
     }
-
-    return data || []
   },
 
   // Add new position

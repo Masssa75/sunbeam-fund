@@ -1,5 +1,6 @@
 import Dashboard from '@/components/Dashboard'
 import VersionBadge from '@/components/VersionBadge'
+import ErrorBoundary from '@/components/ErrorBoundary'
 
 export default function Home() {
   return (
@@ -9,7 +10,9 @@ export default function Home() {
           <h1 className="text-4xl font-bold mb-2">Sunbeam Fund Management</h1>
           <p className="text-lg text-gray-600">Crypto portfolio tracking and reporting system</p>
         </div>
-        <Dashboard />
+        <ErrorBoundary>
+          <Dashboard />
+        </ErrorBoundary>
       </div>
       <VersionBadge />
     </main>
