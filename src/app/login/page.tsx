@@ -29,18 +29,12 @@ export default function LoginPage() {
 
     try {
       if (mode === 'signin') {
-        console.log('[Login] Attempting sign in for:', email)
-        
         let result;
         try {
           // Try client-side auth first
           result = await auth.signIn(email, password)
-          console.log('[Login] Sign in result:', result)
         } catch (signInError: any) {
-          console.error('[Login] Client auth failed:', signInError)
-          
           // Fallback to API endpoint
-          console.log('[Login] Trying API endpoint fallback...')
           const apiResponse = await fetch('/api/auth/login/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -52,7 +46,6 @@ export default function LoginPage() {
             throw new Error(apiData.error || 'Login failed')
           }
           
-          console.log('[Login] API login successful')
           // Force a page reload to pick up the session
           window.location.href = '/'
           return
@@ -62,17 +55,13 @@ export default function LoginPage() {
         let session;
         try {
           session = await auth.getSession()
-          console.log('[Login] Session after sign in:', session ? 'Found' : 'Not found')
         } catch (sessionError: any) {
-          console.error('[Login] Session check error:', sessionError)
           throw new Error('Failed to verify session after sign in. Please try again.')
         }
         
         if (!session) {
           throw new Error('Sign in succeeded but no session was created. Please try again.')
         }
-        
-        console.log('[Login] Sign in successful, redirecting...')
         clearTimeout(timeoutId) // Clear the timeout
         setLoading(false) // Stop the loading state
         
@@ -101,13 +90,6 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       clearTimeout(timeoutId) // Clear timeout on error
-      console.error('[Login] Error details:', {
-        message: err.message,
-        code: err.code,
-        status: err.status,
-        statusText: err.statusText,
-        __isAuthError: err.__isAuthError
-      })
       
       // Provide helpful error messages
       let errorMessage = err.message || 'An error occurred'

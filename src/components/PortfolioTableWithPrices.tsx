@@ -32,12 +32,10 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
   // Check authentication and load positions
   const checkAuthAndLoadPositions = async () => {
-    console.log('[PortfolioTable] Checking authentication...')
     setLoading(true)
     
     // Set a timeout to prevent infinite loading
     const timeoutId = setTimeout(() => {
-      console.log('[PortfolioTable] Load timeout - showing auth required')
       setLoading(false)
       setIsAuthenticated(false)
       setAuthChecked(true)
@@ -56,13 +54,10 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       
       setIsAuthenticated(!!session)
       setAuthChecked(true)
-      console.log('[PortfolioTable] Auth check:', session ? 'Authenticated' : 'Not authenticated')
       
       if (session) {
         // Load positions if authenticated
-        console.log('[PortfolioTable] Loading positions...')
         const savedPositions = await portfolioService.getPositions()
-        console.log('[PortfolioTable] Loaded positions:', savedPositions.length)
         
         if (savedPositions.length > 0) {
           setPositions(savedPositions as Position[])
@@ -70,7 +65,6 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       }
     } catch (error) {
       clearTimeout(timeoutId)
-      console.error('[PortfolioTable] Error:', error)
       setError(error instanceof Error ? error.message : 'Failed to load portfolio')
       setAuthChecked(true)
     } finally {
@@ -99,7 +93,6 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
     // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('[PortfolioTable] Initial session check:', !!session)
       if (session && mounted) {
         setIsAuthenticated(true)
         setAuthChecked(true)
@@ -109,7 +102,6 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[PortfolioTable] Auth state changed:', event, !!session)
       
       if (event === 'SIGNED_IN' && session) {
         // Update state immediately
@@ -159,7 +151,6 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       
       setLastUpdate(new Date())
     } catch (error) {
-      console.error('Error fetching prices:', error)
     } finally {
       setLoading(false)
     }
@@ -191,13 +182,11 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
         notes: position.notes || null
       }
       
-      console.log('Adding position:', cleanedPosition)
       
       const newPosition = await portfolioService.addPosition(cleanedPosition)
       setPositions([...positions, newPosition])
       setShowAddModal(false)
     } catch (error: any) {
-      console.error('Error adding position:', error)
       alert(`Failed to add position: ${error.message || 'Unknown error'}`)
     }
   }
@@ -217,7 +206,6 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       setPositions(positions.map(p => p.id === updated.id ? { ...updated, current_price: p.current_price, current_value: p.current_value, profit_loss: p.profit_loss, profit_loss_percent: p.profit_loss_percent } : p))
       setEditingPosition(null)
     } catch (error) {
-      console.error('Error updating position:', error)
       alert('Failed to update position. Please try again.')
     }
   }
@@ -228,8 +216,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
         await portfolioService.deletePosition(id)
         setPositions(positions.filter(p => p.id !== id))
       } catch (error) {
-        console.error('Error deleting position:', error)
-        alert('Failed to delete position. Please try again.')
+          alert('Failed to delete position. Please try again.')
       }
     }
   }
@@ -239,14 +226,6 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const totalProfitLoss = totalValue - totalCost
   const totalProfitLossPercent = totalCost > 0 ? (totalProfitLoss / totalCost) * 100 : 0
 
-  // Debug logging
-  console.log('[PortfolioTable] Render state:', {
-    mounted,
-    loading,
-    authChecked,
-    isAuthenticated,
-    positionsCount: positions.length
-  })
 
   // Don't render anything until mounted to avoid hydration issues
   if (!mounted) {
@@ -467,7 +446,6 @@ function PositionModal({ position, onSave, onClose }: {
       const results = await searchCoins(query)
       setSearchResults(results)
     } catch (error) {
-      console.error('Error searching coins:', error)
     } finally {
       setSearching(false)
     }
