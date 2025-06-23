@@ -270,7 +270,7 @@ function PositionModal({ position, onSave, onClose }: {
   }
 
   const handleSelectCoin = (coin: CoinPrice) => {
-    const amount = parseFloat(formData.amount) || 0
+    const amount = parseFloat(String(formData.amount)) || 0
     const newCostBasis = useCurrentPrice && amount > 0 
       ? coin.current_price * amount 
       : formData.cost_basis
@@ -287,7 +287,7 @@ function PositionModal({ position, onSave, onClose }: {
 
   // Update cost basis when amount changes and useCurrentPrice is true
   useEffect(() => {
-    const amount = parseFloat(formData.amount) || 0
+    const amount = parseFloat(String(formData.amount)) || 0
     
     // Add a delay to prevent too many API calls
     const timeoutId = setTimeout(() => {
@@ -318,8 +318,8 @@ function PositionModal({ position, onSave, onClose }: {
     onSave({
       ...position,
       ...formData,
-      amount: parseFloat(formData.amount) || 0,
-      cost_basis: parseFloat(formData.cost_basis) || 0,
+      amount: parseFloat(String(formData.amount)) || 0,
+      cost_basis: parseFloat(String(formData.cost_basis)) || 0,
     })
   }
 
@@ -408,7 +408,7 @@ function PositionModal({ position, onSave, onClose }: {
                   onChange={(e) => {
                     const price = parseFloat(e.target.value) || 0
                     setManualPrice(price)
-                    const amount = parseFloat(formData.amount) || 0
+                    const amount = parseFloat(String(formData.amount)) || 0
                     if (amount > 0) {
                       setFormData({ ...formData, cost_basis: price * amount })
                     }
@@ -430,7 +430,7 @@ function PositionModal({ position, onSave, onClose }: {
             />
             {useCurrentPrice && formData.project_name && (
               <p className="text-sm text-gray-500 mt-1">
-                Cost basis will be: ${(parseFloat(formData.cost_basis) || 0).toFixed(2)}
+                Cost basis will be: ${(parseFloat(String(formData.cost_basis)) || 0).toFixed(2)}
                 {useMay31Date ? ' (using manual May 31st price)' : ' (using current price)'}
               </p>
             )}
