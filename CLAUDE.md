@@ -261,29 +261,32 @@ CREATE TABLE reports (
 
 ## Next Steps Priority
 
-### Phase 1: Supabase Integration ✅ (Next Instance)
+### Phase 1: Supabase Integration ✅ COMPLETED
 1. **Create new Supabase project** (keep it separate from porta)
    - Go to https://app.supabase.com
    - Create project named "sunbeam-fund"
    - Copy new credentials to .env
 2. **Database Schema**
-   ```sql
-   -- Already in /supabase/schema.sql
-   - positions table (portfolio holdings)
-   - portfolio_snapshots (historical values)
-   - reports (monthly reports)
-   - users (for auth)
-   ```
-3. **Migrate from localStorage**
-   - Create Supabase client
-   - Add CRUD operations for positions
-   - Sync existing localStorage data
-   - Keep localStorage as offline fallback
-4. **Authentication Setup**
-   - Enable Supabase Auth
-   - Add login page for admin
-   - Protect portfolio management routes
-   - Set up user roles (admin, investor)
+   - Schema ready in `/supabase/schema.sql`
+   - Run the SQL in Supabase SQL Editor after project creation
+3. **Implemented Features**
+   - ✅ Supabase client configuration (`/src/lib/supabase/client.ts`)
+   - ✅ Database types (`/src/lib/supabase/types.ts`)
+   - ✅ Portfolio service with CRUD operations (`/src/lib/supabase/portfolio.ts`)
+   - ✅ Unified storage service with localStorage fallback (`/src/lib/storage-service.ts`)
+   - ✅ Migration banner for existing localStorage data (`/src/components/MigrationBanner.tsx`)
+   - ✅ Updated PortfolioTableWithPrices to use async storage
+   - ✅ Authentication setup (`/src/lib/supabase/auth.ts`)
+   - ✅ Login page (`/src/app/login/page.tsx`)
+   - ✅ Middleware for route protection (`/src/middleware.ts`)
+   - ✅ Header with auth status (`/src/components/Header.tsx`)
+
+**To activate Supabase:**
+1. Create project at https://app.supabase.com
+2. Run schema.sql in SQL Editor
+3. Update .env with new credentials
+4. The app will automatically switch from localStorage to Supabase
+5. Use migration banner to transfer existing data
 
 ### Phase 2: Historical Data & Snapshots
 1. Automated monthly snapshots

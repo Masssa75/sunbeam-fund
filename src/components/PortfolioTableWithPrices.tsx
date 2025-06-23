@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { searchCoins, getMultipleCoinPrices, getCoinPrice, getHistoricalPrice, CoinPrice } from '@/lib/coingecko'
-import { storage, type Position as StoredPosition } from '@/lib/storage'
+import { storageService } from '@/lib/storage-service'
+import type { Database } from '@/lib/supabase/types'
+
+type StoredPosition = Database['public']['Tables']['positions']['Row']
 
 interface Position extends StoredPosition {
   current_price?: number
@@ -22,12 +25,19 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [loading, setLoading] = useState(false)
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
 
-  // Load positions from localStorage on mount
+  // Load positions from storage on mount
   useEffect(() => {
-    const savedPositions = storage.getPositions()
-    if (savedPositions.length > 0) {
-      setPositions(savedPositions as Position[])
+    const loadPositions = async () => {
+      try {
+        const savedPositions = await storageService.getPositions()
+        if (savedPositions.length > 0) {
+          setPositions(savedPositions as Position[])
+        }
+      } catch (error) {
+        console.error('Error loading positions:', error)
+      }
     }
+    loadPositions()
   }, [])
 
   // Fetch prices for all positions
@@ -71,37 +81,60 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     }
   }, [positions.length])
 
-  // Save to localStorage and notify parent of position changes
+  // Notify parent of position changes
   useEffect(() => {
-    if (positions.length > 0 || storage.getPositions().length > 0) {
-      // Only save base position data, not calculated fields
-      const positionsToSave = positions.map(({ 
-        id, project_id, project_name, symbol, amount, cost_basis, entry_date, exit_date, notes 
-      }) => ({
-        id, project_id, project_name, symbol, amount, cost_basis, entry_date, exit_date, notes
-      }))
-      storage.savePositions(positionsToSave)
-    }
     onPositionsChange?.(positions)
   }, [positions, onPositionsChange])
 
-  const handleAddPosition = (position: Omit<Position, 'id'>) => {
-    const newPosition = {
-      ...position,
-      id: Date.now().toString(),
+  const handleAddPosition = async (position: Omit<Position, 'id' | 'created_at' | 'updated_at'>) => {
+    try {
+      const newPosition = await storageService.addPosition({
+        project_id: position.project_id,
+        project_name: position.project_name,
+        symbol: position.symbol,
+        amount: position.amount,
+        cost_basis: position.cost_basis,
+        entry_date: position.entry_date,
+        exit_date: position.exit_date,
+        notes: position.notes
+      })
+      setPositions([...positions, newPosition])
+      setShowAddModal(false)
+    } catch (error) {
+      console.error('Error adding position:', error)
+      alert('Failed to add position. Please try again.')
     }
-    setPositions([...positions, newPosition])
-    setShowAddModal(false)
   }
 
-  const handleEditPosition = (updatedPosition: Position) => {
-    setPositions(positions.map(p => p.id === updatedPosition.id ? updatedPosition : p))
-    setEditingPosition(null)
+  const handleEditPosition = async (updatedPosition: Position) => {
+    try {
+      const updated = await storageService.updatePosition(updatedPosition.id, {
+        project_id: updatedPosition.project_id,
+        project_name: updatedPosition.project_name,
+        symbol: updatedPosition.symbol,
+        amount: updatedPosition.amount,
+        cost_basis: updatedPosition.cost_basis,
+        entry_date: updatedPosition.entry_date,
+        exit_date: updatedPosition.exit_date,
+        notes: updatedPosition.notes
+      })
+      setPositions(positions.map(p => p.id === updated.id ? { ...updated, current_price: p.current_price, current_value: p.current_value, profit_loss: p.profit_loss, profit_loss_percent: p.profit_loss_percent } : p))
+      setEditingPosition(null)
+    } catch (error) {
+      console.error('Error updating position:', error)
+      alert('Failed to update position. Please try again.')
+    }
   }
 
-  const handleDeletePosition = (id: string) => {
+  const handleDeletePosition = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this position?')) {
-      setPositions(positions.filter(p => p.id !== id))
+      try {
+        await storageService.deletePosition(id)
+        setPositions(positions.filter(p => p.id !== id))
+      } catch (error) {
+        console.error('Error deleting position:', error)
+        alert('Failed to delete position. Please try again.')
+      }
     }
   }
 
