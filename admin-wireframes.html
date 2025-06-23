@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunbeam Admin - Wireframes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        h2 {
+            font-size: 20px;
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .wireframes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(395px, 1fr));
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            justify-items: center;
+        }
+
+        .phone-mockup {
+            position: relative;
+            width: 395px;
+            height: 832px;
+            background: #e8e8e8;
+            border-radius: 40px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .phone-screen {
+            width: 375px;
+            height: 812px;
+            background: #ffffff;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen-label {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        /* Common Elements */
+        .status-bar {
+            height: 44px;
+            background: #f8f8f8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .admin-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .admin-badge {
+            background: #FFD700;
+            color: #1a1a1a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #FFD700;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background: currentColor;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
+
+        .icon-dashboard {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='3' width='7' height='7'%3E%3C/rect%3E%3Crect x='14' y='3' width='7' height='7'%3E%3C/rect%3E%3Crect x='14' y='14' width='7' height='7'%3E%3C/rect%3E%3Crect x='3' y='14' width='7' height='7'%3E%3C/rect%3E%3C/svg%3E");
+        }
+
+        .icon-portfolio {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .icon-monitor {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .icon-telegram {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .icon-settings {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='3'%3E%3C/circle%3E%3Cpath d='M12 1v6m0 6v6m11-11h-6m-6 0H1'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        /* Dashboard specific */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .stat-card {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .stat-value.green {
+            color: #00c896;
+        }
+
+        .stat-value.red {
+            color: #ff4757;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: #FFD700;
+            color: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .action-btn.secondary {
+            background: #f8f8f8;
+            color: #333;
+        }
+
+        /* Portfolio Management */
+        .search-bar {
+            padding: 15px 20px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #eee;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .position-list {
+            padding: 20px;
+        }
+
+        .position-card {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .position-info {
+            flex: 1;
+        }
+
+        .position-symbol {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .position-details {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .position-value {
+            text-align: right;
+        }
+
+        .position-amount {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .position-change {
+            font-size: 14px;
+            color: #00c896;
+            margin-top: 3px;
+        }
+
+        .position-change.negative {
+            color: #ff4757;
+        }
+
+        .add-position-btn {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #1a1a1a;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        /* Add Position Form */
+        .form-container {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 15px;
+            background: #FFD700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 15px;
+            background: #f8f8f8;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Twitter Monitoring */
+        .monitor-controls {
+            padding: 20px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .filter-chip {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .filter-chip.active {
+            background: #FFD700;
+            border-color: #FFD700;
+            color: #1a1a1a;
+        }
+
+        .tweet-list {
+            padding: 20px;
+        }
+
+        .tweet-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .tweet-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .tweet-project {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .tweet-score {
+            padding: 4px 8px;
+            background: #ff4757;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tweet-score.high {
+            background: #ff4757;
+        }
+
+        .tweet-score.medium {
+            background: #ffa502;
+        }
+
+        .tweet-score.low {
+            background: #2ed573;
+        }
+
+        .tweet-content {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .tweet-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tweet-btn {
+            padding: 6px 12px;
+            background: #f8f8f8;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Settings */
+        .settings-section {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+        }
+
+        .settings-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .setting-label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 28px;
+            background: #ddd;
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background: #00c896;
+        }
+
+        .toggle-knob {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.active .toggle-knob {
+            transform: translateX(20px);
+        }
+
+        /* Report Generation */
+        .report-preview {
+            margin: 20px;
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .report-icon {
+            width: 80px;
+            height: 80px;
+            background: #FFD700;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .report-month {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .report-status {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            background: #FFD700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .report-sections {
+            padding: 20px;
+        }
+
+        .section-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-checkbox:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .checkbox.checked {
+            background: #00c896;
+            border-color: #00c896;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sunbeam Admin Panel</h1>
+    <h2>Fund Management Wireframes</h2>
+    
+    <div class="wireframes-grid">
+        <!-- 1. Admin Dashboard -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="admin-header">
+                    <div class="admin-title">Sunbeam Admin</div>
+                    <div class="admin-badge">ADMIN</div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total AUM</div>
+                        <div class="stat-value">$2.84M</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Month Change</div>
+                        <div class="stat-value green">+12.4%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Active Positions</div>
+                        <div class="stat-value">12</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Investors</div>
+                        <div class="stat-value">47</div>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="section-title">Quick Actions</div>
+                    <div class="action-grid">
+                        <div class="action-btn">Add Position</div>
+                        <div class="action-btn">Generate Report</div>
+                        <div class="action-btn secondary">View Alerts</div>
+                        <div class="action-btn secondary">Send Update</div>
+                    </div>
+                </div>
+                
+                <div style="padding: 20px;">
+                    <div class="section-title">Recent Activity</div>
+                    <div style="background: #f8f8f8; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="font-size: 14px; font-weight: 600;">Position Added: ARB</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 3px;">2 hours ago • $125,000</div>
+                    </div>
+                    <div style="background: #f8f8f8; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="font-size: 14px; font-weight: 600;">Alert Sent: ETH Rally</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 3px;">5 hours ago • Score: 8/10</div>
+                    </div>
+                    <div style="background: #f8f8f8; padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 14px; font-weight: 600;">Report Generated</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 3px;">Yesterday • October 2024</div>
+                    </div>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-dashboard"></div>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-portfolio"></div>
+                        <span>Portfolio</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-monitor"></div>
+                        <span>Monitor</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-telegram"></div>
+                        <span>Alerts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-settings"></div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">1. Admin Dashboard</div>
+        </div>
+
+        <!-- 2. Portfolio Management -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="admin-header">
+                    <div class="admin-title">Portfolio Management</div>
+                    <div class="admin-badge">12 POSITIONS</div>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search positions...">
+                </div>
+                
+                <div class="position-list">
+                    <div class="position-card">
+                        <div class="position-info">
+                            <div class="position-symbol">BTC</div>
+                            <div class="position-details">15.2 BTC • Entry: $28,450</div>
+                        </div>
+                        <div class="position-value">
+                            <div class="position-amount">$892,451</div>
+                            <div class="position-change">+213.6%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-card">
+                        <div class="position-info">
+                            <div class="position-symbol">ETH</div>
+                            <div class="position-details">425 ETH • Entry: $1,235</div>
+                        </div>
+                        <div class="position-value">
+                            <div class="position-amount">$743,892</div>
+                            <div class="position-change">+141.7%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-card">
+                        <div class="position-info">
+                            <div class="position-symbol">SOL</div>
+                            <div class="position-details">8,500 SOL • Entry: $22.50</div>
+                        </div>
+                        <div class="position-value">
+                            <div class="position-amount">$412,778</div>
+                            <div class="position-change">+115.8%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-card">
+                        <div class="position-info">
+                            <div class="position-symbol">ARB</div>
+                            <div class="position-details">125,000 ARB • Entry: $1.12</div>
+                        </div>
+                        <div class="position-value">
+                            <div class="position-amount">$187,500</div>
+                            <div class="position-change">+33.9%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-card">
+                        <div class="position-info">
+                            <div class="position-symbol">MATIC</div>
+                            <div class="position-details">150,000 MATIC • Entry: $0.85</div>
+                        </div>
+                        <div class="position-value">
+                            <div class="position-amount">$142,500</div>
+                            <div class="position-change negative">-5.8%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="add-position-btn">+</div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-dashboard"></div>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-portfolio"></div>
+                        <span>Portfolio</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-monitor"></div>
+                        <span>Monitor</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-telegram"></div>
+                        <span>Alerts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-settings"></div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">2. Portfolio Management</div>
+        </div>
+
+        <!-- 3. Add/Edit Position -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="admin-header">
+                    <div class="admin-title">Add Position</div>
+                    <div style="font-size: 14px; cursor: pointer;">Cancel</div>
+                </div>
+                
+                <div class="form-container">
+                    <div class="form-group">
+                        <label class="form-label">Token/Project</label>
+                        <select class="form-select">
+                            <option>Select token...</option>
+                            <option>BTC - Bitcoin</option>
+                            <option>ETH - Ethereum</option>
+                            <option>SOL - Solana</option>
+                            <option>ARB - Arbitrum</option>
+                            <option>MATIC - Polygon</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Amount</label>
+                        <input type="number" class="form-input" placeholder="0.00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Entry Price (USD)</label>
+                        <input type="number" class="form-input" placeholder="0.00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Entry Date</label>
+                        <input type="date" class="form-input" value="2024-11-15">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Notes (Optional)</label>
+                        <textarea class="form-input" rows="3" placeholder="Add any notes about this position..."></textarea>
+                    </div>
+                    
+                    <div style="background: #f8f8f8; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span style="color: #666;">Current Price:</span>
+                            <span style="font-weight: 600;">$1.50</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #666;">Total Value:</span>
+                            <span style="font-weight: 600;">$187,500</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn-secondary">Cancel</button>
+                        <button class="btn-primary">Add Position</button>
+                    </div>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-dashboard"></div>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-portfolio"></div>
+                        <span>Portfolio</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-monitor"></div>
+                        <span>Monitor</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-telegram"></div>
+                        <span>Alerts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-settings"></div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">3. Add/Edit Position</div>
+        </div>
+
+        <!-- 4. Twitter Monitoring -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="admin-header">
+                    <div class="admin-title">Twitter Monitor</div>
+                    <div class="admin-badge">LIVE</div>
+                </div>
+                
+                <div class="monitor-controls">
+                    <div class="filter-row">
+                        <div class="filter-chip active">All Projects</div>
+                        <div class="filter-chip">High Priority</div>
+                        <div class="filter-chip">Alerts Only</div>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-chip">Score 8+</div>
+                        <div class="filter-chip">Last 24h</div>
+                        <div class="filter-chip">Unread</div>
+                    </div>
+                </div>
+                
+                <div class="tweet-list">
+                    <div class="tweet-card">
+                        <div class="tweet-header">
+                            <span class="tweet-project">Ethereum</span>
+                            <span class="tweet-score high">9/10</span>
+                        </div>
+                        <div class="tweet-content">
+                            "Major upgrade announcement: Ethereum's next upgrade 'Petra' will reduce gas fees by 90% and increase throughput to 100k TPS. Testnet launch next week."
+                        </div>
+                        <div class="tweet-actions">
+                            <button class="tweet-btn">Send Alert</button>
+                            <button class="tweet-btn">View Analysis</button>
+                            <button class="tweet-btn">Dismiss</button>
+                        </div>
+                    </div>
+                    
+                    <div class="tweet-card">
+                        <div class="tweet-header">
+                            <span class="tweet-project">Solana</span>
+                            <span class="tweet-score medium">6/10</span>
+                        </div>
+                        <div class="tweet-content">
+                            "Solana Labs announces partnership with major payment processor. Integration expected Q1 2025."
+                        </div>
+                        <div class="tweet-actions">
+                            <button class="tweet-btn">Send Alert</button>
+                            <button class="tweet-btn">View Analysis</button>
+                            <button class="tweet-btn">Dismiss</button>
+                        </div>
+                    </div>
+                    
+                    <div class="tweet-card">
+                        <div class="tweet-header">
+                            <span class="tweet-project">Arbitrum</span>
+                            <span class="tweet-score low">3/10</span>
+                        </div>
+                        <div class="tweet-content">
+                            "Weekly developer update: 15 new projects deployed on Arbitrum this week. TVL continues steady growth."
+                        </div>
+                        <div class="tweet-actions">
+                            <button class="tweet-btn">Send Alert</button>
+                            <button class="tweet-btn">View Analysis</button>
+                            <button class="tweet-btn">Dismiss</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-dashboard"></div>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-portfolio"></div>
+                        <span>Portfolio</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-monitor"></div>
+                        <span>Monitor</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-telegram"></div>
+                        <span>Alerts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-settings"></div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">4. Twitter Monitoring</div>
+        </div>
+
+        <!-- 5. Report Generation -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="admin-header">
+                    <div class="admin-title">Generate Report</div>
+                    <div style="font-size: 14px;">November 2024</div>
+                </div>
+                
+                <div class="report-preview">
+                    <div class="report-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <div class="report-month">November 2024</div>
+                    <div class="report-status">Ready to generate</div>
+                    <button class="generate-btn">Generate Report</button>
+                </div>
+                
+                <div class="report-sections">
+                    <div class="section-title">Include Sections</div>
+                    
+                    <div class="section-checkbox">
+                        <div class="checkbox checked"></div>
+                        <span>Portfolio Performance Summary</span>
+                    </div>
+                    
+                    <div class="section-checkbox">
+                        <div class="checkbox checked"></div>
+                        <span>Individual Position Analysis</span>
+                    </div>
+                    
+                    <div class="section-checkbox">
+                        <div class="checkbox checked"></div>
+                        <span>Market Commentary</span>
+                    </div>
+                    
+                    <div class="section-checkbox">
+                        <div class="checkbox checked"></div>
+                        <span>AI-Generated Insights</span>
+                    </div>
+                    
+                    <div class="section-checkbox">
+                        <div class="checkbox"></div>
+                        <span>Detailed Transaction Log</span>
+                    </div>
+                    
+                    <div class="section-checkbox">
+                        <div class="checkbox"></div>
+                        <span>Tax Summary</span>
+                    </div>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-dashboard"></div>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-portfolio"></div>
+                        <span>Portfolio</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-monitor"></div>
+                        <span>Monitor</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-telegram"></div>
+                        <span>Alerts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-settings"></div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">5. Report Generation</div>
+        </div>
+
+        <!-- 6. Settings & Configuration -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="admin-header">
+                    <div class="admin-title">Settings</div>
+                    <div class="admin-badge">ADMIN</div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">Twitter Monitoring</div>
+                    <div class="setting-item">
+                        <span class="setting-label">Auto-monitor portfolio projects</span>
+                        <div class="toggle-switch active">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Alert threshold score</span>
+                        <select style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px;">
+                            <option>7+ High</option>
+                            <option>5+ Medium</option>
+                            <option>3+ Low</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">Telegram Alerts</div>
+                    <div class="setting-item">
+                        <span class="setting-label">Send to investor group</span>
+                        <div class="toggle-switch active">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Include AI analysis</span>
+                        <div class="toggle-switch active">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Daily summary</span>
+                        <div class="toggle-switch">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">Report Settings</div>
+                    <div class="setting-item">
+                        <span class="setting-label">Auto-generate monthly</span>
+                        <div class="toggle-switch active">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Report day</span>
+                        <select style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px;">
+                            <option>1st of month</option>
+                            <option>Last day</option>
+                            <option>Custom</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">API Keys</div>
+                    <button style="width: 100%; padding: 12px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 8px; text-align: left;">
+                        CoinGecko API
+                    </button>
+                    <button style="width: 100%; padding: 12px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 8px; text-align: left; margin-top: 10px;">
+                        Telegram Bot Token
+                    </button>
+                    <button style="width: 100%; padding: 12px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 8px; text-align: left; margin-top: 10px;">
+                        Gemini AI Key
+                    </button>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-dashboard"></div>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-portfolio"></div>
+                        <span>Portfolio</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-monitor"></div>
+                        <span>Monitor</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-telegram"></div>
+                        <span>Alerts</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-settings"></div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">6. Settings & Configuration</div>
+        </div>
+    </div>
+</body>
+</html>

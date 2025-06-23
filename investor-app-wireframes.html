@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunbeam Investor App - Complete Wireframes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        h2 {
+            font-size: 20px;
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .wireframes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(395px, 1fr));
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            justify-items: center;
+        }
+
+        .phone-mockup {
+            position: relative;
+            width: 395px;
+            height: 832px;
+            background: #e8e8e8;
+            border-radius: 40px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .phone-screen {
+            width: 375px;
+            height: 812px;
+            background: #ffffff;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen-label {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        /* Common Elements */
+        .status-bar {
+            height: 44px;
+            background: #f8f8f8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .header {
+            padding: 40px 20px;
+            text-align: center;
+            background: #fff;
+        }
+
+        .fund-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .fund-value {
+            font-size: 56px;
+            font-weight: 200;
+            color: #000;
+            line-height: 1;
+        }
+
+        .change {
+            font-size: 28px;
+            color: #00c896;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        .change.negative {
+            color: #ff4757;
+        }
+
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 0 20px;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: #f8f8f8;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #00c896;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background: currentColor;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
+
+        .icon-home {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .icon-chart {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M18 20V10M12 20V4M6 20v-6'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .icon-news {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M4 6h16M4 12h16M4 18h7'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .icon-report {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+
+        .icon-profile {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='12' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        /* Screen-specific styles */
+        .summary {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .summary-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .highlight {
+            color: #00c896;
+            font-weight: 600;
+        }
+
+        .updates {
+            padding: 20px;
+        }
+
+        .update-card {
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .update-card:last-child {
+            border-bottom: none;
+        }
+
+        .update-date {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .update-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .update-preview {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Performance Chart Screen */
+        .chart-header {
+            padding: 20px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .chart-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .time-selector {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .time-btn {
+            padding: 8px 16px;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #666;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .time-btn.active {
+            background: #00c896;
+            color: white;
+            border-color: #00c896;
+        }
+
+        .chart-container {
+            height: 300px;
+            margin: 20px;
+            background: #f8f8f8;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-placeholder {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top right, transparent 48%, #00c896 50%, transparent 52%);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .metric-card {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        /* Updates/News Screen */
+        .section-header {
+            padding: 20px;
+            font-size: 24px;
+            font-weight: 600;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            overflow-x: auto;
+        }
+
+        .filter-pill {
+            padding: 6px 16px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #666;
+            background: #fff;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .filter-pill.active {
+            background: #00c896;
+            color: white;
+            border-color: #00c896;
+        }
+
+        .news-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .news-badge {
+            padding: 4px 8px;
+            background: #e8f5f0;
+            color: #00c896;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .news-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .news-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .news-preview {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Reports Screen */
+        .report-card {
+            margin: 20px;
+            background: #f8f8f8;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .report-icon {
+            width: 60px;
+            height: 60px;
+            background: #00c896;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .report-icon svg {
+            width: 30px;
+            height: 30px;
+            color: white;
+        }
+
+        .report-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .report-date {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .download-btn {
+            padding: 10px 24px;
+            background: #00c896;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .report-list {
+            padding: 20px;
+        }
+
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .report-item:last-child {
+            border-bottom: none;
+        }
+
+        .report-info {
+            flex: 1;
+        }
+
+        .report-month {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .report-performance {
+            font-size: 14px;
+            color: #00c896;
+        }
+
+        .report-arrow {
+            width: 20px;
+            height: 20px;
+            background: #666;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+            mask-size: contain;
+        }
+
+        /* Profile Screen */
+        .profile-header {
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8f8f8;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: #00c896;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .menu-section {
+            padding: 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            background: #666;
+            mask-size: contain;
+        }
+
+        .menu-label {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .menu-arrow {
+            width: 20px;
+            height: 20px;
+            background: #ccc;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+            mask-size: contain;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 15px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sunbeam Investor App</h1>
+    <h2>Complete Wireframes - Minimal Zen Design</h2>
+    
+    <div class="wireframes-grid">
+        <!-- 1. Home Screen -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="header">
+                    <div class="fund-label">Portfolio Value</div>
+                    <div class="fund-value">$2.84M</div>
+                    <div class="change">+12.4%</div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="summary">
+                    <p class="summary-text">
+                        This month, your portfolio gained <span class="highlight">$312,847</span>, 
+                        led by strong performance in <span class="highlight">DeFi</span> and 
+                        <span class="highlight">Layer 2</span> sectors.
+                    </p>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="updates">
+                    <div class="update-card">
+                        <div class="update-date">3 days ago</div>
+                        <div class="update-title">Ethereum Merge Success</div>
+                        <div class="update-preview">Portfolio's ETH position gained 15% following successful...</div>
+                    </div>
+                    <div class="update-card">
+                        <div class="update-date">1 week ago</div>
+                        <div class="update-title">New Position: Arbitrum</div>
+                        <div class="update-preview">Added ARB to portfolio at $1.12, targeting Layer 2 growth...</div>
+                    </div>
+                    <div class="update-card">
+                        <div class="update-date">2 weeks ago</div>
+                        <div class="update-title">Monthly Report Available</div>
+                        <div class="update-preview">October report ready with detailed performance analysis...</div>
+                    </div>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-home"></div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-chart"></div>
+                        <span>Charts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-news"></div>
+                        <span>Updates</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-report"></div>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-profile"></div>
+                        <span>Profile</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">1. Home Screen</div>
+        </div>
+
+        <!-- 2. Performance Charts Screen -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="chart-header">
+                    <div class="chart-title">Portfolio Performance</div>
+                    <div class="chart-subtitle">Total value over time</div>
+                </div>
+                
+                <div class="time-selector">
+                    <button class="time-btn">1D</button>
+                    <button class="time-btn">1W</button>
+                    <button class="time-btn active">1M</button>
+                    <button class="time-btn">3M</button>
+                    <button class="time-btn">1Y</button>
+                    <button class="time-btn">ALL</button>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-placeholder"></div>
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Current Value</div>
+                        <div class="metric-value">$2.84M</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Month Change</div>
+                        <div class="metric-value" style="color: #00c896;">+12.4%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Month High</div>
+                        <div class="metric-value">$2.91M</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Month Low</div>
+                        <div class="metric-value">$2.52M</div>
+                    </div>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-home"></div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-chart"></div>
+                        <span>Charts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-news"></div>
+                        <span>Updates</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-report"></div>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-profile"></div>
+                        <span>Profile</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">2. Performance Charts</div>
+        </div>
+
+        <!-- 3. Updates/News Screen -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="section-header">Important Updates</div>
+                
+                <div class="filter-pills">
+                    <div class="filter-pill active">All</div>
+                    <div class="filter-pill">Portfolio</div>
+                    <div class="filter-pill">Market</div>
+                    <div class="filter-pill">Reports</div>
+                </div>
+                
+                <div class="news-list">
+                    <div class="news-item">
+                        <div class="news-meta">
+                            <span class="news-badge">Portfolio</span>
+                            <span class="news-time">2 hours ago</span>
+                        </div>
+                        <div class="news-title">Solana Position Hits New ATH</div>
+                        <div class="news-preview">Your SOL holdings reached a new all-time high value of $428,000 as the network sees increased adoption...</div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <div class="news-meta">
+                            <span class="news-badge">Market</span>
+                            <span class="news-time">5 hours ago</span>
+                        </div>
+                        <div class="news-title">Fed Signals Crypto-Friendly Stance</div>
+                        <div class="news-preview">Federal Reserve comments boost crypto markets, with your portfolio benefiting from the positive sentiment...</div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <div class="news-meta">
+                            <span class="news-badge">Alert</span>
+                            <span class="news-time">1 day ago</span>
+                        </div>
+                        <div class="news-title">Arbitrum Reaches Target Price</div>
+                        <div class="news-preview">ARB hit our $1.50 target. Consider taking partial profits according to the strategy outlined in last month's report...</div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <div class="news-meta">
+                            <span class="news-badge">Report</span>
+                            <span class="news-time">3 days ago</span>
+                        </div>
+                        <div class="news-title">November Report Now Available</div>
+                        <div class="news-preview">Your monthly performance report is ready. This month saw exceptional gains across all sectors...</div>
+                    </div>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-home"></div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-chart"></div>
+                        <span>Charts</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-news"></div>
+                        <span>Updates</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-report"></div>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-profile"></div>
+                        <span>Profile</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">3. Important Updates</div>
+        </div>
+
+        <!-- 4. Reports Screen -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="section-header">Monthly Reports</div>
+                
+                <div class="report-card">
+                    <div class="report-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <div class="report-title">November 2024</div>
+                    <div class="report-date">Latest Report</div>
+                    <button class="download-btn">Download PDF</button>
+                </div>
+                
+                <div class="divider" style="margin: 20px;"></div>
+                
+                <div class="report-list">
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-month">October 2024</div>
+                            <div class="report-performance">+8.7% performance</div>
+                        </div>
+                        <div class="report-arrow"></div>
+                    </div>
+                    
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-month">September 2024</div>
+                            <div class="report-performance">+5.2% performance</div>
+                        </div>
+                        <div class="report-arrow"></div>
+                    </div>
+                    
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-month">August 2024</div>
+                            <div class="report-performance">+15.8% performance</div>
+                        </div>
+                        <div class="report-arrow"></div>
+                    </div>
+                    
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-month">July 2024</div>
+                            <div class="report-performance">-3.2% performance</div>
+                        </div>
+                        <div class="report-arrow"></div>
+                    </div>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-home"></div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-chart"></div>
+                        <span>Charts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-news"></div>
+                        <span>Updates</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-report"></div>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-profile"></div>
+                        <span>Profile</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">4. Monthly Reports</div>
+        </div>
+
+        <!-- 5. Profile Screen -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="profile-header">
+                    <div class="profile-avatar">JS</div>
+                    <div class="profile-name">John Smith</div>
+                    <div class="profile-email">john.smith@email.com</div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Months</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="stat-value">84.2%</div>
+                        <div class="stat-label">Total Return</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="stat-value">Gold</div>
+                        <div class="stat-label">Tier</div>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-item">
+                        <div class="menu-left">
+                            <div class="menu-icon icon-profile"></div>
+                            <span class="menu-label">Personal Information</span>
+                        </div>
+                        <div class="menu-arrow"></div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-left">
+                            <div class="menu-icon icon-report"></div>
+                            <span class="menu-label">Tax Documents</span>
+                        </div>
+                        <div class="menu-arrow"></div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-left">
+                            <div class="menu-icon icon-news"></div>
+                            <span class="menu-label">Notification Settings</span>
+                        </div>
+                        <div class="menu-arrow"></div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-left">
+                            <div class="menu-icon icon-chart"></div>
+                            <span class="menu-label">Investment Preferences</span>
+                        </div>
+                        <div class="menu-arrow"></div>
+                    </div>
+                    
+                    <button class="logout-btn">Log Out</button>
+                </div>
+                
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon icon-home"></div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-chart"></div>
+                        <span>Charts</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-news"></div>
+                        <span>Updates</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon icon-report"></div>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon icon-profile"></div>
+                        <span>Profile</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">5. Profile</div>
+        </div>
+
+        <!-- 6. Login Screen -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>100%</span>
+                </div>
+                
+                <div style="padding: 60px 20px; text-align: center;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #FFD700, #FFA500); border-radius: 20px; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center;">
+                        <div style="font-size: 36px; color: white; font-weight: bold;">S</div>
+                    </div>
+                    
+                    <h1 style="font-size: 32px; margin-bottom: 10px;">Sunbeam Fund</h1>
+                    <p style="color: #666; margin-bottom: 50px;">Illuminating your crypto journey</p>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <input type="email" placeholder="Email" style="width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 8px; font-size: 16px; margin-bottom: 15px;">
+                        <input type="password" placeholder="Password" style="width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 8px; font-size: 16px;">
+                    </div>
+                    
+                    <button style="width: 100%; padding: 15px; background: #00c896; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 15px;">Sign In</button>
+                    
+                    <a href="#" style="color: #00c896; text-decoration: none; font-size: 14px;">Forgot password?</a>
+                    
+                    <div style="margin-top: 80px; padding-top: 30px; border-top: 1px solid #eee;">
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Don't have an account?</p>
+                        <button style="padding: 12px 30px; background: white; color: #00c896; border: 1px solid #00c896; border-radius: 8px; font-size: 14px; font-weight: 600;">Contact Fund Manager</button>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">6. Login Screen</div>
+        </div>
+    </div>
+</body>
+</html>

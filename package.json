@@ -1,0 +1,37 @@
+{
+  "name": "sunbeam",
+  "version": "0.1.0",
+  "description": "Sunbeam Fund Management System - Portfolio tracking and reporting for crypto funds",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "setup": "npm install && cp .env.example .env",
+    "deploy-functions": "node scripts/deploy-functions.js",
+    "automation": "node automation-server.js"
+  },
+  "dependencies": {
+    "next": "14.0.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "@supabase/supabase-js": "^2.39.0",
+    "axios": "^1.6.2",
+    "date-fns": "^3.0.6",
+    "recharts": "^2.10.3",
+    "lucide-react": "^0.294.0",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  }
+}
