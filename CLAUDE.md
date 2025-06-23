@@ -233,7 +233,57 @@ CREATE TABLE reports (
 - Start with fund management, add monitoring after
 - Copy what works from porta, improve where needed
 
+## Deployment Information
+
+### Live URLs
+- **Production**: https://wonderful-strudel-a9c260.netlify.app
+- **GitHub**: https://github.com/Masssa75/sunbeam-fund
+
+### Deployment Process
+1. Code pushed to GitHub automatically triggers Netlify build
+2. If stuck on old commit: Relink repository in Netlify dashboard
+3. Manual deploy: "Trigger deploy" → "Clear cache and deploy site"
+
+### Current Features (Live)
+- ✅ Portfolio CRUD operations with localStorage persistence
+- ✅ CoinGecko price integration (via API routes, no CORS)
+- ✅ P&L tracking and calculations
+- ✅ Monthly report generation (JSON export)
+- ✅ May 31st entry date option with manual price input
+- ✅ Mobile responsive design
+
+### API Tokens (All from Porta)
+- **Supabase**: Full credentials ready in .env
+- **Telegram Bot**: Token ready for notifications
+- **Gemini AI**: For content analysis
+- **GitHub/Netlify**: Deployment automation
+- **Cron Job**: For scheduled tasks
+
+## Next Steps Priority
+
+### Phase 1: Supabase Integration ✅ (Next)
+1. Database tables for positions, snapshots, reports
+2. Replace localStorage with cloud storage
+3. Enable multi-device access
+4. Historical data tracking
+
+### Phase 2: Authentication
+1. Supabase Auth for admin access
+2. Separate investor portal with limited access
+3. Role-based permissions
+
+### Phase 3: Twitter Monitoring
+1. Copy working implementation from porta
+2. Set up Edge Functions
+3. Configure cron jobs
+
+### Phase 4: Telegram Integration
+1. Notifications for important updates
+2. Monthly report distribution
+3. Command interface
+
 ## Version
-- Current Version: 0.1.0
+- Current Version: 1.0.0
 - Created: 2025-06-23
-- Status: Initial setup
+- Status: Deployed and operational
+- Last Updated: 2025-06-23
