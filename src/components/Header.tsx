@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { auth } from '@/lib/supabase/auth'
 
 export default function Header() {
@@ -64,9 +65,9 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
-            <a href="/" className="text-lg font-semibold text-gray-900 hover:text-gray-700">
+            <Link href="/" className="text-lg font-semibold text-gray-900 hover:text-gray-700">
               Sunbeam Fund
-            </a>
+            </Link>
             {user ? (
               <span className="text-sm text-gray-700">
                 Signed in as: <span className="font-medium">{user.email}</span>
@@ -78,22 +79,22 @@ export default function Header() {
           <div className="flex items-center gap-4">
             {user && isAdmin && (
               <div className="flex items-center gap-2 text-sm">
-                <a
+                <Link
                   href="/"
                   className={`px-3 py-1 rounded ${
                     pathname === '/' ? 'bg-gray-200' : 'hover:bg-gray-100'
                   }`}
                 >
                   Admin View
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/investor"
                   className={`px-3 py-1 rounded ${
                     pathname === '/investor' ? 'bg-gray-200' : 'hover:bg-gray-100'
                   }`}
                 >
                   Investor View
-                </a>
+                </Link>
               </div>
             )}
             {user ? (
@@ -104,12 +105,12 @@ export default function Header() {
                 Sign out
               </button>
             ) : (
-              <a
+              <Link
                 href="/login"
                 className="text-sm text-blue-600 hover:text-blue-700"
               >
                 Sign in
-              </a>
+              </Link>
             )}
           </div>
         </div>
