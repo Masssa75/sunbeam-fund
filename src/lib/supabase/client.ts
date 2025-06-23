@@ -9,12 +9,6 @@ const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-ser
 // Only create clients if we have real values (not placeholders)
 const hasValidConfig = supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
 
-console.log('Supabase client initialization:', {
-  url: supabaseUrl,
-  hasKey: !!supabaseAnonKey,
-  hasValidConfig
-})
-
 export const supabase = hasValidConfig 
   ? createClient<Database>(supabaseUrl, supabaseAnonKey)
   : null as any
