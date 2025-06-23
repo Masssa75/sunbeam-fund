@@ -44,19 +44,21 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     }, 10000) // 10 second timeout
     
     try {
-      // First check authentication via API
-      const sessionResponse = await fetch('/api/auth/session/', {
-        credentials: 'include'
-      })
-      const sessionData = await sessionResponse.json()
+      // Check authentication directly via Supabase client
+      const supabase = createBrowserClient<Database>(
+        process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
+      )
+      
+      const { data: { session } } = await supabase.auth.getSession()
       
       clearTimeout(timeoutId)
       
-      setIsAuthenticated(sessionData.authenticated)
+      setIsAuthenticated(!!session)
       setAuthChecked(true)
-      console.log('[PortfolioTable] Auth check:', sessionData.authenticated ? 'Authenticated' : 'Not authenticated')
+      console.log('[PortfolioTable] Auth check:', session ? 'Authenticated' : 'Not authenticated')
       
-      if (sessionData.authenticated) {
+      if (session) {
         // Load positions if authenticated
         console.log('[PortfolioTable] Loading positions...')
         const savedPositions = await portfolioService.getPositions()
