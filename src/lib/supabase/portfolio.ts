@@ -17,6 +17,11 @@ export const portfolioService = {
         const response = await fetch('/api/positions')
         if (!response.ok) {
           const error = await response.json()
+          if (response.status === 401) {
+            console.log('[PortfolioService] User not authenticated')
+            // Return empty array for unauthorized users
+            return []
+          }
           throw new Error(error.error || 'Failed to fetch positions')
         }
         const data = await response.json()

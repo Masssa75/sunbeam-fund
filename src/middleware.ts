@@ -5,14 +5,9 @@ import type { NextRequest } from 'next/server'
 export async function middleware(req: NextRequest) {
   let res = NextResponse.next()
   
-  // Only check auth if Supabase is properly configured
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  
-  // Skip auth check if using porta's credentials or not configured
-  if (!supabaseUrl || !supabaseKey || supabaseUrl === 'https://midojobnawatvxhmhmoh.supabase.co') {
-    return res
-  }
+  // Use hardcoded values if env vars are missing
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co'
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
 
   const supabase = createServerClient(
     supabaseUrl,
@@ -23,10 +18,21 @@ export async function middleware(req: NextRequest) {
           return req.cookies.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
-          res.cookies.set({ name, value, ...options })
+          res.cookies.set({ 
+            name, 
+            value, 
+            ...options,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production'
+          })
         },
         remove(name: string, options: CookieOptions) {
-          res.cookies.set({ name, value: '', ...options })
+          res.cookies.set({ 
+            name, 
+            value: '', 
+            ...options,
+            maxAge: 0
+          })
         },
       },
     }
