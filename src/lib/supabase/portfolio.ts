@@ -15,7 +15,8 @@ export const portfolioService = {
       console.log('[PortfolioService] Using API route (client-side)')
       console.log('[PortfolioService] Environment:', process.env.NODE_ENV)
       try {
-        const response = await fetch('/api/positions')
+        // Use trailing slash to avoid redirect
+        const response = await fetch('/api/positions/')
         if (!response.ok) {
           const error = await response.json()
           if (response.status === 401) {
