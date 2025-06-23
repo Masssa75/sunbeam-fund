@@ -33,10 +33,19 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     console.log('[PortfolioTable] Checking authentication...')
     setLoading(true)
     
+    // Set a timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      console.log('[PortfolioTable] Load timeout - showing auth required')
+      setLoading(false)
+      setIsAuthenticated(false)
+    }, 5000) // 5 second timeout
+    
     try {
       // First check authentication via API
       const sessionResponse = await fetch('/api/auth/session/')
       const sessionData = await sessionResponse.json()
+      
+      clearTimeout(timeoutId)
       
       setIsAuthenticated(sessionData.authenticated)
       console.log('[PortfolioTable] Auth check:', sessionData.authenticated ? 'Authenticated' : 'Not authenticated')
@@ -52,6 +61,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
         }
       }
     } catch (error) {
+      clearTimeout(timeoutId)
       console.error('[PortfolioTable] Error:', error)
       setError(error instanceof Error ? error.message : 'Failed to load portfolio')
     } finally {
