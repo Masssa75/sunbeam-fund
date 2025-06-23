@@ -328,14 +328,16 @@ CREATE TABLE reports (
 
 ## 🚨 CURRENT ISSUES TO FIX (NEXT INSTANCE)
 
-### Privacy Error on sunbeam.capital
-- **Issue**: SSL/Privacy error when accessing https://sunbeam.capital
-- **Fix**: Need to check Netlify domain settings and SSL certificate
-- **Steps**:
-  1. Check Netlify dashboard for SSL provisioning status
-  2. May need to wait for DNS propagation
-  3. Or manually trigger SSL certificate renewal
-  4. Verify HTTPS redirect is enabled
+### Privacy Error on sunbeam.capital - IN PROGRESS
+- **Issue**: SSL/Privacy error when accessing https://sunbeam.capital (NET::ERR_CERT_COMMON_NAME_INVALID)
+- **Status**: Opened Netlify dashboard for manual SSL provisioning
+- **Site Details**:
+  - Netlify Site: starlit-mousse-8fa18a
+  - Site ID: f4f02cc0-7275-4b0c-97eb-340df38f4292
+  - Domain: sunbeam.capital (DNS verified working)
+  - SSL Status: false (certificate not provisioned)
+- **Fix**: Need to manually provision SSL certificate in Netlify dashboard
+- **Script Created**: `/scripts/fix-ssl.js` to open dashboard
 
 ## 📋 CURRENT PROJECT STATE (v1.1.0)
 
