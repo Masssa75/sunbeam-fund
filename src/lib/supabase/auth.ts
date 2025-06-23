@@ -72,6 +72,33 @@ export const auth = {
     return supabase.auth.onAuthStateChange(callback)
   },
 
+  // Reset password
+  async resetPassword(email: string) {
+    if (!supabase) {
+      throw new Error('Supabase is not configured')
+    }
+    
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    })
+    
+    return { data, error }
+  },
+
+  // Update password (after clicking reset link)
+  async updatePassword(newPassword: string) {
+    if (!supabase) {
+      throw new Error('Supabase is not configured')
+    }
+    
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword
+    })
+    
+    if (error) throw error
+    return data
+  },
+
   // Check if user is admin (you can customize this based on your needs)
   async isAdmin(userId: string): Promise<boolean> {
     // For now, all authenticated users are admins

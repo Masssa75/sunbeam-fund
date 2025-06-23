@@ -1,6 +1,6 @@
 export default function VersionBadge() {
   // Version will be updated with each deployment
-  const version = "1.0.0"
+  const version = "1.1.0"
   const deployDate = "2025-06-23"
   
   return (
