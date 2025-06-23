@@ -65,25 +65,25 @@ export default function MonthlyReportView({
   const chartRef = useRef<HTMLCanvasElement>(null)
 
   // Calculate portfolio metrics
-  const totalValue = positions.reduce((sum, pos) => sum + (pos.currentValue || 0), 0)
-  const totalCost = positions.reduce((sum, pos) => sum + (pos.amount * pos.costBasis), 0)
+  const totalValue = positions.reduce((sum, pos) => sum + (pos.current_value || 0), 0)
+  const totalCost = positions.reduce((sum, pos) => sum + (pos.amount * (pos.cost_basis || 0)), 0)
   const totalPnL = totalValue - totalCost
   const totalPnLPercent = totalCost > 0 ? (totalPnL / totalCost) * 100 : 0
 
   // Sort positions by value and prepare holdings data
-  const sortedPositions = [...positions].sort((a, b) => (b.currentValue || 0) - (a.currentValue || 0))
+  const sortedPositions = [...positions].sort((a, b) => (b.current_value || 0) - (a.current_value || 0))
   
   // Take top 4 positions and group the rest
   const topHoldings: PortfolioHolding[] = sortedPositions.slice(0, 4).map((pos, index) => ({
-    name: pos.projectName,
+    name: pos.project_name,
     symbol: pos.symbol.toUpperCase(),
-    percentage: totalValue > 0 ? ((pos.currentValue || 0) / totalValue) * 100 : 0,
-    thesis: DEFAULT_HOLDINGS_THESIS[pos.projectId] || 'High-conviction investment in blockchain innovation',
+    percentage: totalValue > 0 ? ((pos.current_value || 0) / totalValue) * 100 : 0,
+    thesis: DEFAULT_HOLDINGS_THESIS[pos.project_id] || 'High-conviction investment in blockchain innovation',
     color: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'][index]
   }))
 
   // Calculate "Others" percentage
-  const othersValue = sortedPositions.slice(4).reduce((sum, pos) => sum + (pos.currentValue || 0), 0)
+  const othersValue = sortedPositions.slice(4).reduce((sum, pos) => sum + (pos.current_value || 0), 0)
   const othersPercentage = totalValue > 0 ? (othersValue / totalValue) * 100 : 0
   const othersCount = sortedPositions.length - 4
 
