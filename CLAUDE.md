@@ -303,11 +303,11 @@ CREATE TABLE reports (
 5. ✅ CRUD operations verified working
 6. ✅ All localStorage code removed for simplicity
 
-### Phase 2: Historical Data & Snapshots
-1. Automated monthly snapshots
-2. Historical price tracking
-3. Performance analytics
-4. Comparison charts
+### 🎯 NEXT UP: Phase 2 - Historical Data & Snapshots
+1. **Automated monthly snapshots** - Cron job to capture portfolio state
+2. **Historical price tracking** - Store price history for performance charts
+3. **Performance analytics** - Calculate ROI, best/worst performers
+4. **Comparison charts** - Visual performance over time
 
 ### Phase 3: Twitter Monitoring
 1. Copy working implementation from porta
@@ -326,40 +326,28 @@ CREATE TABLE reports (
 2. Monthly report distribution
 3. Command interface
 
-## 🚨 CRITICAL ISSUE - LOADING PROBLEM
+## ✅ LOADING ISSUE FIXED (v1.2.1)
 
-### The Problem:
-- **Symptom**: Page shows "Loading..." indefinitely when navigating between admin and investor views
-- **Pattern**: Works briefly after deployment, then breaks when clicking view switcher
-- **Location**: Both / (admin) and /investor routes affected
-- **Console**: No visible errors in browser console
+### The Problem (RESOLVED):
+- **Symptom**: Page showed "Loading..." indefinitely when navigating between views
+- **Root Cause**: Supabase client was returning null when env vars weren't detected as valid
+- **Solution**: Fixed client initialization to always return a valid client instance
 
-### What We Tried:
-1. ✅ Fixed RLS policies (`scripts/fix-rls-policies.sql` and `scripts/run-rls-fix.js`)
-2. ✅ Fixed environment variables in Netlify (manually added)
-3. ❌ Created Header component with auth check - caused SSR issues
-4. ❌ Fixed Header with usePathname instead of window.location - still had loading issues
-5. ✅ Removed Header component, added simple view switcher buttons - worked briefly
+### What Fixed It:
+1. ✅ Updated Supabase client to always return an instance (even with placeholders)
+2. ✅ Removed all `ensureSupabase()` null checks that were throwing errors
+3. ✅ Fixed TypeScript errors in auth module
+4. ✅ Replaced `<a>` tags with Next.js `Link` components to prevent full page reloads
+5. ✅ Added debug logging to track Supabase configuration status
 
-### Root Cause Hypothesis:
-- Likely related to middleware + auth state management
-- The middleware at `src/middleware.ts` might be causing redirect loops
-- Auth state might not be properly shared between client components
+### Current Status:
+- ✅ Build passes successfully
+- ✅ Deployment successful at https://sunbeam.capital
+- ✅ Navigation between admin/investor views works smoothly
+- ✅ No more infinite loading states
+- ✅ Error handling is graceful even if Supabase isn't configured
 
-### Next Steps to Try:
-1. **Check middleware logs** - Add console.log to middleware to see redirect patterns
-2. **Simplify middleware** - Currently homepage is unprotected but might still have issues
-3. **Check Supabase client initialization** - The placeholders in client.ts might cause issues
-4. **Remove auth checks temporarily** - Test if it's auth-related or component-related
-5. **Check for hydration mismatches** - SSR/client mismatch could cause loading states
-
-### Working Components:
-- ✅ Database queries work (positions exist and can be queried)
-- ✅ Supabase connection works locally
-- ✅ Individual components work when tested in isolation
-- ✅ Deployment process works correctly
-
-## 📋 CURRENT PROJECT STATE (v1.2.0)
+## 📋 CURRENT PROJECT STATE (v1.2.1)
 
 ### What's Working:
 - ✅ Full Supabase integration (no localStorage)
@@ -413,18 +401,10 @@ cat latest-result.json
 ```
 
 ## Version
-- Current Version: 1.2.0
+- Current Version: 1.2.1
 - Created: 2025-06-23
-- Status: Deployed but has loading issue when switching views
-- Last Updated: 2025-06-23 16:00 PST
-
-## Key Files for Debugging Loading Issue:
-- `/src/middleware.ts` - Check for redirect loops
-- `/src/lib/supabase/client.ts` - Check placeholder handling
-- `/src/components/PortfolioTableWithPrices.tsx` - Main portfolio component
-- `/src/components/InvestorDashboard.tsx` - Investor view component
-- `/src/app/page.tsx` - Admin view page
-- `/src/app/investor/page.tsx` - Investor view page
+- Status: Deployed successfully - loading issue fixed!
+- Last Updated: 2025-06-23 16:30 PST
 
 ## REMEMBER FOR NEXT INSTANCE
 1. You CAN create Supabase projects autonomously
