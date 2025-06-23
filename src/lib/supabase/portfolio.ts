@@ -103,6 +103,7 @@ export const portfolioService = {
 
   // Add new position
   async addPosition(position: PositionInsert): Promise<Position> {
+    const supabase = this.getClient()
     const { data, error } = await supabase
       .from('positions')
       .insert(position)
@@ -124,6 +125,7 @@ export const portfolioService = {
 
   // Update position
   async updatePosition(id: string, updates: PositionUpdate): Promise<Position> {
+    const supabase = this.getClient()
     const { data, error } = await supabase
       .from('positions')
       .update(updates)
@@ -147,6 +149,7 @@ export const portfolioService = {
 
   // Delete position
   async deletePosition(id: string): Promise<void> {
+    const supabase = this.getClient()
     const { error } = await supabase
       .from('positions')
       .delete()
@@ -180,6 +183,7 @@ export const portfolioService = {
       }
     }
 
+    const supabase = this.getClient()
     const { error } = await supabase
       .from('portfolio_snapshots')
       .insert(snapshot)
@@ -192,6 +196,7 @@ export const portfolioService = {
 
   // Get snapshots
   async getSnapshots(limit = 12): Promise<any[]> {
+    const supabase = this.getClient()
     const { data, error } = await supabase
       .from('portfolio_snapshots')
       .select('*')
@@ -208,6 +213,7 @@ export const portfolioService = {
 
   // Log audit entry
   async logAudit(action: string, entityType: string | null, entityId: string | null, details: any): Promise<void> {
+    const supabase = this.getClient()
     const { error } = await supabase
       .from('audit_log')
       .insert({
