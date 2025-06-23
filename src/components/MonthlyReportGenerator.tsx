@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { generateMonthlyReport } from '@/lib/reports/generator'
 import type { Position } from '@/lib/types'
 
@@ -54,13 +55,26 @@ export default function MonthlyReportGenerator({ positions }: MonthlyReportGener
           />
         </div>
 
-        <button
-          onClick={handleGenerateReport}
-          disabled={generating || positions.length === 0}
-          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300"
-        >
-          {generating ? 'Generating...' : 'Generate Monthly Report'}
-        </button>
+        <div className="flex gap-4">
+          <button
+            onClick={handleGenerateReport}
+            disabled={generating || positions.length === 0}
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300"
+          >
+            {generating ? 'Generating...' : 'Download JSON Report'}
+          </button>
+          
+          <Link
+            href={`/report?month=${selectedMonth}`}
+            className={`px-6 py-2 rounded-lg ${
+              positions.length === 0 
+                ? 'bg-gray-300 text-gray-500 pointer-events-none' 
+                : 'bg-green-500 text-white hover:bg-green-600'
+            }`}
+          >
+            View Visual Report
+          </Link>
+        </div>
 
         {positions.length === 0 && (
           <p className="text-sm text-gray-500">Add positions to generate a report</p>

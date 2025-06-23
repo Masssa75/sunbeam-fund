@@ -1,0 +1,39 @@
+@media print {
+  body {
+    background: white !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-break-after {
+    page-break-after: always;
+  }
+  
+  .print-break-inside-avoid {
+    page-break-inside: avoid;
+  }
+  
+  /* Ensure charts are visible */
+  canvas {
+    max-height: 300px !important;
+  }
+  
+  /* Remove shadows and borders for cleaner print */
+  .shadow-lg {
+    box-shadow: none !important;
+  }
+  
+  /* Ensure good contrast */
+  .text-gray-600 {
+    color: #333 !important;
+  }
+  
+  /* Hide navigation and buttons */
+  button, 
+  nav,
+  header {
+    display: none !important;
+  }
+}
