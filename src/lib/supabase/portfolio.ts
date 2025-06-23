@@ -22,8 +22,19 @@ export const portfolioService = {
           message: error.message,
           code: error.code,
           details: error.details,
-          hint: error.hint
+          hint: error.hint,
+          status: (error as any).status,
+          statusText: (error as any).statusText
         })
+        
+        // Check for common issues
+        if (error.message?.includes('fetch')) {
+          console.error('[PortfolioService] Network/CORS error - cannot reach Supabase')
+        }
+        if (error.code === 'PGRST301') {
+          console.error('[PortfolioService] Authentication error - check RLS policies')
+        }
+        
         throw error
       }
 
