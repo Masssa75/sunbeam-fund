@@ -281,12 +281,17 @@ CREATE TABLE reports (
    - ✅ Middleware for route protection (`/src/middleware.ts`)
    - ✅ Header with auth status (`/src/components/Header.tsx`)
 
-**To activate Supabase:**
-1. Create project at https://app.supabase.com
-2. Run schema.sql in SQL Editor
-3. Update .env with new credentials
-4. The app will automatically switch from localStorage to Supabase
-5. Use migration banner to transfer existing data
+**✅ Supabase Project Created:**
+- Project: sunbeam-fund
+- URL: https://gualxudgbmpuhjbumfeh.supabase.co
+- Database Password: uzPKvZpiawpFogmbuBQ0Jnmb
+
+**To complete setup:**
+1. Go to: https://app.supabase.com/project/gualxudgbmpuhjbumfeh/sql/new
+2. Copy and paste the contents of `/supabase/schema.sql`
+3. Click "Run" to create all tables
+4. The app is now using Supabase (credentials already updated in .env)
+5. Use migration banner on homepage to transfer any localStorage data
 
 ### Phase 2: Historical Data & Snapshots
 1. Automated monthly snapshots
