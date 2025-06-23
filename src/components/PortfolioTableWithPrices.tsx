@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { searchCoins, getMultipleCoinPrices, getCoinPrice, getHistoricalPrice, CoinPrice } from '@/lib/coingecko'
 import { portfolioService } from '@/lib/supabase/portfolio'
+import { supabase } from '@/lib/supabase/client'
 import type { Database } from '@/lib/supabase/types'
 
 type StoredPosition = Database['public']['Tables']['positions']['Row']
@@ -25,6 +26,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [loading, setLoading] = useState(true) // Start with loading true
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   // Load positions from Supabase on mount
   useEffect(() => {
@@ -73,6 +75,44 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       }
     }
     loadPositions()
+  }, [])
+
+  // Monitor auth state changes
+  useEffect(() => {
+    // Check initial auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session)
+      if (session) {
+        // Reload positions if we just authenticated
+        const loadPositions = async () => {
+          setLoading(true)
+          try {
+            const savedPositions = await portfolioService.getPositions()
+            if (savedPositions.length > 0) {
+              setPositions(savedPositions as Position[])
+            }
+          } catch (error) {
+            console.error('[PortfolioTable] Error reloading after auth:', error)
+          } finally {
+            setLoading(false)
+          }
+        }
+        loadPositions()
+      }
+    })
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[PortfolioTable] Auth state changed:', event, !!session)
+      setIsAuthenticated(!!session)
+      
+      if (event === 'SIGNED_IN' && session) {
+        // Reload the page to ensure fresh state
+        window.location.reload()
+      }
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   // Fetch prices for all positions
@@ -200,8 +240,8 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     )
   }
   
-  // Show login prompt if no positions and not loading
-  if (!loading && positions.length === 0 && !error) {
+  // Show login prompt if not authenticated and not loading
+  if (!loading && !isAuthenticated && positions.length === 0) {
     return (
       <div className="w-full">
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
