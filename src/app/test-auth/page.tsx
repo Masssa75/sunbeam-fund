@@ -25,17 +25,23 @@ export default function TestAuthPage() {
   }, [])
 
   const testAPI = async () => {
+    console.log('Test API clicked')
     setError(null)
+    setPositions([]) // Reset positions
     try {
       const response = await fetch('/api/positions')
+      console.log('API response status:', response.status)
       if (response.ok) {
         const data = await response.json()
+        console.log('API data:', data)
         setPositions(data)
       } else {
-        setError(`API error: ${response.status}`)
+        const errorText = await response.text()
+        setError(`API error: ${response.status} - ${errorText}`)
       }
-    } catch (err) {
-      setError(`Fetch error: ${err}`)
+    } catch (err: any) {
+      console.error('Fetch error:', err)
+      setError(`Fetch error: ${err.message}`)
     }
   }
 
@@ -56,7 +62,7 @@ export default function TestAuthPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Auth Test Page</h1>
+      <h1 className="text-2xl font-bold mb-4">Auth Test Page v2</h1>
       
       <div className="mb-4">
         <p>Session: {session ? `Logged in as ${session.user.email}` : 'Not logged in'}</p>
