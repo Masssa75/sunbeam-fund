@@ -489,6 +489,16 @@ cat latest-result.json
 - `node scripts/test-full-login-flow.js` - Complete end-to-end test
 - `node scripts/test-auth.js` - Basic auth test
 - `node scripts/test-browser-e2e.js` - Browser automation test with Playwright
+- `node scripts/test-browser-template.js` - Template for creating new browser tests
+
+### 🧪 Browser Automation Testing
+We use Playwright to test the app from a real user's perspective. This caught issues that backend tests missed:
+- Browser cache problems
+- CORS issues
+- Authentication flow in real browsers
+- Visual verification with screenshots
+
+See `BROWSER-TESTING-GUIDE.md` for complete documentation on our browser testing approach.
 
 ## 🎯 CURRENT STATUS - LOGIN FIXES APPLIED
 
