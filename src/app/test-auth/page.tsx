@@ -83,14 +83,19 @@ export default function TestAuthPage() {
         </div>
       )}
 
-      {positions.length > 0 && (
-        <div className="p-4 bg-gray-100 rounded">
-          <h2 className="font-bold mb-2">Positions ({positions.length}):</h2>
-          {positions.map((pos, i) => (
-            <div key={i}>{pos.project_name}</div>
-          ))}
-        </div>
-      )}
+      <div className="p-4 bg-gray-100 rounded">
+        <h2 className="font-bold mb-2">API Response:</h2>
+        {positions.length > 0 ? (
+          <>
+            <p>Found {positions.length} positions:</p>
+            {positions.map((pos, i) => (
+              <div key={i}>{pos.project_name} - {pos.amount} {pos.symbol}</div>
+            ))}
+          </>
+        ) : (
+          <p>No positions returned (empty array)</p>
+        )}
+      </div>
     </div>
   )
 }

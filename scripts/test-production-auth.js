@@ -41,10 +41,24 @@ async function testProductionAuth() {
   
   // 3. Test API with authentication
   console.log('\n3. Testing API with auth token:')
-  const cookies = [
-    `sb-gualxudgbmpuhjbumfeh-auth-token=${authData.session.access_token}`,
-    `sb-gualxudgbmpuhjbumfeh-auth-token-refresh=${authData.session.refresh_token}`
-  ].join('; ')
+  // Get all auth cookies
+  const authCookies = []
+  if (authData.session?.access_token) {
+    authCookies.push(`sb-gualxudgbmpuhjbumfeh-auth-token=${authData.session.access_token}`)
+  }
+  if (authData.session?.refresh_token) {
+    authCookies.push(`sb-gualxudgbmpuhjbumfeh-auth-token-refresh=${authData.session.refresh_token}`)
+  }
+  // Add the base64 encoded session
+  const sessionData = {
+    access_token: authData.session.access_token,
+    refresh_token: authData.session.refresh_token,
+    user: authData.user
+  }
+  const sessionBase64 = Buffer.from(JSON.stringify(sessionData)).toString('base64')
+  authCookies.push(`sb-gualxudgbmpuhjbumfeh-auth-token-code-verifier=${sessionBase64}`)
+  
+  const cookies = authCookies.join('; ')
   
   try {
     const authResponse = await fetch(`${prodUrl}/api/positions`, {
