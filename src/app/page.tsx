@@ -1,6 +1,7 @@
 import Dashboard from '@/components/Dashboard'
 import VersionBadge from '@/components/VersionBadge'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import DebugPanel from '@/components/DebugPanel'
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         </ErrorBoundary>
       </div>
       <VersionBadge />
+      <DebugPanel />
     </main>
   )
 }
