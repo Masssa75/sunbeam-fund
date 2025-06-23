@@ -21,9 +21,17 @@ export default function LoginPage() {
     setError('')
     setMessage('')
 
+    // Add timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      setError('Request timed out. Please try again.')
+      setLoading(false)
+    }, 15000) // 15 second timeout
+
     try {
       if (mode === 'signin') {
+        console.log('[Login] Attempting sign in for:', email)
         await auth.signIn(email, password)
+        console.log('[Login] Sign in successful, redirecting...')
         // Use window.location for more reliable redirect
         window.location.href = '/'
       } else if (mode === 'signup') {
@@ -40,9 +48,11 @@ export default function LoginPage() {
         if (error) throw error
         setMessage('Check your email for the password reset link!')
       }
+      clearTimeout(timeoutId) // Clear timeout on success
     } catch (err: any) {
+      clearTimeout(timeoutId) // Clear timeout on error
+      console.error('[Login] Error:', err)
       setError(err.message || `Failed to ${mode === 'signin' ? 'sign in' : mode === 'signup' ? 'sign up' : 'reset password'}`)
-    } finally {
       setLoading(false)
     }
   }
