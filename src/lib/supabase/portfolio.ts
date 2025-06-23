@@ -10,36 +10,23 @@ export const portfolioService = {
   async getPositions(): Promise<Position[]> {
     console.log('[PortfolioService] getPositions() called')
     
-    // Always use API route on client side to ensure auth
-    if (typeof window !== 'undefined') {
-      console.log('[PortfolioService] Using API route (client-side)')
-      console.log('[PortfolioService] Environment:', process.env.NODE_ENV)
-      try {
-        // Use trailing slash to avoid redirect
-        const response = await fetch('/api/positions/')
-        if (!response.ok) {
-          const error = await response.json()
-          if (response.status === 401) {
-            console.log('[PortfolioService] User not authenticated - returning empty array')
-            // Return empty array for unauthorized users
-            return []
-          }
-          throw new Error(error.error || 'Failed to fetch positions')
-        }
-        const data = await response.json()
-        console.log('[PortfolioService] Successfully fetched positions via API:', data.length)
-        return data
-      } catch (err) {
-        console.error('[PortfolioService] API route error:', err)
-        // Return empty array on error instead of throwing
+    try {
+      // Check if user is authenticated first
+      const { data: { session }, error: authError } = await supabase.auth.getSession()
+      
+      if (authError) {
+        console.error('[PortfolioService] Auth error:', authError)
         return []
       }
-    }
-    
-    // For server-side, fetch directly without auth check (RLS handles it)
-    console.log('[PortfolioService] Server-side call - fetching positions')
-    
-    try {
+      
+      if (!session) {
+        console.log('[PortfolioService] No session - returning empty array')
+        return []
+      }
+      
+      console.log('[PortfolioService] Authenticated as:', session.user.email)
+      
+      // Fetch positions with authenticated session
       const { data, error } = await supabase
         .from('positions')
         .select('*')
@@ -47,14 +34,16 @@ export const portfolioService = {
 
       if (error) {
         console.error('[PortfolioService] Error fetching positions:', error)
-        throw error
+        // Return empty array instead of throwing to prevent UI errors
+        return []
       }
 
       console.log('[PortfolioService] Successfully fetched positions:', data?.length || 0)
       return data || []
     } catch (err) {
       console.error('[PortfolioService] Caught error in getPositions:', err)
-      throw err
+      // Return empty array on any error
+      return []
     }
   },
 

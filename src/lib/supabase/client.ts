@@ -38,8 +38,9 @@ export const supabase = (() => {
       supabaseAnonKey || 'placeholder-key',
       {
         auth: {
-          persistSession: false,
-          autoRefreshToken: false
+          persistSession: true,
+          autoRefreshToken: true,
+          storage: typeof window !== 'undefined' ? window.localStorage : undefined
         }
       }
     )
