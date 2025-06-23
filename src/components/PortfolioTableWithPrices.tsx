@@ -88,21 +88,26 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
   const handleAddPosition = async (position: Omit<Position, 'id' | 'created_at' | 'updated_at'>) => {
     try {
-      const newPosition = await portfolioService.addPosition({
+      // Clean up the data before sending
+      const cleanedPosition = {
         project_id: position.project_id,
         project_name: position.project_name,
         symbol: position.symbol,
-        amount: position.amount,
-        cost_basis: position.cost_basis,
+        amount: Number(position.amount) || 0,
+        cost_basis: Number(position.cost_basis) || 0,
         entry_date: position.entry_date,
-        exit_date: position.exit_date,
-        notes: position.notes
-      })
+        exit_date: position.exit_date || null,
+        notes: position.notes || null
+      }
+      
+      console.log('Adding position:', cleanedPosition)
+      
+      const newPosition = await portfolioService.addPosition(cleanedPosition)
       setPositions([...positions, newPosition])
       setShowAddModal(false)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding position:', error)
-      alert('Failed to add position. Please try again.')
+      alert(`Failed to add position: ${error.message || 'Unknown error'}`)
     }
   }
 
@@ -348,6 +353,18 @@ function PositionModal({ position, onSave, onClose }: {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validate required fields
+    if (!formData.project_id || !formData.project_name || !formData.symbol) {
+      alert('Please select a project from the search results')
+      return
+    }
+    
+    if (!formData.amount || parseFloat(String(formData.amount)) <= 0) {
+      alert('Please enter a valid amount')
+      return
+    }
+    
     onSave({
       ...position,
       ...formData,
