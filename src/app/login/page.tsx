@@ -30,10 +30,22 @@ export default function LoginPage() {
     try {
       if (mode === 'signin') {
         console.log('[Login] Attempting sign in for:', email)
-        await auth.signIn(email, password)
+        const result = await auth.signIn(email, password)
+        console.log('[Login] Sign in result:', result)
+        
+        // Check if we actually got a session
+        const session = await auth.getSession()
+        console.log('[Login] Session after sign in:', session ? 'Found' : 'Not found')
+        
+        if (!session) {
+          throw new Error('Sign in succeeded but no session was created. Please try again.')
+        }
+        
         console.log('[Login] Sign in successful, redirecting...')
-        // Use window.location for more reliable redirect
-        window.location.href = '/'
+        // Small delay to ensure session is saved
+        setTimeout(() => {
+          window.location.href = '/'
+        }, 100)
       } else if (mode === 'signup') {
         const data = await auth.signUp(email, password)
         if (data?.user?.identities?.length === 0) {
@@ -42,17 +54,42 @@ export default function LoginPage() {
         } else {
           setMessage('Check your email for the confirmation link!')
         }
+        clearTimeout(timeoutId)
+        setLoading(false)
       } else if (mode === 'forgot') {
-        // For password reset, we need to add this to auth.ts
         const { error } = await auth.resetPassword(email)
         if (error) throw error
         setMessage('Check your email for the password reset link!')
+        clearTimeout(timeoutId)
+        setLoading(false)
       }
-      clearTimeout(timeoutId) // Clear timeout on success
     } catch (err: any) {
       clearTimeout(timeoutId) // Clear timeout on error
-      console.error('[Login] Error:', err)
-      setError(err.message || `Failed to ${mode === 'signin' ? 'sign in' : mode === 'signup' ? 'sign up' : 'reset password'}`)
+      console.error('[Login] Error details:', {
+        message: err.message,
+        code: err.code,
+        status: err.status,
+        statusText: err.statusText,
+        __isAuthError: err.__isAuthError
+      })
+      
+      // Provide helpful error messages
+      let errorMessage = err.message || 'An error occurred'
+      
+      if (err.message?.includes('Invalid login credentials')) {
+        errorMessage = 'Invalid email or password. Please check your credentials.'
+        
+        // Provide hint for known accounts
+        if (email === 'marc@cyrator.com') {
+          errorMessage += '\n\nNote: This account exists but may have a different password. Try using the password reset option.'
+        }
+      } else if (err.message?.includes('Email not confirmed')) {
+        errorMessage = 'Please check your email and confirm your account before signing in.'
+      } else if (err.code === 'auth/network-request-failed') {
+        errorMessage = 'Network error. Please check your internet connection.'
+      }
+      
+      setError(errorMessage)
       setLoading(false)
     }
   }
