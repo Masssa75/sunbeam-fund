@@ -6,6 +6,10 @@ export async function GET() {
   try {
     const cookieStore = cookies()
     
+    // Debug: log all cookies
+    const allCookies = cookieStore.getAll()
+    console.log('[Session API] All cookies:', allCookies.map(c => ({ name: c.name, length: c.value.length })))
+    
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM',
@@ -42,6 +46,8 @@ export async function GET() {
     )
     
     const { data: { session } } = await supabase.auth.getSession()
+    
+    console.log('[Session API] Session found:', !!session, session?.user?.email)
     
     return NextResponse.json({ 
       authenticated: !!session,

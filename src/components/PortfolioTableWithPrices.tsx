@@ -45,7 +45,9 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     
     try {
       // First check authentication via API
-      const sessionResponse = await fetch('/api/auth/session/')
+      const sessionResponse = await fetch('/api/auth/session/', {
+        credentials: 'include'
+      })
       const sessionData = await sessionResponse.json()
       
       clearTimeout(timeoutId)
@@ -93,18 +95,34 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
     )
 
+    // Check initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('[PortfolioTable] Initial session check:', !!session)
+      if (session && mounted) {
+        setIsAuthenticated(true)
+        setAuthChecked(true)
+        checkAuthAndLoadPositions()
+      }
+    })
+
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('[PortfolioTable] Auth state changed:', event, !!session)
       
       if (event === 'SIGNED_IN' && session) {
-        // Reload the entire auth check when user signs in
+        // Update state immediately
+        setIsAuthenticated(true)
+        setAuthChecked(true)
+        // Then reload positions
         checkAuthAndLoadPositions()
       } else if (event === 'SIGNED_OUT') {
         setIsAuthenticated(false)
         setPositions([])
         setAuthChecked(true)
         setLoading(false)
+      } else if (event === 'TOKEN_REFRESHED' && session) {
+        // Handle token refresh
+        setIsAuthenticated(true)
       }
     })
 
