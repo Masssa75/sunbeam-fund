@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { auth } from '@/lib/supabase/auth'
 
 export default function Header() {
   const router = useRouter()
+  const pathname = usePathname()
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -80,7 +81,7 @@ export default function Header() {
                 <a
                   href="/"
                   className={`px-3 py-1 rounded ${
-                    window.location.pathname === '/' ? 'bg-gray-200' : 'hover:bg-gray-100'
+                    pathname === '/' ? 'bg-gray-200' : 'hover:bg-gray-100'
                   }`}
                 >
                   Admin View
@@ -88,7 +89,7 @@ export default function Header() {
                 <a
                   href="/investor"
                   className={`px-3 py-1 rounded ${
-                    window.location.pathname === '/investor' ? 'bg-gray-200' : 'hover:bg-gray-100'
+                    pathname === '/investor' ? 'bg-gray-200' : 'hover:bg-gray-100'
                   }`}
                 >
                   Investor View
