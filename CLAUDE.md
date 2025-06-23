@@ -326,33 +326,54 @@ CREATE TABLE reports (
 2. Monthly report distribution
 3. Command interface
 
-## 🚨 CURRENT ISSUES TO FIX (NEXT INSTANCE)
+## 🚨 CRITICAL ISSUE - LOADING PROBLEM
 
-### ✅ SSL Issue - FIXED
-- **Issue**: SSL/Privacy error when accessing https://sunbeam.capital
-- **Resolution**: SSL certificate provisioned successfully, site now loads with HTTPS
+### The Problem:
+- **Symptom**: Page shows "Loading..." indefinitely when navigating between admin and investor views
+- **Pattern**: Works briefly after deployment, then breaks when clicking view switcher
+- **Location**: Both / (admin) and /investor routes affected
+- **Console**: No visible errors in browser console
 
-### 🚨 Environment Variables Issue - IN PROGRESS
-- **Issue**: "Invalid API key" error on signup page
-- **Cause**: Supabase environment variables not set in Netlify
-- **Status**: Need to manually add env vars to Netlify dashboard
-- **Required Variables**:
-  1. `NEXT_PUBLIC_SUPABASE_URL`: https://gualxudgbmpuhjbumfeh.supabase.co
-  2. `NEXT_PUBLIC_SUPABASE_ANON_KEY`: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-- **Scripts Created**: 
-  - `/scripts/add-env-vars.js` - Opens Netlify env vars page
-  - `/scripts/copy-env-vars.sh` - Shows exact values to copy
+### What We Tried:
+1. ✅ Fixed RLS policies (`scripts/fix-rls-policies.sql` and `scripts/run-rls-fix.js`)
+2. ✅ Fixed environment variables in Netlify (manually added)
+3. ❌ Created Header component with auth check - caused SSR issues
+4. ❌ Fixed Header with usePathname instead of window.location - still had loading issues
+5. ✅ Removed Header component, added simple view switcher buttons - worked briefly
 
-## 📋 CURRENT PROJECT STATE (v1.1.0)
+### Root Cause Hypothesis:
+- Likely related to middleware + auth state management
+- The middleware at `src/middleware.ts` might be causing redirect loops
+- Auth state might not be properly shared between client components
+
+### Next Steps to Try:
+1. **Check middleware logs** - Add console.log to middleware to see redirect patterns
+2. **Simplify middleware** - Currently homepage is unprotected but might still have issues
+3. **Check Supabase client initialization** - The placeholders in client.ts might cause issues
+4. **Remove auth checks temporarily** - Test if it's auth-related or component-related
+5. **Check for hydration mismatches** - SSR/client mismatch could cause loading states
+
+### Working Components:
+- ✅ Database queries work (positions exist and can be queried)
+- ✅ Supabase connection works locally
+- ✅ Individual components work when tested in isolation
+- ✅ Deployment process works correctly
+
+## 📋 CURRENT PROJECT STATE (v1.2.0)
 
 ### What's Working:
 - ✅ Full Supabase integration (no localStorage)
 - ✅ Complete authentication system (signup, login, forgot password, email verification)
-- ✅ Portfolio CRUD operations
+- ✅ Portfolio CRUD operations with RLS policies fixed
 - ✅ CoinGecko price integration
 - ✅ Monthly report generation
 - ✅ Deployment automation with version tracking
 - ✅ Database: https://gualxudgbmpuhjbumfeh.supabase.co
+- ✅ SSL certificate on sunbeam.capital
+- ✅ Email verification redirects to correct domain
+- ✅ Admin setup for marc@cyrator.com
+- ✅ Investor view at /investor route
+- ✅ 9 positions in database totaling ~$61k (verified with scripts/check-positions.js)
 
 ### Credentials Location:
 - All in `.env` file (NOT in CLAUDE.md)
@@ -392,10 +413,18 @@ cat latest-result.json
 ```
 
 ## Version
-- Current Version: 1.1.0
+- Current Version: 1.2.0
 - Created: 2025-06-23
-- Status: Deployed but SSL issue on custom domain
-- Last Updated: 2025-06-23
+- Status: Deployed but has loading issue when switching views
+- Last Updated: 2025-06-23 16:00 PST
+
+## Key Files for Debugging Loading Issue:
+- `/src/middleware.ts` - Check for redirect loops
+- `/src/lib/supabase/client.ts` - Check placeholder handling
+- `/src/components/PortfolioTableWithPrices.tsx` - Main portfolio component
+- `/src/components/InvestorDashboard.tsx` - Investor view component
+- `/src/app/page.tsx` - Admin view page
+- `/src/app/investor/page.tsx` - Investor view page
 
 ## REMEMBER FOR NEXT INSTANCE
 1. You CAN create Supabase projects autonomously
