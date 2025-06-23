@@ -27,7 +27,7 @@ export default function LoginPage() {
         // Use window.location for more reliable redirect
         window.location.href = '/'
       } else if (mode === 'signup') {
-        const { data } = await auth.signUp(email, password)
+        const data = await auth.signUp(email, password)
         if (data?.user?.identities?.length === 0) {
           setError('This email is already registered. Please sign in.')
           setMode('signin')
