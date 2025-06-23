@@ -165,29 +165,5 @@ export const portfolioService = {
       console.error('Error logging audit:', error)
       // Don't throw - audit logging shouldn't break operations
     }
-  },
-
-  // Migrate from localStorage
-  async migrateFromLocalStorage(localPositions: any[]): Promise<void> {
-    console.log('Starting migration from localStorage...')
-    
-    for (const pos of localPositions) {
-      try {
-        await this.addPosition({
-          project_id: pos.projectId,
-          project_name: pos.projectName,
-          symbol: pos.symbol,
-          amount: parseFloat(pos.amount),
-          cost_basis: pos.costBasis ? parseFloat(pos.costBasis) : null,
-          entry_date: pos.entryDate,
-          notes: pos.notes || null
-        })
-        console.log(`Migrated position: ${pos.projectName}`)
-      } catch (error) {
-        console.error(`Failed to migrate position ${pos.projectName}:`, error)
-      }
-    }
-    
-    console.log('Migration completed')
   }
 }

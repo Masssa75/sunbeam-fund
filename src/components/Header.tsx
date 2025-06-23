@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { auth } from '@/lib/supabase/auth'
-import { storageService } from '@/lib/storage-service'
 
 export default function Header() {
   const router = useRouter()
@@ -11,12 +10,6 @@ export default function Header() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check if Supabase is configured
-    if (!storageService.isUsingSupabase()) {
-      setLoading(false)
-      return
-    }
-
     // Get initial user
     auth.getUser().then(user => {
       setUser(user)
@@ -40,11 +33,6 @@ export default function Header() {
     } catch (error) {
       console.error('Error signing out:', error)
     }
-  }
-
-  // Don't show auth UI if Supabase is not configured
-  if (!storageService.isUsingSupabase()) {
-    return null
   }
 
   if (loading) {

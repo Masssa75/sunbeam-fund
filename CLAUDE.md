@@ -236,7 +236,8 @@ CREATE TABLE reports (
 ## Deployment Information
 
 ### Live URLs
-- **Production**: https://wonderful-strudel-a9c260.netlify.app
+- **Production**: https://sunbeam.capital
+- **Netlify App**: https://wonderful-strudel-a9c260.netlify.app
 - **GitHub**: https://github.com/Masssa75/sunbeam-fund
 
 ### Deployment Process
@@ -245,12 +246,13 @@ CREATE TABLE reports (
 3. Manual deploy: "Trigger deploy" → "Clear cache and deploy site"
 
 ### Current Features (Live)
-- ✅ Portfolio CRUD operations with localStorage persistence
+- ✅ Portfolio CRUD operations with Supabase persistence
 - ✅ CoinGecko price integration (via API routes, no CORS)
 - ✅ P&L tracking and calculations
 - ✅ Monthly report generation (JSON export)
-- ✅ May 31st entry date option with manual price input
+- ✅ Authentication system with login
 - ✅ Mobile responsive design
+- ✅ Audit logging for all operations
 
 ### API Tokens (All from Porta)
 - **Supabase**: Full credentials ready in .env
@@ -273,9 +275,7 @@ CREATE TABLE reports (
    - ✅ Supabase client configuration (`/src/lib/supabase/client.ts`)
    - ✅ Database types (`/src/lib/supabase/types.ts`)
    - ✅ Portfolio service with CRUD operations (`/src/lib/supabase/portfolio.ts`)
-   - ✅ Unified storage service with localStorage fallback (`/src/lib/storage-service.ts`)
-   - ✅ Migration banner for existing localStorage data (`/src/components/MigrationBanner.tsx`)
-   - ✅ Updated PortfolioTableWithPrices to use async storage
+   - ✅ Direct Supabase integration (no localStorage)
    - ✅ Authentication setup (`/src/lib/supabase/auth.ts`)
    - ✅ Login page (`/src/app/login/page.tsx`)
    - ✅ Middleware for route protection (`/src/middleware.ts`)
@@ -290,9 +290,9 @@ CREATE TABLE reports (
 1. ✅ Supabase project created via API
 2. ✅ Database schema executed successfully 
 3. ✅ All tables created and tested
-4. ✅ App is now using Supabase (credentials in .env)
+4. ✅ App is now using Supabase exclusively
 5. ✅ CRUD operations verified working
-6. Migration banner will appear on homepage for localStorage data transfer
+6. ✅ All localStorage code removed for simplicity
 
 ### Phase 2: Historical Data & Snapshots
 1. Automated monthly snapshots

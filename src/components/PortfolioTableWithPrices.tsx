@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { searchCoins, getMultipleCoinPrices, getCoinPrice, getHistoricalPrice, CoinPrice } from '@/lib/coingecko'
-import { storageService } from '@/lib/storage-service'
+import { portfolioService } from '@/lib/supabase/portfolio'
 import type { Database } from '@/lib/supabase/types'
 
 type StoredPosition = Database['public']['Tables']['positions']['Row']
@@ -25,11 +25,11 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [loading, setLoading] = useState(false)
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
 
-  // Load positions from storage on mount
+  // Load positions from Supabase on mount
   useEffect(() => {
     const loadPositions = async () => {
       try {
-        const savedPositions = await storageService.getPositions()
+        const savedPositions = await portfolioService.getPositions()
         if (savedPositions.length > 0) {
           setPositions(savedPositions as Position[])
         }
@@ -88,7 +88,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
   const handleAddPosition = async (position: Omit<Position, 'id' | 'created_at' | 'updated_at'>) => {
     try {
-      const newPosition = await storageService.addPosition({
+      const newPosition = await portfolioService.addPosition({
         project_id: position.project_id,
         project_name: position.project_name,
         symbol: position.symbol,
@@ -108,7 +108,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
 
   const handleEditPosition = async (updatedPosition: Position) => {
     try {
-      const updated = await storageService.updatePosition(updatedPosition.id, {
+      const updated = await portfolioService.updatePosition(updatedPosition.id, {
         project_id: updatedPosition.project_id,
         project_name: updatedPosition.project_name,
         symbol: updatedPosition.symbol,
@@ -129,7 +129,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const handleDeletePosition = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this position?')) {
       try {
-        await storageService.deletePosition(id)
+        await portfolioService.deletePosition(id)
         setPositions(positions.filter(p => p.id !== id))
       } catch (error) {
         console.error('Error deleting position:', error)
