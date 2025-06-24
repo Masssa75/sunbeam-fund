@@ -14,14 +14,14 @@
 9. **Browser Testing** - Comprehensive Playwright test suite
 10. **Header Authentication Display** - Fixed! Shows correct user status after page refresh
 11. **Investor View** - Fixed! Shows portfolio data correctly without loading issues
+12. **P&L Calculations** - Fixed! Correct profit/loss calculations (cost_basis is total, not per-unit)
 
 ### ❌ What's Not Working:
-1. **Price Data** - CoinGecko integration returns incorrect values (showing billions instead of realistic prices)
-2. **Twitter Monitoring** - Not yet implemented (need to copy from porta project)
-3. **Telegram Alerts** - Not yet implemented
-4. **Monthly Reports** - JSON export works but PDF generation not implemented
-5. **Automated Snapshots** - Cron jobs for monthly snapshots not set up
-6. **Position CRUD UI** - No UI for adding/editing/deleting positions
+1. **Twitter Monitoring** - Not yet implemented (need to copy from porta project)
+2. **Telegram Alerts** - Not yet implemented
+3. **Monthly Reports** - JSON export works but PDF generation not implemented
+4. **Automated Snapshots** - Cron jobs for monthly snapshots not set up
+5. **Position CRUD UI** - No UI for adding/editing/deleting positions
 
 ### 🔧 What We Tried:
 1. **Complex State Management** - Original PortfolioTableWithPrices had race conditions with multiple useEffects (REPLACED)
@@ -847,6 +847,31 @@ node scripts/check-deploy.js
 
 ### Browser Test Scripts:
 - `/scripts/test-investor-view-fix.js` - Verifies the fix is working
+
+## ✅ P&L CALCULATION FIXED (June 24, 2025)
+
+### The Problem:
+- P&L values were showing astronomical negative numbers (e.g., -$508,519,702.98)
+- The issue was in the calculation: `totalCost = amount * cost_basis`
+- But `cost_basis` in the database is already the TOTAL cost, not per-unit cost
+
+### The Solution:
+1. Fixed PortfolioTableSimplified.tsx to use `cost_basis` directly
+2. Changed from: `const totalCost = pos.amount * pos.cost_basis`
+3. Changed to: `const totalCost = pos.cost_basis`
+4. Fixed both individual position P&L and total portfolio P&L calculations
+
+### Key Files Changed:
+- `/src/components/PortfolioTableSimplified.tsx` - Fixed P&L calculations
+
+### Test Results:
+- ✅ Individual position P&L now shows reasonable values
+- ✅ Total portfolio P&L is calculated correctly
+- ✅ No more astronomical negative values
+- ✅ Example: Keeta now shows +$425.19 (24.76%) instead of massive loss
+
+### Browser Test Script:
+- `/scripts/test-pnl-fix.js` - Verifies P&L calculations are correct
 
 ## REMEMBER FOR NEXT INSTANCE
 1. You CAN create Supabase projects autonomously
