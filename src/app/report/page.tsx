@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import MonthlyReportView from '@/components/MonthlyReportView'
-import { portfolioService } from '@/lib/supabase/portfolio'
 import type { Position } from '@/lib/types'
 import './print.css'
 
@@ -23,20 +22,30 @@ export default function ReportPage() {
     const loadPositions = async () => {
       try {
         setLoading(true)
-        const data = await portfolioService.getPositions()
+        // Use API endpoint instead of portfolioService to avoid auth issues
+        const response = await fetch('/api/positions/')
+        if (!response.ok) {
+          throw new Error('Failed to fetch positions')
+        }
+        const data = await response.json()
+        
+        // If no positions, just set empty array
+        if (!data || data.length === 0) {
+          setPositions([])
+          return
+        }
         
         // Fetch current prices
-        const projectIds = data.map(pos => pos.project_id).join(',')
+        const projectIds = data.map((pos: any) => pos.project_id).join(',')
         try {
           const priceResponse = await fetch(`/api/coingecko/price?ids=${projectIds}`)
           const prices = await priceResponse.json()
           
           // Map to Position type with calculated values
-          const mappedPositions: Position[] = data.map(pos => {
+          const mappedPositions: Position[] = data.map((pos: any) => {
             const currentPrice = prices[pos.project_id]?.usd || 0
             const currentValue = pos.amount * currentPrice
-            const costBasis = pos.cost_basis || 0
-            const totalCost = pos.amount * costBasis
+            const totalCost = pos.cost_basis || 0 // cost_basis is already total, not per-unit
             const profitLoss = currentValue - totalCost
             const profitLossPercent = totalCost > 0 ? (profitLoss / totalCost) * 100 : 0
             
@@ -52,7 +61,7 @@ export default function ReportPage() {
         } catch (err) {
           console.error('Error fetching prices:', err)
           // Still set positions even if prices fail
-          const mappedPositions: Position[] = data.map(pos => ({
+          const mappedPositions: Position[] = data.map((pos: any) => ({
             ...pos,
             current_price: 0,
             current_value: 0,
