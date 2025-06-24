@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -11,12 +11,29 @@ export default function NavigationSimple() {
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
   const [isInvestor, setIsInvestor] = useState(false)
+
+  // Click outside handler
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    if (mobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }
+  }, [mobileMenuOpen])
 
   useEffect(() => {
     if (!mounted) return
@@ -89,7 +106,7 @@ export default function NavigationSimple() {
   }
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-white shadow-sm border-b border-gray-200 relative" ref={menuRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
@@ -115,10 +132,11 @@ export default function NavigationSimple() {
             </button>
           </div>
         </div>
-        
-        {/* Menu dropdown for all screen sizes */}
-        {mobileMenuOpen && (
-          <div className="pb-3 pt-2">
+      </div>
+      
+      {/* Menu dropdown - positioned absolutely and right-aligned */}
+      {mobileMenuOpen && (
+        <div className="absolute right-4 top-14 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
             {user ? (
               <>
                 {/* User info section */}
@@ -130,10 +148,10 @@ export default function NavigationSimple() {
                 </div>
                 
                 {/* Navigation links */}
-                <div className="space-y-1 pt-2">
+                <div className="py-1">
                   <Link
                     href="/"
-                    className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Portfolio
@@ -142,21 +160,21 @@ export default function NavigationSimple() {
                     <>
                       <Link
                         href="/admin/investors"
-                        className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Manage Investors
                       </Link>
                       <Link
                         href="/admin/reports"
-                        className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Reports
                       </Link>
                       <Link
                         href="/investor"
-                        className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Preview Investor View
@@ -166,13 +184,13 @@ export default function NavigationSimple() {
                 </div>
                 
                 {/* Sign out section */}
-                <div className="mt-3 pt-3 border-t border-gray-200">
+                <div className="border-t border-gray-200">
                   <button
                     onClick={() => {
                       setMobileMenuOpen(false)
                       handleSignOut()
                     }}
-                    className="block w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   >
                     Sign out
                   </button>
@@ -180,19 +198,18 @@ export default function NavigationSimple() {
               </>
             ) : (
               /* Not authenticated - show sign in */
-              <div className="space-y-1">
+              <div className="py-2">
                 <Link
                   href="/login"
-                  className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign In
                 </Link>
               </div>
             )}
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   )
 }
