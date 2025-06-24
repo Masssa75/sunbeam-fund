@@ -263,12 +263,20 @@ export default function InvestorsPage() {
                         </button>
                       )}
                       {role === 'Investor' && (
-                        <button
-                          onClick={() => handleEditInvestor(user)}
-                          className="text-blue-600 hover:text-blue-900"
-                        >
-                          Edit
-                        </button>
+                        <>
+                          <button
+                            onClick={() => router.push(`/investor?viewAs=${user.id}`)}
+                            className="text-green-600 hover:text-green-900"
+                          >
+                            View as
+                          </button>
+                          <button
+                            onClick={() => handleEditInvestor(user)}
+                            className="text-blue-600 hover:text-blue-900"
+                          >
+                            Edit
+                          </button>
+                        </>
                       )}
                       <button
                         onClick={() => handleDeleteUser(user)}

@@ -1,10 +1,19 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import type { Database } from '@/lib/supabase/types'
 
-export async function GET() {
+const ADMIN_EMAILS = [
+  'marc@cyrator.com',
+  'marc@minutevideos.com',
+  'claude.admin@sunbeam.capital'
+]
+
+export async function GET(request: NextRequest) {
   console.log('[API Route] GET /api/positions called')
+  
+  const searchParams = request.nextUrl.searchParams
+  const viewAsId = searchParams.get('viewAs')
   
   try {
     const cookieStore = cookies()
@@ -55,6 +64,39 @@ export async function GET() {
     }
     
     console.log('[API Route] Authenticated user:', session.user.email)
+    
+    // If viewAs parameter is provided, check if user is admin
+    if (viewAsId) {
+      const isAdmin = ADMIN_EMAILS.includes(session.user.email || '')
+      
+      if (!isAdmin) {
+        console.log('[API Route] Non-admin trying to use viewAs - forbidden')
+        return NextResponse.json(
+          { error: 'Forbidden' },
+          { status: 403 }
+        )
+      }
+      
+      console.log('[API Route] Admin viewing as investor:', viewAsId)
+      
+      // Get investor details to verify they exist
+      const { data: investor, error: investorError } = await supabase
+        .from('investors')
+        .select('*')
+        .eq('id', viewAsId)
+        .single()
+      
+      if (investorError || !investor) {
+        console.log('[API Route] Investor not found:', viewAsId)
+        return NextResponse.json(
+          { error: 'Investor not found' },
+          { status: 404 }
+        )
+      }
+      
+      // For now, return the same positions for all investors
+      // In a real implementation, you might have investor-specific positions
+    }
     
     // Fetch positions with authenticated context
     const { data, error } = await supabase

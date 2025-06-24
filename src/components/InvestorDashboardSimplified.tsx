@@ -16,7 +16,11 @@ type Position = {
   profit_loss_percent?: number
 }
 
-export default function InvestorDashboardSimplified() {
+interface InvestorDashboardProps {
+  viewAsId?: string | null
+}
+
+export default function InvestorDashboardSimplified({ viewAsId }: InvestorDashboardProps) {
   const [positions, setPositions] = useState<Position[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -37,7 +41,7 @@ export default function InvestorDashboardSimplified() {
   useEffect(() => {
     if (!mounted) return
     loadPortfolio()
-  }, [mounted])
+  }, [mounted, viewAsId])
 
   const loadPortfolio = async () => {
     console.log('[InvestorDashboard] Starting to load portfolio...')
@@ -45,20 +49,23 @@ export default function InvestorDashboardSimplified() {
     try {
       setLoading(true)
       
-      // Check if authenticated
-      const authResponse = await fetch('/api/auth/session/')
-      const authData = await authResponse.json()
-      
-      if (!authData.authenticated) {
-        console.log('[InvestorDashboard] Not authenticated')
-        setError('Please sign in to view your portfolio')
-        setLoading(false)
-        return
+      // Check if authenticated (skip if viewing as another user)
+      if (!viewAsId) {
+        const authResponse = await fetch('/api/auth/session/')
+        const authData = await authResponse.json()
+        
+        if (!authData.authenticated) {
+          console.log('[InvestorDashboard] Not authenticated')
+          setError('Please sign in to view your portfolio')
+          setLoading(false)
+          return
+        }
       }
       
       // Fetch positions from API
       console.log('[InvestorDashboard] Fetching positions...')
-      const response = await fetch('/api/positions/')
+      const url = viewAsId ? `/api/positions/?viewAs=${viewAsId}` : '/api/positions/'
+      const response = await fetch(url)
       
       if (!response.ok) {
         throw new Error(`Failed to fetch positions: ${response.statusText}`)
