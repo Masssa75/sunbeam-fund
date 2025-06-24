@@ -26,7 +26,7 @@ export async function GET() {
   try {
     const { data: { session }, error } = await supabase.auth.getSession()
     
-    if (error || \!session) {
+    if (error || !session) {
       return NextResponse.json({ authenticated: false })
     }
     
@@ -41,4 +41,3 @@ export async function GET() {
     return NextResponse.json({ authenticated: false })
   }
 }
-EOF < /dev/null
