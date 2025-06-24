@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSupabaseClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import { getServerAuth } from '@/lib/supabase/server-auth'
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabaseClient()
     if (!supabase) {
       return NextResponse.json({ error: 'Database not configured' }, { status: 500 })
     }
@@ -36,12 +35,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Check if user is admin
-    const auth = await getServerAuth(request)
-    if (!auth.isAuthenticated || !auth.isAdmin) {
+    const auth = await getServerAuth()
+    if (!auth.user || !auth.isAdmin) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
 
-    const supabase = getSupabaseClient()
     if (!supabase) {
       return NextResponse.json({ error: 'Database not configured' }, { status: 500 })
     }
