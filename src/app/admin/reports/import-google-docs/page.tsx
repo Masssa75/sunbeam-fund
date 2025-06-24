@@ -141,7 +141,12 @@ export default function ImportGoogleDocsPage() {
     
     // Process all documents
     const results = await Promise.all(links.map(link => fetchAndParseDoc(link)))
-    const validResults = results.filter(r => r !== null) as any[]
+    const validResults = results.filter(r => r !== null) as Array<{
+      investor: ParsedInvestor, 
+      month: string, 
+      fundData: any, 
+      highlights: string
+    }>
     
     // Group by month
     const reportsByMonth = validResults.reduce((acc, result) => {
