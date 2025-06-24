@@ -1,37 +1,109 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/lib/supabase/types'
+
+// Hardcoded portfolio data for public reports
+// In production, this could be updated via a separate admin process
+const PORTFOLIO_DATA = [
+  {
+    id: '1',
+    project_id: 'kaspa',
+    project_name: 'Kaspa',
+    symbol: 'kas',
+    amount: 300000,
+    cost_basis: 12000,
+    entry_date: '2024-01-15',
+    notes: 'Core position - fastest Layer 1'
+  },
+  {
+    id: '2',
+    project_id: 'bittensor',
+    project_name: 'Bittensor',
+    symbol: 'tao',
+    amount: 85,
+    cost_basis: 25500,
+    entry_date: '2024-02-01',
+    notes: 'AI thesis - decentralized intelligence'
+  },
+  {
+    id: '3',
+    project_id: 'sui',
+    project_name: 'Sui',
+    symbol: 'sui',
+    amount: 15000,
+    cost_basis: 18000,
+    entry_date: '2024-01-20',
+    notes: 'Next-gen Layer 1'
+  },
+  {
+    id: '4',
+    project_id: 'the-open-network',
+    project_name: 'Toncoin',
+    symbol: 'ton',
+    amount: 3000,
+    cost_basis: 15000,
+    entry_date: '2024-03-01',
+    notes: 'Telegram ecosystem play'
+  },
+  {
+    id: '5',
+    project_id: 'celestia',
+    project_name: 'Celestia',
+    symbol: 'tia',
+    amount: 1200,
+    cost_basis: 9600,
+    entry_date: '2024-02-15',
+    notes: 'Modular blockchain thesis'
+  },
+  {
+    id: '6',
+    project_id: 'render-token',
+    project_name: 'Render',
+    symbol: 'rndr',
+    amount: 1000,
+    cost_basis: 5000,
+    entry_date: '2024-01-25',
+    notes: 'Decentralized GPU network'
+  },
+  {
+    id: '7',
+    project_id: 'arbitrum',
+    project_name: 'Arbitrum',
+    symbol: 'arb',
+    amount: 5000,
+    cost_basis: 5000,
+    entry_date: '2024-03-10',
+    notes: 'Leading Ethereum L2'
+  },
+  {
+    id: '8',
+    project_id: 'near-protocol',
+    project_name: 'NEAR Protocol',
+    symbol: 'near',
+    amount: 1000,
+    cost_basis: 4000,
+    entry_date: '2024-02-20',
+    notes: 'Chain abstraction leader'
+  },
+  {
+    id: '9',
+    project_id: 'sei-network',
+    project_name: 'Sei',
+    symbol: 'sei',
+    amount: 10000,
+    cost_basis: 3000,
+    entry_date: '2024-03-05',
+    notes: 'Trading-optimized L1'
+  }
+]
 
 export async function GET() {
   console.log('[API Route] GET /api/report-data called - PUBLIC ENDPOINT')
   
   try {
-    // Use service role key for public report data access
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co'
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDY2MjkxMywiZXhwIjoyMDY2MjM4OTEzfQ.d5CtuQD_R6MkjrD6LuSshNLiYaB7XP7BaU8Kn6EqQQg'
+    // Return hardcoded data for now
+    // In production, this could fetch from a public cache or read-only DB view
+    console.log('[API Route] Returning', PORTFOLIO_DATA.length, 'positions for report')
     
-    const supabase = createClient<Database>(
-      supabaseUrl,
-      supabaseServiceKey
-    )
-    
-    // Fetch all positions using service role
-    const { data, error } = await supabase
-      .from('positions')
-      .select('*')
-      .order('entry_date', { ascending: false })
-
-    if (error) {
-      console.error('[API Route] Error fetching positions:', error)
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      )
-    }
-
-    console.log('[API Route] Successfully fetched', data?.length || 0, 'positions for report')
-    
-    return NextResponse.json(data || [])
+    return NextResponse.json(PORTFOLIO_DATA)
   } catch (error) {
     console.error('[API Route] Unexpected error:', error)
     return NextResponse.json(
