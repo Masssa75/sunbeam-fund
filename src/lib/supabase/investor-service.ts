@@ -1,8 +1,8 @@
-import { getSupabaseClient } from './client';
+import { supabaseAdmin } from './client';
 import type { Investor, InvestorWithAuth } from './investor-types';
 
 export class InvestorService {
-  private supabase = getSupabaseClient();
+  private supabase = supabaseAdmin;
 
   async getAllInvestors(): Promise<Investor[]> {
     const { data, error } = await this.supabase
