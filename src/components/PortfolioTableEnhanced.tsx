@@ -330,6 +330,15 @@ function PositionModal({ position, onSave, onClose, saving }: {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<any[]>([])
   const [searching, setSearching] = useState(false)
+  const [currentPrice, setCurrentPrice] = useState<number>(0)
+  const [fetchingPrice, setFetchingPrice] = useState(false)
+
+  // Fetch current price when editing a position
+  useEffect(() => {
+    if (position?.project_id) {
+      fetchCurrentPrice(position.project_id)
+    }
+  }, [position])
 
   // Search for projects when typing
   useEffect(() => {
@@ -340,6 +349,21 @@ function PositionModal({ position, onSave, onClose, saving }: {
       return () => clearTimeout(timer)
     }
   }, [searchQuery])
+  
+  const fetchCurrentPrice = async (projectId: string) => {
+    setFetchingPrice(true)
+    try {
+      const response = await fetch(`/api/coingecko/price?ids=${projectId}`)
+      if (response.ok) {
+        const prices = await response.json()
+        setCurrentPrice(prices[projectId] || 0)
+      }
+    } catch (error) {
+      console.error('Error fetching price:', error)
+    } finally {
+      setFetchingPrice(false)
+    }
+  }
 
   const searchProjects = async () => {
     setSearching(true)
@@ -356,7 +380,7 @@ function PositionModal({ position, onSave, onClose, saving }: {
     }
   }
 
-  const handleProjectSelect = (coin: any) => {
+  const handleProjectSelect = async (coin: any) => {
     setFormData({
       ...formData,
       project_id: coin.id,
@@ -365,6 +389,34 @@ function PositionModal({ position, onSave, onClose, saving }: {
     })
     setSearchQuery('')
     setSearchResults([])
+    
+    // Fetch current price to calculate cost basis
+    setFetchingPrice(true)
+    try {
+      const response = await fetch(`/api/coingecko/price?ids=${coin.id}`)
+      if (response.ok) {
+        const prices = await response.json()
+        const currentPrice = prices[coin.id] || 0
+        
+        // Store the current price for later calculations
+        setCurrentPrice(currentPrice)
+        
+        // Update cost basis if amount is already entered
+        if (formData.amount > 0) {
+          setFormData(prev => ({
+            ...prev,
+            project_id: coin.id,
+            project_name: coin.name,
+            symbol: coin.symbol.toUpperCase(),
+            cost_basis: Number((prev.amount * currentPrice).toFixed(2))
+          }))
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching price:', error)
+    } finally {
+      setFetchingPrice(false)
+    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -453,7 +505,14 @@ function PositionModal({ position, onSave, onClose, saving }: {
               type="number"
               step="any"
               value={formData.amount}
-              onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) || 0 })}
+              onChange={(e) => {
+                const newAmount = parseFloat(e.target.value) || 0
+                setFormData({ 
+                  ...formData, 
+                  amount: newAmount,
+                  cost_basis: currentPrice > 0 ? Number((newAmount * currentPrice).toFixed(2)) : formData.cost_basis
+                })
+              }}
               className="w-full border rounded px-3 py-2"
               required
             />
@@ -465,10 +524,16 @@ function PositionModal({ position, onSave, onClose, saving }: {
               step="any"
               value={formData.cost_basis}
               onChange={(e) => setFormData({ ...formData, cost_basis: parseFloat(e.target.value) || 0 })}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 bg-gray-50"
               required
             />
-            <p className="text-xs text-gray-500 mt-1">Enter the total amount paid, not per-unit cost</p>
+            <p className="text-xs text-gray-500 mt-1">
+              {fetchingPrice 
+                ? 'Fetching current price...'
+                : currentPrice > 0 
+                  ? `Auto-calculated based on current price: $${currentPrice.toFixed(4)}`
+                  : 'Enter the total amount paid'}
+            </p>
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Entry Date</label>

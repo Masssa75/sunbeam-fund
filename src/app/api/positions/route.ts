@@ -208,7 +208,10 @@ export async function POST(request: NextRequest) {
     console.log('[API Route] Adding position:', body)
     
     // Validate required fields
-    if (!body.project_id || !body.project_name || !body.symbol || !body.amount || !body.cost_basis || !body.entry_date) {
+    if (!body.project_id || !body.project_name || !body.symbol || 
+        body.amount === undefined || body.amount === null || 
+        body.cost_basis === undefined || body.cost_basis === null || 
+        !body.entry_date) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
