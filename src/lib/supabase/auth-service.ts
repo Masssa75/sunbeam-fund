@@ -13,22 +13,50 @@ export class AuthService {
   async getCurrentUser() {
     try {
       // Get the auth token from cookies
-      const cookieStore = cookies()
-      const authToken = cookieStore.get('sb-gualxudgbmpuhjbumfeh-auth-token')
+      const cookieStore = await cookies()
+      
+      // Try different cookie patterns
+      const authToken = cookieStore.get('sb-gualxudgbmpuhjbumfeh-auth-token') ||
+                       cookieStore.get('sb-gualxudgbmpuhjbumfeh-auth-token.0') ||
+                       cookieStore.get('sb-access-token') ||
+                       cookieStore.get('sb-refresh-token')
       
       if (!authToken?.value) {
+        console.log('No auth token found in cookies')
         return null
       }
 
-      // Parse the token to get user info
-      const token = JSON.parse(authToken.value)
-      const accessToken = token[0]
+      let accessToken: string
+      
+      // Handle different token formats
+      try {
+        const parsed = JSON.parse(authToken.value)
+        accessToken = Array.isArray(parsed) ? parsed[0] : parsed
+      } catch (e) {
+        // Token might already be a string
+        accessToken = authToken.value
+      }
+      
+      // For chunked cookies, check if we need to combine them
+      const authToken0 = cookieStore.get('sb-gualxudgbmpuhjbumfeh-auth-token.0')
+      const authToken1 = cookieStore.get('sb-gualxudgbmpuhjbumfeh-auth-token.1')
+      
+      if (authToken0 && authToken1) {
+        try {
+          const combined = authToken0.value + authToken1.value
+          const parsed = JSON.parse(combined)
+          accessToken = parsed[0]
+        } catch (e) {
+          console.error('Error parsing chunked cookies:', e)
+        }
+      }
       
       // Verify the token and get user
       const supabase = this.getSupabase()
       const { data: { user }, error } = await supabase.auth.getUser(accessToken)
       
       if (error || !user) {
+        console.error('Error verifying token:', error)
         return null
       }
 
