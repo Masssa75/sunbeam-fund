@@ -13,6 +13,7 @@
 8. **Cross-Tab Auth Sync** - Multiple browser tabs stay in sync
 9. **Browser Testing** - Comprehensive Playwright test suite
 10. **Header Authentication Display** - Fixed! Shows correct user status after page refresh
+11. **Investor View** - Fixed! Shows portfolio data correctly without loading issues
 
 ### ❌ What's Not Working:
 1. **Price Data** - CoinGecko integration returns incorrect values (showing billions instead of realistic prices)
@@ -29,6 +30,7 @@
 4. **Multiple Loading States** - Had loading, initialLoad, mounted, authChecked, pricesFetched (SIMPLIFIED)
 5. **Dependency Arrays** - positions.length vs positions caused update issues (FIXED)
 6. **Header Component** - Original used direct Supabase client which failed on SSR (REPLACED with API-based HeaderSimplified)
+7. **InvestorDashboard** - Original used portfolioService with direct Supabase client (REPLACED with API-based InvestorDashboardSimplified)
 
 ### 📋 What Still Needs to Be Done:
 1. **Fix CoinGecko Price Integration** - Investigate unit conversion or API response format
@@ -820,6 +822,32 @@ node scripts/check-deploy.js
 ### Browser Test Script:
 - `/scripts/test-header-fix.js` - Comprehensive test that reproduces and verifies the fix
 
+## ✅ INVESTOR VIEW FIXED (June 24, 2025)
+
+### The Problem:
+- Investor view showed "Loading Portfolio..." indefinitely
+- Same root cause as the header issue - direct Supabase client usage
+- The InvestorDashboard component used `portfolioService.getActivePositions()`
+
+### The Solution:
+1. Created `InvestorDashboardSimplified.tsx` that uses API endpoints
+2. Fetches positions from `/api/positions/` endpoint
+3. Fetches prices from `/api/coingecko/price` endpoint
+4. Added proper hydration handling with `mounted` state
+
+### Key Files Changed:
+- `/src/components/InvestorDashboardSimplified.tsx` - New simplified dashboard
+- `/src/app/investor/page.tsx` - Updated to use simplified component
+
+### Test Results:
+- ✅ No longer stuck in loading state
+- ✅ Portfolio data displays correctly (shows 9 positions)
+- ✅ Maintains state after page refresh
+- ✅ All portfolio metrics calculated and displayed
+
+### Browser Test Scripts:
+- `/scripts/test-investor-view-fix.js` - Verifies the fix is working
+
 ## REMEMBER FOR NEXT INSTANCE
 1. You CAN create Supabase projects autonomously
 2. You CAN execute SQL schemas via API
@@ -829,3 +857,4 @@ node scripts/check-deploy.js
 6. The user prefers FULLY AUTONOMOUS operation
 7. Authentication is WORKING - use marc@minutevideos.com / 123456
 8. Header authentication display is FIXED - uses API endpoint approach
+9. Investor View is FIXED - uses API endpoint approach
