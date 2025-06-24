@@ -23,8 +23,6 @@ export default function NavigationSimple() {
         const response = await fetch('/api/auth/session/')
         const data = await response.json()
         
-        console.log('[NavigationSimple] Auth check response:', data)
-        
         if (data.authenticated && data.user) {
           setUser(data.user)
           setIsAdmin(data.isAdmin || false)
@@ -79,38 +77,10 @@ export default function NavigationSimple() {
           </div>
 
           <div className="flex items-center">
-            <div className="flex items-center space-x-4">
-              {user ? (
-                <>
-                  <span className="text-sm text-gray-700">
-                    {user.email}
-                    {isAdmin && (
-                      <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                        Admin
-                      </span>
-                    )}
-                  </span>
-                  <button
-                    onClick={handleSignOut}
-                    className="text-sm text-gray-500 hover:text-gray-700"
-                  >
-                    Sign out
-                  </button>
-                </>
-              ) : (
-                <Link
-                  href="/login"
-                  className="text-sm text-blue-600 hover:text-blue-700"
-                >
-                  Sign In
-                </Link>
-              )}
-            </div>
-            
             {/* Menu button for all screen sizes */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="ml-4 p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+              className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
             >
               <span className="sr-only">Open menu</span>
               {/* Hamburger icon */}
@@ -122,42 +92,79 @@ export default function NavigationSimple() {
         </div>
         
         {/* Menu dropdown for all screen sizes */}
-        {mobileMenuOpen && user && (
+        {mobileMenuOpen && (
           <div className="pb-3 pt-2">
-            <div className="space-y-1">
-              <Link
-                href="/"
-                className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Portfolio
-              </Link>
-              {isAdmin && (
-                <>
+            {user ? (
+              <>
+                {/* User info section */}
+                <div className="px-4 py-3 border-b border-gray-200">
+                  <div className="text-sm font-medium text-gray-900">{user.email}</div>
+                  {isAdmin && (
+                    <div className="text-xs text-gray-500 mt-1">Administrator</div>
+                  )}
+                </div>
+                
+                {/* Navigation links */}
+                <div className="space-y-1 pt-2">
                   <Link
-                    href="/admin/investors"
+                    href="/"
                     className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Manage Investors
+                    Portfolio
                   </Link>
-                  <Link
-                    href="/report"
-                    className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                    onClick={() => setMobileMenuOpen(false)}
+                  {isAdmin && (
+                    <>
+                      <Link
+                        href="/admin/investors"
+                        className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Manage Investors
+                      </Link>
+                      <Link
+                        href="/report"
+                        className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Reports
+                      </Link>
+                      <Link
+                        href="/investor"
+                        className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Preview Investor View
+                      </Link>
+                    </>
+                  )}
+                </div>
+                
+                {/* Sign out section */}
+                <div className="mt-3 pt-3 border-t border-gray-200">
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      handleSignOut()
+                    }}
+                    className="block w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
                   >
-                    Reports
-                  </Link>
-                  <Link
-                    href="/investor"
-                    className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Preview Investor View
-                  </Link>
-                </>
-              )}
-            </div>
+                    Sign out
+                  </button>
+                </div>
+              </>
+            ) : (
+              /* Not authenticated - show sign in */
+              <div className="space-y-1">
+                <Link
+                  href="/login"
+                  className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>
