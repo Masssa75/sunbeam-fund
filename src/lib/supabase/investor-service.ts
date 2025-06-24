@@ -1,8 +1,18 @@
-import { supabaseAdmin } from './client';
+import { createClient } from '@supabase/supabase-js';
 import type { Investor, InvestorWithAuth } from './investor-types';
+import type { Database } from './types';
 
 export class InvestorService {
-  private supabase = supabaseAdmin;
+  private supabase = createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDY2MjkxMywiZXhwIjoyMDY2MjM4OTEzfQ.8V_9hWPPzQqWfMgGqnCXlzZNbZcAdowOk9kHWPNJb0s',
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    }
+  );
 
   async getAllInvestors(): Promise<Investor[]> {
     const { data, error } = await this.supabase
