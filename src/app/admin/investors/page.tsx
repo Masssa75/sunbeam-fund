@@ -24,7 +24,14 @@ export default function InvestorsPage() {
 
   const loadUsers = async () => {
     try {
-      const response = await fetch('/api/users/')
+      // Try the simple endpoint first
+      let response = await fetch('/api/users-simple/')
+      
+      // Fallback to original endpoint if simple one doesn't exist yet
+      if (response.status === 404) {
+        response = await fetch('/api/users/')
+      }
+      
       if (!response.ok) {
         if (response.status === 401) {
           router.push('/login')
@@ -34,7 +41,7 @@ export default function InvestorsPage() {
       }
       
       const data = await response.json()
-      setUsers(data.users)
+      setUsers(data.users || [])
     } catch (err) {
       setError('Failed to load users')
       console.error(err)
