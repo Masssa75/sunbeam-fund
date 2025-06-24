@@ -30,12 +30,25 @@ export async function GET() {
       return NextResponse.json({ authenticated: false })
     }
     
+    // Check if user is admin
+    let isAdmin = false
+    if (session.user.email) {
+      const { data } = await supabase
+        .from('admin_users')
+        .select('user_email')
+        .eq('user_email', session.user.email)
+        .single()
+      
+      isAdmin = !!data
+    }
+    
     return NextResponse.json({ 
       authenticated: true,
       user: {
         id: session.user.id,
         email: session.user.email
-      }
+      },
+      isAdmin
     })
   } catch (error) {
     return NextResponse.json({ authenticated: false })
