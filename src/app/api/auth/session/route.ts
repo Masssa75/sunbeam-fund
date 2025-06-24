@@ -32,11 +32,11 @@ export async function GET() {
     
     // Check if user is admin
     let isAdmin = false
-    if (session.user.email) {
+    if (session.user.id) {
       const { data } = await supabase
         .from('admin_users')
-        .select('user_email')
-        .eq('user_email', session.user.email)
+        .select('id')
+        .eq('id', session.user.id)
         .single()
       
       isAdmin = !!data
