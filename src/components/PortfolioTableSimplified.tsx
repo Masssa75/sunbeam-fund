@@ -41,7 +41,8 @@ export default function PortfolioTableSimplified({ onPositionsChange }: any) {
           const positionsWithPrices = posData.map((pos: any) => {
             const price = prices[pos.project_id] || 0
             const currentValue = pos.amount * price
-            const totalCost = pos.amount * pos.cost_basis
+            // cost_basis is already the total cost, not per-unit
+            const totalCost = pos.cost_basis
             return {
               ...pos,
               current_price: price,
@@ -103,7 +104,7 @@ export default function PortfolioTableSimplified({ onPositionsChange }: any) {
   }
 
   const totalValue = positions.reduce((sum, p) => sum + (p.current_value || 0), 0)
-  const totalCost = positions.reduce((sum, p) => sum + (p.amount * p.cost_basis), 0)
+  const totalCost = positions.reduce((sum, p) => sum + p.cost_basis, 0)
   const totalPL = totalValue - totalCost
   const totalPLPercent = totalCost > 0 ? (totalPL / totalCost) * 100 : 0
 
