@@ -58,56 +58,49 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       if (session) {
         // Load positions if authenticated
         const savedPositions = await portfolioService.getPositions()
+        clearTimeout(timeoutId) // Clear timeout on success
         
-        if (savedPositions.length > 0) {
-          setPositions(savedPositions as Position[])
-        }
+        setPositions(savedPositions as Position[])
+        setLoading(false)
+      } else {
+        clearTimeout(timeoutId)
+        setLoading(false)
       }
     } catch (error) {
       clearTimeout(timeoutId)
       setError(error instanceof Error ? error.message : 'Failed to load portfolio')
       setAuthChecked(true)
-    } finally {
       setLoading(false)
     }
   }
 
-  // Track mount status
+  // Track mount status and load positions on mount
   useEffect(() => {
     setMounted(true)
-  }, [])
-
-  // Load positions from Supabase on mount
-  useEffect(() => {
-    if (mounted) {
-      checkAuthAndLoadPositions()
-    }
-  }, [mounted])
-
-  // Monitor auth state changes
-  useEffect(() => {
+    
     const supabase = createBrowserClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
     )
 
-    // Check initial session
+    // Check initial session and load positions
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session && mounted) {
+      if (session) {
         setIsAuthenticated(true)
         setAuthChecked(true)
         checkAuthAndLoadPositions()
+      } else {
+        setIsAuthenticated(false)
+        setAuthChecked(true)
+        setLoading(false)
       }
     })
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      
       if (event === 'SIGNED_IN' && session) {
-        // Update state immediately
         setIsAuthenticated(true)
         setAuthChecked(true)
-        // Then reload positions
         checkAuthAndLoadPositions()
       } else if (event === 'SIGNED_OUT') {
         setIsAuthenticated(false)
@@ -115,7 +108,6 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
         setAuthChecked(true)
         setLoading(false)
       } else if (event === 'TOKEN_REFRESHED' && session) {
-        // Handle token refresh
         setIsAuthenticated(true)
       }
     })
