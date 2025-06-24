@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface User {
@@ -26,6 +26,7 @@ export default function InvestorsPage() {
   const [error, setError] = useState('')
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     account_number: '',
@@ -34,9 +35,21 @@ export default function InvestorsPage() {
     notes: ''
   })
   const router = useRouter()
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     loadUsers()
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenuId(null)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
   const loadUsers = async () => {
@@ -253,37 +266,78 @@ export default function InvestorsPage() {
                     {user.last_sign_in ? new Date(user.last_sign_in).toLocaleDateString() : 'Never'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-3">
-                      {role === 'User' && (
-                        <button
-                          onClick={() => handleConvertToInvestor(user)}
-                          className="text-blue-600 hover:text-blue-900"
-                        >
-                          Make Investor
-                        </button>
-                      )}
-                      {role === 'Investor' && (
-                        <>
-                          <button
-                            onClick={() => router.push(`/investor?viewAs=${user.id}`)}
-                            className="text-green-600 hover:text-green-900"
-                          >
-                            View as
-                          </button>
-                          <button
-                            onClick={() => handleEditInvestor(user)}
-                            className="text-blue-600 hover:text-blue-900"
-                          >
-                            Edit
-                          </button>
-                        </>
-                      )}
+                    <div className="relative" ref={openMenuId === user.id ? menuRef : null}>
                       <button
-                        onClick={() => handleDeleteUser(user)}
-                        className="text-red-600 hover:text-red-900"
+                        onClick={() => setOpenMenuId(openMenuId === user.id ? null : user.id)}
+                        className="text-gray-400 hover:text-gray-600 p-1 rounded-md hover:bg-gray-100"
                       >
-                        Delete
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        </svg>
                       </button>
+                      
+                      {openMenuId === user.id && (
+                        <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                          <div className="py-1">
+                            {role === 'Investor' && (
+                              <>
+                                <button
+                                  onClick={() => {
+                                    router.push(`/investor?viewAs=${user.id}`)
+                                    setOpenMenuId(null)
+                                  }}
+                                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                  <svg className="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                  </svg>
+                                  View as investor
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    handleEditInvestor(user)
+                                    setOpenMenuId(null)
+                                  }}
+                                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                  <svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                  </svg>
+                                  Edit investor
+                                </button>
+                              </>
+                            )}
+                            {role === 'User' && (
+                              <button
+                                onClick={() => {
+                                  handleConvertToInvestor(user)
+                                  setOpenMenuId(null)
+                                }}
+                                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                Make investor
+                              </button>
+                            )}
+                            <div className="border-t border-gray-100"></div>
+                            <button
+                              onClick={() => {
+                                handleDeleteUser(user)
+                                setOpenMenuId(null)
+                              }}
+                              className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                            >
+                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                              Delete user
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </td>
                 </tr>
