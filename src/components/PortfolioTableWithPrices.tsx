@@ -23,7 +23,8 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [positions, setPositions] = useState<Position[]>([])
   const [showAddModal, setShowAddModal] = useState(false)
   const [editingPosition, setEditingPosition] = useState<Position | null>(null)
-  const [loading, setLoading] = useState(true) // Start with loading true
+  const [loading, setLoading] = useState(false) // Start with loading false
+  const [initialLoad, setInitialLoad] = useState(true) // Track initial load
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -59,6 +60,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
         
         console.log('[PortfolioTable] Setting positions in state:', savedPositions.length)
         setPositions(savedPositions as Position[])
+        console.log('[PortfolioTable] Setting loading to false')
         setLoading(false)
         
         // Force a re-render by updating a timestamp
@@ -92,16 +94,19 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
           setIsAuthenticated(true)
           setAuthChecked(true)
           await checkAuthAndLoadPositions()
+          setInitialLoad(false)
         } else {
           setIsAuthenticated(false)
           setAuthChecked(true)
           setLoading(false)
+          setInitialLoad(false)
         }
       } catch (error) {
         console.error('[PortfolioTable] Initial auth check failed:', error)
         setIsAuthenticated(false)
         setAuthChecked(true)
         setLoading(false)
+        setInitialLoad(false)
       }
     }
     
@@ -249,7 +254,8 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   }
 
   // Show loading state
-  if (loading) {
+  console.log('[PortfolioTable] Render - loading:', loading, 'initialLoad:', initialLoad, 'positions:', positions.length)
+  if (loading || initialLoad) {
     return (
       <div className="w-full">
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
