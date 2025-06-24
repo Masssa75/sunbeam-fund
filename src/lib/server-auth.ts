@@ -31,7 +31,13 @@ export async function getServerAuth() {
     
     // Check if user is admin
     let isAdmin = false
-    if (session.user.id) {
+    
+    // First check hardcoded admin emails
+    const hardcodedAdmins = ['marc@cyrator.com', 'marc@minutevideos.com']
+    if (session.user.email && hardcodedAdmins.includes(session.user.email)) {
+      isAdmin = true
+    } else if (session.user.id) {
+      // If not a hardcoded admin, check the admin_users table
       const { data } = await supabase
         .from('admin_users')
         .select('id')
