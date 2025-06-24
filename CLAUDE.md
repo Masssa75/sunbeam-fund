@@ -1,5 +1,8 @@
 # Sunbeam Fund Management System - CLAUDE.md
 
+## 🚨 CRITICAL: WORKING PROCESS GUIDE
+**EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
+
 ## 🚀 CURRENT STATUS (June 24, 2025)
 
 ### ✅ What's Working:
@@ -874,12 +877,24 @@ node scripts/check-deploy.js
 - `/scripts/test-pnl-fix.js` - Verifies P&L calculations are correct
 
 ## REMEMBER FOR NEXT INSTANCE
-1. You CAN create Supabase projects autonomously
-2. You CAN execute SQL schemas via API
-3. You CAN debug and fix deployment issues
-4. You SHOULD wait 90-120s after deployment to check status
-5. You SHOULD use all available tools without asking
-6. The user prefers FULLY AUTONOMOUS operation
-7. Authentication is WORKING - use marc@minutevideos.com / 123456
-8. Header authentication display is FIXED - uses API endpoint approach
-9. Investor View is FIXED - uses API endpoint approach
+1. **ALWAYS FOLLOW THE WORKING PROCESS GUIDE** - See `/WORKING-PROCESS-GUIDE.md`
+2. You CAN create Supabase projects autonomously
+3. You CAN execute SQL schemas via API
+4. You CAN debug and fix deployment issues
+5. You SHOULD wait 90-120s after deployment to check status
+6. You SHOULD use all available tools without asking
+7. The user prefers FULLY AUTONOMOUS operation
+8. Authentication is WORKING - use marc@minutevideos.com / 123456
+9. Header authentication display is FIXED - uses API endpoint approach
+10. Investor View is FIXED - uses API endpoint approach
+11. P&L calculations are FIXED - cost_basis is total, not per-unit
+
+## 🎯 PROVEN DEBUGGING APPROACH
+When fixing issues, ALWAYS follow the 5-step process documented in `/WORKING-PROCESS-GUIDE.md`:
+1. Diagnose with browser testing
+2. Investigate root cause
+3. Implement minimal fix
+4. Verify with automation
+5. Document everything
+
+This systematic approach has been highly effective. Do not skip steps or try shortcuts.
