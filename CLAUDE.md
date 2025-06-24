@@ -3,7 +3,66 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 24, 2025 - 7:30 PM)
+## 🚀 CURRENT STATUS (June 24, 2025 - 8:30 PM)
+
+### ✅ SESSION COMPLETED - MAJOR UI/UX IMPROVEMENTS
+**Status**: Implemented View as Investor, cleaned up admin UI, redesigned investor dashboard with real data
+
+**Major Accomplishments This Session**:
+1. **View as Investor Feature** ✅
+   - Green "View as" button for each investor in admin panel
+   - Admins can see exactly what investors see
+   - Secure implementation with proper admin validation
+   - Shows yellow indicator "Viewing as [investor name]"
+
+2. **Dropdown Menu for Actions** ✅
+   - Replaced cluttered action buttons with three-dot menu
+   - Contains: View as investor, Edit investor, Delete user
+   - Click outside to close functionality
+   - Much cleaner table interface
+
+3. **Investor Dashboard Redesign** ✅
+   - Simplified to show only what investors care about:
+     - Current Standing (value, returns, performance)
+     - Monthly Reports list
+   - Removed complex portfolio details
+   - Clean, professional design
+
+4. **Real Portfolio Numbers** ✅
+   - Fixed service role key issues (typo in JWT)
+   - Connected actual portfolio data ($61k total)
+   - Shows investor's actual share (e.g., 38.34% = $23,651)
+   - Real P&L calculations based on initial investment
+   - Live prices from CoinGecko when available
+
+5. **Portfolio Sorting** ✅
+   - Sorted by current value (highest first)
+   - Kaspa ($23k) and Bittensor ($23k) at top
+   - Easy to see largest holdings at a glance
+
+**Technical Fixes This Session**:
+- Fixed service role key in `/api/investor/standing` and `/api/positions`
+- Created new simplified investor dashboard component
+- Added investor info endpoint for name display
+- Improved error handling for price fetching
+- Added proper logging for debugging
+
+**Files Created/Modified**:
+- `/src/components/InvestorDashboardNew.tsx` - New simplified investor view
+- `/src/app/api/investor/standing/route.ts` - Real portfolio calculations
+- `/src/app/api/investor/reports/route.ts` - Monthly reports endpoint
+- `/src/app/api/investor-info/route.ts` - Investor details endpoint
+- `/src/app/admin/investors/page.tsx` - Added dropdown menu
+- `/src/components/PortfolioTableSimplified.tsx` - Added sorting
+
+**Key Improvements**:
+- Investors see focused, relevant information only
+- Admins can easily impersonate investors for support
+- Cleaner UI with actions tucked away in menus
+- Real data instead of mock values
+- Better user experience overall
+
+## 🚀 PREVIOUS SESSION (June 24, 2025 - 7:30 PM)
 
 ### ✅ SESSION COMPLETED - VIEW AS INVESTOR FEATURE
 **Status**: Added ability for admins to view the investor portal as any investor
