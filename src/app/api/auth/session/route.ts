@@ -32,6 +32,7 @@ export async function GET() {
     
     // Check if user is admin
     let isAdmin = false
+    let isInvestor = false
     
     // First check hardcoded admin emails
     if (session.user.email === 'marc@cyrator.com' || session.user.email === 'marc@minutevideos.com') {
@@ -47,13 +48,22 @@ export async function GET() {
       isAdmin = !!data
     }
     
+    // Check if user is an active investor (only if not admin)
+    if (!isAdmin && session.user.id) {
+      const { data: investorData } = await supabase
+        .rpc('is_investor', { user_id: session.user.id })
+      
+      isInvestor = !!investorData
+    }
+    
     return NextResponse.json({ 
       authenticated: true,
       user: {
         id: session.user.id,
         email: session.user.email
       },
-      isAdmin
+      isAdmin,
+      isInvestor
     })
   } catch (error) {
     return NextResponse.json({ authenticated: false })
