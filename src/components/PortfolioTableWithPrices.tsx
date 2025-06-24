@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { searchCoins, getMultipleCoinPrices, getCoinPrice, getHistoricalPrice, CoinPrice } from '@/lib/coingecko'
 import { portfolioService } from '@/lib/supabase/portfolio'
-import { createBrowserClient } from '@supabase/ssr'
+import { getSupabaseClient, sessionManager } from '@/lib/supabase/session-manager'
 import type { Database } from '@/lib/supabase/types'
 
 type StoredPosition = Database['public']['Tables']['positions']['Row']
@@ -43,10 +43,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     
     try {
       // Check authentication directly via Supabase client
-      const supabase = createBrowserClient<Database>(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
-      )
+      const supabase = getSupabaseClient()
       
       const { data: { session } } = await supabase.auth.getSession()
       
@@ -78,26 +75,38 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   useEffect(() => {
     setMounted(true)
     
-    const supabase = createBrowserClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
-    )
+    const supabase = getSupabaseClient()
 
     // Check initial session and load positions
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setIsAuthenticated(true)
-        setAuthChecked(true)
-        checkAuthAndLoadPositions()
-      } else {
+    const checkInitialAuth = async () => {
+      try {
+        // Refresh session first to ensure we have latest
+        await sessionManager.refreshSession()
+        const { data: { session } } = await supabase.auth.getSession()
+        
+        if (session) {
+          setIsAuthenticated(true)
+          setAuthChecked(true)
+          await checkAuthAndLoadPositions()
+        } else {
+          setIsAuthenticated(false)
+          setAuthChecked(true)
+          setLoading(false)
+        }
+      } catch (error) {
+        console.error('[PortfolioTable] Initial auth check failed:', error)
         setIsAuthenticated(false)
         setAuthChecked(true)
         setLoading(false)
       }
-    })
+    }
+    
+    checkInitialAuth()
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[PortfolioTable] Auth state changed:', event)
+      
       if (event === 'SIGNED_IN' && session) {
         setIsAuthenticated(true)
         setAuthChecked(true)
@@ -109,10 +118,21 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
         setLoading(false)
       } else if (event === 'TOKEN_REFRESHED' && session) {
         setIsAuthenticated(true)
+        // Reload positions on token refresh
+        checkAuthAndLoadPositions()
       }
     })
+    
+    // Listen for session refresh events (cross-tab sync)
+    const unsubscribeSessionManager = sessionManager.addListener(() => {
+      console.log('[PortfolioTable] Session refreshed, reloading positions')
+      checkAuthAndLoadPositions()
+    })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      subscription.unsubscribe()
+      unsubscribeSessionManager()
+    }
   }, [])
 
   // Fetch prices for all positions

@@ -1,5 +1,5 @@
-import { createBrowserClient } from '@supabase/ssr'
 import { createClient } from '@supabase/supabase-js'
+import { getSupabaseClient, sessionManager } from './session-manager'
 import type { Database } from './types'
 
 type Position = Database['public']['Tables']['positions']['Row']
@@ -9,13 +9,12 @@ type PositionUpdate = Database['public']['Tables']['positions']['Update']
 export const portfolioService = {
   // Get Supabase client
   getClient() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co'
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
-    
     if (typeof window !== 'undefined') {
-      return createBrowserClient<Database>(url, key)
+      return getSupabaseClient()
     }
     // For server-side, use regular client
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co'
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
     return createClient<Database>(url, key)
   },
   // Get all positions
@@ -24,6 +23,11 @@ export const portfolioService = {
     
     try {
       const supabase = this.getClient()
+      
+      // Refresh session first if in browser
+      if (typeof window !== 'undefined') {
+        await sessionManager.refreshSession()
+      }
       
       // Check if user is authenticated first
       const { data: { session }, error: authError } = await supabase.auth.getSession()
