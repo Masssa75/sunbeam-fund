@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import PortfolioTableWithPrices from './PortfolioTableWithPrices'
+import PortfolioTableWithPrices from './PortfolioTableSimplified'
 import ReportGenerator from './ReportGenerator'
 
 interface Position {
