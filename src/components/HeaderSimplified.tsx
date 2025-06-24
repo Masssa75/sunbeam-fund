@@ -126,7 +126,15 @@ export default function HeaderSimplified() {
                     pathname === '/' ? 'bg-gray-200' : 'hover:bg-gray-100'
                   }`}
                 >
-                  Admin View
+                  Portfolio
+                </Link>
+                <Link
+                  href="/admin/investors"
+                  className={`px-3 py-1 rounded ${
+                    pathname === '/admin/investors' ? 'bg-gray-200' : 'hover:bg-gray-100'
+                  }`}
+                >
+                  Investors
                 </Link>
                 <Link
                   href="/investor"
