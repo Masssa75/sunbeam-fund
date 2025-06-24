@@ -71,6 +71,7 @@ export default function MonthlyReportGenerator({ positions }: MonthlyReportGener
                 ? 'bg-gray-300 text-gray-500 pointer-events-none' 
                 : 'bg-green-500 text-white hover:bg-green-600'
             }`}
+            target="_blank"
           >
             View Visual Report
           </Link>
@@ -78,6 +79,17 @@ export default function MonthlyReportGenerator({ positions }: MonthlyReportGener
 
         {positions.length === 0 && (
           <p className="text-sm text-gray-500">Add positions to generate a report</p>
+        )}
+        
+        {positions.length > 0 && (
+          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+            <p className="text-sm text-gray-700">
+              <strong>Tip:</strong> Customize the visual report by adding URL parameters:
+            </p>
+            <code className="text-xs bg-gray-100 px-2 py-1 rounded block mt-2 overflow-x-auto">
+              /report?month={selectedMonth}&name=Investor%20Name&account=001&share=100
+            </code>
+          </div>
         )}
       </div>
     </div>

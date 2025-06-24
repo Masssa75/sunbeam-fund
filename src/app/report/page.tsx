@@ -22,8 +22,8 @@ export default function ReportPage() {
     const loadPositions = async () => {
       try {
         setLoading(true)
-        // Use API endpoint instead of portfolioService to avoid auth issues
-        const response = await fetch('/api/positions/')
+        // Use public report-data endpoint that doesn't require auth
+        const response = await fetch('/api/report-data')
         if (!response.ok) {
           throw new Error('Failed to fetch positions')
         }
