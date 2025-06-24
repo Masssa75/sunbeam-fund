@@ -592,6 +592,30 @@ node scripts/test-auth.js
 3. Monitor for any cache-related issues in production
 4. Consider adding "Clear Cache" instructions to login page
 
+## ✅ LOGIN ISSUE FIXED (June 24, 2025)
+
+The persistent login issue where the portfolio wouldn't load on subsequent page loads has been fixed by replacing the complex PortfolioTableWithPrices component with a simplified version (PortfolioTableSimplified).
+
+### What Was The Problem:
+- The original component had multiple conflicting useEffect hooks and state management
+- Race conditions between authentication checks, position loading, and price fetching
+- Complex loading states that would get stuck
+
+### The Solution:
+- Created PortfolioTableSimplified with a single, simple useEffect
+- Direct API calls without complex client-side state management
+- No race conditions or conflicting state updates
+- Works reliably on every page load
+
+### Current Status:
+- ✅ Login works without clearing cache
+- ✅ Multiple tabs work correctly
+- ✅ Portfolio loads on every page visit
+- ✅ No more "Loading Portfolio..." stuck state
+
+### Note on Prices:
+The CoinGecko price integration shows some incorrect values (billions instead of realistic prices). This is a separate issue with the API integration that needs investigation.
+
 ## 🎯 PREVIOUS STATUS NOTES
 
 1. **Successfully Fixed** ✅
