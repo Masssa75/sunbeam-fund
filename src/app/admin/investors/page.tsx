@@ -25,6 +25,7 @@ export default function InvestorsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [editingUser, setEditingUser] = useState<User | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     account_number: '',
@@ -120,16 +121,31 @@ export default function InvestorsPage() {
     }
   }
 
-  const handleUpdateInvestor = async (user: User) => {
-    const newSharePercentage = prompt('Enter new share percentage:', user.share_percentage?.toString() || '')
-    if (!newSharePercentage) return
+  const handleEditInvestor = (user: User) => {
+    setEditingUser(user)
+    setFormData({
+      name: user.name || user.email,
+      account_number: user.account_number || '',
+      share_percentage: user.share_percentage?.toString() || '',
+      initial_investment: user.initial_investment?.toString() || '',
+      notes: user.notes || ''
+    })
+  }
+
+  const handleUpdateInvestor = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingUser) return
 
     try {
-      const response = await fetch(`/api/investors/${user.id}`, {
+      const response = await fetch(`/api/investors/${editingUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          share_percentage: parseFloat(newSharePercentage)
+          name: formData.name,
+          account_number: formData.account_number,
+          share_percentage: parseFloat(formData.share_percentage),
+          initial_investment: formData.initial_investment ? parseFloat(formData.initial_investment) : null,
+          notes: formData.notes
         })
       })
 
@@ -137,9 +153,41 @@ export default function InvestorsPage() {
         throw new Error('Failed to update investor')
       }
 
+      setEditingUser(null)
       await loadUsers()
     } catch (err) {
       alert('Failed to update investor')
+      console.error(err)
+    }
+  }
+
+  const handleDeleteUser = async (user: User) => {
+    const confirmDelete = confirm(`Are you sure you want to delete ${user.email}? This action cannot be undone.`)
+    if (!confirmDelete) return
+
+    try {
+      // If user is an investor, delete investor record first
+      if (user.isInvestor || user.account_number) {
+        const response = await fetch(`/api/investors/${user.id}`, {
+          method: 'DELETE'
+        })
+        if (!response.ok) {
+          throw new Error('Failed to delete investor record')
+        }
+      }
+
+      // Delete the user account
+      const response = await fetch(`/api/users/${user.id}`, {
+        method: 'DELETE'
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete user')
+      }
+
+      await loadUsers()
+    } catch (err) {
+      alert('Failed to delete user')
       console.error(err)
     }
   }
@@ -205,25 +253,30 @@ export default function InvestorsPage() {
                     {user.last_sign_in ? new Date(user.last_sign_in).toLocaleDateString() : 'Never'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    {role === 'User' && (
+                    <div className="flex space-x-3">
+                      {role === 'User' && (
+                        <button
+                          onClick={() => handleConvertToInvestor(user)}
+                          className="text-blue-600 hover:text-blue-900"
+                        >
+                          Make Investor
+                        </button>
+                      )}
+                      {role === 'Investor' && (
+                        <button
+                          onClick={() => handleEditInvestor(user)}
+                          className="text-blue-600 hover:text-blue-900"
+                        >
+                          Edit
+                        </button>
+                      )}
                       <button
-                        onClick={() => handleConvertToInvestor(user)}
-                        className="text-blue-600 hover:text-blue-900"
+                        onClick={() => handleDeleteUser(user)}
+                        className="text-red-600 hover:text-red-900"
                       >
-                        Make Investor
+                        Delete
                       </button>
-                    )}
-                    {role === 'Investor' && (
-                      <button
-                        onClick={() => handleUpdateInvestor(user)}
-                        className="text-blue-600 hover:text-blue-900"
-                      >
-                        Edit
-                      </button>
-                    )}
-                    {role === 'Admin' && (
-                      <span className="text-gray-500">-</span>
-                    )}
+                    </div>
                   </td>
                 </tr>
               )
@@ -344,6 +397,102 @@ export default function InvestorsPage() {
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
                   Create Investor
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Investor Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full">
+            <h3 className="text-xl font-semibold mb-4">Edit Investor</h3>
+            <p className="text-gray-600 mb-4">Editing: {editingUser.email}</p>
+            
+            <form onSubmit={handleUpdateInvestor}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Account Number
+                </label>
+                <input
+                  type="text"
+                  value={formData.account_number}
+                  onChange={(e) => setFormData({...formData, account_number: e.target.value})}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  placeholder="e.g., INV001"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Share Percentage (%)
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={formData.share_percentage}
+                  onChange={(e) => setFormData({...formData, share_percentage: e.target.value})}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  placeholder="e.g., 10.5"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Initial Investment (Optional)
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={formData.initial_investment}
+                  onChange={(e) => setFormData({...formData, initial_investment: e.target.value})}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  placeholder="e.g., 50000"
+                />
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Notes (Optional)
+                </label>
+                <textarea
+                  value={formData.notes}
+                  onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  rows={3}
+                />
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Update Investor
                 </button>
               </div>
             </form>
