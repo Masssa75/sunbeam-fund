@@ -57,8 +57,12 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
         const savedPositions = await portfolioService.getPositions()
         clearTimeout(timeoutId) // Clear timeout on success
         
+        console.log('[PortfolioTable] Setting positions in state:', savedPositions.length)
         setPositions(savedPositions as Position[])
         setLoading(false)
+        
+        // Force a re-render by updating a timestamp
+        setLastUpdate(new Date())
       } else {
         clearTimeout(timeoutId)
         setLoading(false)
@@ -245,7 +249,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   }
 
   // Show loading state
-  if (loading && !authChecked && positions.length === 0) {
+  if (loading) {
     return (
       <div className="w-full">
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
@@ -262,7 +266,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   }
   
   // Show login prompt if not authenticated after auth check
-  if (authChecked && !isAuthenticated && positions.length === 0) {
+  if (authChecked && !isAuthenticated) {
     return (
       <div className="w-full">
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
