@@ -25,6 +25,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   const [editingPosition, setEditingPosition] = useState<Position | null>(null)
   const [loading, setLoading] = useState(false) // Start with loading false
   const [initialLoad, setInitialLoad] = useState(true) // Track initial load
+  const [pricesFetched, setPricesFetched] = useState(false) // Track if prices have been fetched
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -60,6 +61,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
         
         console.log('[PortfolioTable] Setting positions in state:', savedPositions.length)
         setPositions(savedPositions as Position[])
+        setPricesFetched(false) // Reset so prices will be fetched
         console.log('[PortfolioTable] Setting loading to false')
         setLoading(false)
         
@@ -156,9 +158,10 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
       setPositions(positions.map(position => {
         const currentPrice = prices[position.project_id] || 0
         const currentValue = currentPrice * position.amount
-        const profitLoss = currentValue - position.cost_basis
-        const profitLossPercent = position.cost_basis > 0 
-          ? (profitLoss / position.cost_basis) * 100 
+        const totalCost = position.amount * position.cost_basis
+        const profitLoss = currentValue - totalCost
+        const profitLossPercent = totalCost > 0 
+          ? (profitLoss / totalCost) * 100 
           : 0
         
         return {
@@ -177,12 +180,15 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
     }
   }
 
-  // Fetch prices on mount and when positions change
+  // Fetch prices when positions are loaded
   useEffect(() => {
-    if (positions.length > 0) {
+    console.log('[PortfolioTable] Price fetch effect - positions:', positions.length, 'pricesFetched:', pricesFetched)
+    if (positions.length > 0 && !pricesFetched) {
+      console.log('[PortfolioTable] Fetching prices for positions')
+      setPricesFetched(true)
       fetchPrices()
     }
-  }, [positions.length])
+  }, [positions.length, pricesFetched])
 
   // Notify parent of position changes
   useEffect(() => {
@@ -243,7 +249,7 @@ export default function PortfolioTableWithPrices({ onPositionsChange }: Portfoli
   }
 
   const totalValue = positions.reduce((sum, p) => sum + (p.current_value || 0), 0)
-  const totalCost = positions.reduce((sum, p) => sum + (p.cost_basis || 0), 0)
+  const totalCost = positions.reduce((sum, p) => sum + (p.amount * p.cost_basis), 0)
   const totalProfitLoss = totalValue - totalCost
   const totalProfitLossPercent = totalCost > 0 ? (totalProfitLoss / totalCost) * 100 : 0
 
