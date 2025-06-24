@@ -37,11 +37,21 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+    console.log('Creating investor with data:', body);
     const investor = await investorService.createInvestor(body);
     
     return NextResponse.json({ investor });
   } catch (error) {
     console.error('Error in POST /api/investors:', error);
-    return NextResponse.json({ error: 'Failed to create investor' }, { status: 500 });
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      code: (error as any)?.code,
+      details: (error as any)?.details,
+      hint: (error as any)?.hint
+    });
+    return NextResponse.json({ 
+      error: 'Failed to create investor',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
