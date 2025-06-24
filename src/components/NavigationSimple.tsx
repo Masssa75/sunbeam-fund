@@ -17,32 +17,6 @@ export default function NavigationSimple() {
               </Link>
             </div>
             
-            <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
-              <Link
-                href="/"
-                className="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Portfolio
-              </Link>
-              <Link
-                href="/admin/investors"
-                className="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Manage Investors
-              </Link>
-              <Link
-                href="/report"
-                className="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Reports
-              </Link>
-              <Link
-                href="/investor"
-                className="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Preview Investor View
-              </Link>
-            </div>
           </div>
 
           <div className="flex items-center">
@@ -55,10 +29,10 @@ export default function NavigationSimple() {
               </Link>
             </div>
             
-            {/* Mobile menu button */}
+            {/* Menu button for all screen sizes */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="sm:hidden ml-4 p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+              className="ml-4 p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
             >
               <span className="sr-only">Open menu</span>
               {/* Hamburger icon */}
@@ -69,9 +43,9 @@ export default function NavigationSimple() {
           </div>
         </div>
         
-        {/* Mobile menu */}
+        {/* Menu dropdown for all screen sizes */}
         {mobileMenuOpen && (
-          <div className="sm:hidden pb-3 pt-2">
+          <div className="pb-3 pt-2">
             <div className="space-y-1">
               <Link
                 href="/"
