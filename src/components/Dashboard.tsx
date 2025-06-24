@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import PortfolioTableWithPrices from './PortfolioTableSimplified'
 import ReportGenerator from './ReportGenerator'
-import InvestorDashboard from './InvestorDashboardSimplified'
+import InvestorDashboard from './InvestorDashboardNew'
 import WelcomeMessage from './WelcomeMessage'
 
 interface Position {
@@ -101,17 +101,7 @@ export default function Dashboard() {
 
   // Investor users see the investor dashboard
   if (sessionData.isInvestor) {
-    return (
-      <main className="min-h-screen p-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">Sunbeam Fund</h1>
-            <p className="text-lg text-gray-600">Portfolio Performance Overview</p>
-          </div>
-          <InvestorDashboard />
-        </div>
-      </main>
-    )
+    return <InvestorDashboard />
   }
 
   // Regular users see the welcome message
