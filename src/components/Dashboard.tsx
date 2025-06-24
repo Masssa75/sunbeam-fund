@@ -52,11 +52,6 @@ export default function Dashboard() {
   if (!authenticated) {
     return (
       <div className="bg-white p-8 rounded-lg shadow max-w-md mx-auto">
-        {/* Header with hamburger menu only */}
-        <div className="flex justify-end items-center mb-12">
-          <div className="w-6 h-6 bg-gray-300 rounded"></div>
-        </div>
-        
         {/* Main Content */}
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-6">Welcome to Sunbeam Capital</h2>
