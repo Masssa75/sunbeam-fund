@@ -20,10 +20,14 @@ export async function GET(request: NextRequest) {
     
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co'
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6InNlcnZpY2Ufcm9sZSIsImlhdCI6MTc1MDY2MjkxMywiZXhwIjoyMDY2MjM4OTEzfQ.KBm6Q-s4y6sQFGGYvwF4KXdE4xCVK0k-OMOiR-vByH4'
+    
+    // Use service role key if viewAs is provided (admin viewing as investor)
+    const supabaseKey = viewAsId ? supabaseServiceKey : supabaseAnonKey
     
     const supabase = createServerClient<Database>(
       supabaseUrl,
-      supabaseAnonKey,
+      supabaseKey,
       {
         cookies: {
           get(name: string) {
@@ -55,18 +59,19 @@ export async function GET(request: NextRequest) {
       }
     )
     
-    // Check if user is authenticated
-    const { data: { session } } = await supabase.auth.getSession()
-    
-    if (!session) {
-      console.log('[API Route] No session - returning empty array')
-      return NextResponse.json([])
-    }
-    
-    console.log('[API Route] Authenticated user:', session.user.email)
-    
-    // If viewAs parameter is provided, check if user is admin
+    // If viewAs parameter is provided, validate admin access first
     if (viewAsId) {
+      // When using viewAs, we still need to check the session for admin validation
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        console.log('[API Route] No session - unauthorized viewAs attempt')
+        return NextResponse.json(
+          { error: 'Unauthorized' },
+          { status: 401 }
+        )
+      }
+      
       const isAdmin = ADMIN_EMAILS.includes(session.user.email || '')
       
       if (!isAdmin) {
@@ -96,6 +101,16 @@ export async function GET(request: NextRequest) {
       
       // For now, return the same positions for all investors
       // In a real implementation, you might have investor-specific positions
+    } else {
+      // Normal authentication check when not using viewAs
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        console.log('[API Route] No session - returning empty array')
+        return NextResponse.json([])
+      }
+      
+      console.log('[API Route] Authenticated user:', session.user.email)
     }
     
     // Fetch positions with authenticated context
