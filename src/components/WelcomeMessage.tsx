@@ -7,22 +7,14 @@ interface WelcomeMessageProps {
 export default function WelcomeMessage({ userEmail }: WelcomeMessageProps) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center space-y-6 px-6">
-        <h1 className="text-3xl font-light text-gray-900">
-          Welcome to Sunbeam Fund
+      <div className="text-center space-y-4 px-6">
+        <h1 className="text-2xl font-light text-gray-900">
+          Thank you for signing up
         </h1>
         
-        <p className="text-lg text-gray-600 max-w-md">
-          Thank you for signing up.
-        </p>
-        
         <p className="text-gray-500">
-          We will enable your investor account shortly and send you a message when it's ready.
+          Your investor account is being reviewed and will be activated shortly.
         </p>
-        
-        <div className="text-sm text-gray-400 pt-4">
-          Logged in as: {userEmail}
-        </div>
       </div>
     </div>
   )
