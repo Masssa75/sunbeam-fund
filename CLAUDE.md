@@ -3,12 +3,58 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 24, 2025 - 8:30 PM)
+## 🚀 CURRENT STATUS (June 24, 2025 - 9:20 PM)
+
+### ✅ SESSION COMPLETED - PORTFOLIO MANAGEMENT CRUD & CUSTOM POSITIONS
+**Status**: Added full CRUD functionality for portfolio positions with support for presale/custom investments
+
+**Major Accomplishments This Session**:
+1. **Portfolio Management CRUD** ✅
+   - Add Position button with modal interface
+   - CoinGecko search integration for finding projects
+   - Edit and Delete buttons for each position
+   - Automatic cost basis calculation based on current prices
+   - API endpoints for POST, PUT, DELETE operations
+
+2. **Custom/Presale Position Support** ✅
+   - Toggle between "Search CoinGecko" and "Custom Entry" modes
+   - Manual entry for presale investments, private rounds, or unlisted tokens
+   - Custom positions show with purple "Custom" badge
+   - Price displays as "N/A" for non-CoinGecko tokens
+   - Perfect for tracking illiquid investments like $20K presales
+
+3. **Enhanced User Experience** ✅
+   - Search projects by name or symbol with thumbnails
+   - Auto-calculate cost basis when entering token amounts
+   - Shows current price being used for calculations
+   - Sorted portfolio by value (highest holdings first)
+   - Notes field for vesting schedules or round details
+
+**Technical Implementation**:
+- Created `PortfolioTableEnhanced.tsx` with full CRUD functionality
+- Added `/api/positions/[id]/route.ts` for PUT/DELETE operations
+- Updated `/api/positions/route.ts` to support POST with validation
+- Modified `/api/coingecko/search/route.ts` to return proper format
+- Fixed syntax errors and ensured successful deployment
+
+**How It Works**:
+- **Adding CoinGecko Positions**: Search → Select → Enter Amount → Auto-calculates cost
+- **Adding Custom Positions**: Toggle to Custom → Enter all details manually
+- **Editing**: Click Edit → Modify any field → Save
+- **Deleting**: Click Delete → Confirm → Position removed
+
+**Files Created/Modified**:
+- `/src/components/PortfolioTableEnhanced.tsx` - Main component with CRUD
+- `/src/app/api/positions/[id]/route.ts` - Individual position operations
+- `/src/app/api/positions/route.ts` - Added POST functionality
+- `/src/components/Dashboard.tsx` - Updated to use enhanced component
+
+## 🚀 PREVIOUS SESSION (June 24, 2025 - 8:30 PM)
 
 ### ✅ SESSION COMPLETED - MAJOR UI/UX IMPROVEMENTS
 **Status**: Implemented View as Investor, cleaned up admin UI, redesigned investor dashboard with real data
 
-**Major Accomplishments This Session**:
+**Major Accomplishments from Previous Session**:
 1. **View as Investor Feature** ✅
    - Green "View as" button for each investor in admin panel
    - Admins can see exactly what investors see
@@ -773,10 +819,10 @@ cat latest-result.json
 ```
 
 ## Version
-- Current Version: 1.7.0
+- Current Version: 1.8.0
 - Created: 2025-06-23
-- Status: PRODUCTION - User routing & welcome message design completed
-- Last Updated: 2025-06-24 17:40 PST
+- Status: PRODUCTION - Portfolio CRUD & custom positions fully implemented
+- Last Updated: 2025-06-24 21:20 PST
 
 ## 🎉 LOGIN ISSUE RESOLVED
 
