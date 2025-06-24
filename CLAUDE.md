@@ -3,7 +3,56 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 24, 2025 - 5:40 PM)
+## 🚀 CURRENT STATUS (June 24, 2025 - 6:30 PM)
+
+### ✅ SESSION COMPLETED - INVESTOR MANAGEMENT SYSTEM OVERHAUL
+**Status**: Fixed investor creation, redesigned user management, and added full CRUD operations
+
+**Major Accomplishments This Session**:
+1. **Fixed Investor Creation Form** ✅ - Resolved authentication and service role key issues
+2. **Unified User Management View** ✅ - Single table showing all users with role badges
+3. **Comprehensive Edit Modal** ✅ - Full editing capabilities for all investor fields
+4. **Delete Functionality** ✅ - Added user deletion with proper confirmation
+
+**Technical Fixes**:
+- **Authentication Fix**: Updated `getServerAuth()` to use `@supabase/ssr` `createServerClient` instead of manual cookie parsing
+- **Service Role Key**: Fixed incorrect service role key (was using `...b0s`, correct is `...yH4`)
+- **Foreign Key Issue**: Resolved user ID mismatch causing foreign key constraint violations
+- **API Endpoints**: Created `/api/users/[id]` DELETE and `/api/users-with-roles/` GET endpoints
+
+**User Management Page Updates**:
+- **Unified Table**: All users shown in single table with role indicators
+- **Role Badges**: Admin (purple), Investor (green), User (gray)
+- **Inline Details**: Investor information displayed directly in table
+- **Summary Cards**: Total users, active investors, and administrators count
+- **Actions**: Context-appropriate actions per user type
+
+**Edit/Delete Features**:
+- **Full Edit Modal**: Edit all investor fields (name, account #, share %, investment, notes)
+- **Delete Button**: Available for all users with confirmation dialog
+- **Cascade Delete**: Properly handles investor records before deleting user accounts
+
+**Files Modified**:
+- `/src/lib/supabase/server-auth.ts` - Fixed authentication with proper cookie handling
+- `/src/lib/supabase/investor-service.ts` - Corrected service role key
+- `/src/app/admin/investors/page.tsx` - Complete redesign with unified view
+- `/src/app/api/users-with-roles/route.ts` - New endpoint for merged user data
+- `/src/app/api/users/[id]/route.ts` - New endpoint for user deletion
+- `/src/app/api/investors/[id]/route.ts` - Fixed import path
+
+**Debugging Process**:
+1. Used Playwright browser automation to reproduce exact user experience
+2. Captured form data and API responses to identify issues
+3. Traced authentication flow through cookie handling
+4. Fixed service role key mismatch by comparing with .env file
+5. Created comprehensive test scripts for validation
+
+**Next Session Priorities**:
+1. Fix CoinGecko Price Integration (astronomical values issue)
+2. Copy Twitter Monitoring from Porta project
+3. Set up Telegram Bot for investor notifications
+
+## 🚀 PREVIOUS SESSION (June 24, 2025 - 5:40 PM)
 
 ### ✅ SESSION COMPLETED - USER ROUTING & WELCOME MESSAGE DESIGN
 **Status**: Implemented user status-based routing with ultra minimalist welcome message
@@ -61,39 +110,6 @@
 2. Copy Twitter Monitoring from Porta project
 3. Set up Telegram Bot for investor notifications
 
-## 🚀 PREVIOUS SESSION (June 24, 2025 - 4:30 PM)
-
-### 🚨 INVESTOR CREATION FORM ISSUE
-**Problem**: "Failed to create investor" error when trying to convert users to investors
-**Root Cause**: Client-side form validation preventing submission
-**Status**: API backend is working, but front-end form has validation issues
-
-**What We Discovered**:
-1. **API Backend Works** ✅ - Fixed import paths and added detailed error logging
-2. **Form Modal Opens** ✅ - Modal displays correctly with all fields
-3. **Browser Validation Issue** ❌ - Form won't submit due to required field validation
-
-**Technical Details**:
-- Form fields: Name, Account Number, Share Percentage (%), Initial Investment, Notes
-- Share Percentage field is required and causes "Please fill out this field" error
-- Account Number field also triggers validation errors
-- Backend API at `/api/investors` is ready and has proper auth + error logging
-
-**Screenshots Available**:
-- `after-click-modal.png` - Shows form modal structure
-- `investor-creation-result.png` - Shows validation error state
-
-**Files Modified for Debugging**:
-- `/src/app/api/investors/route.ts` - Fixed imports, added error logging
-- `/scripts/test-investor-creation.js` - Automated test script
-
-**Next Steps for Fix**:
-1. Check form field validation requirements in the React component
-2. Ensure all required fields are properly marked and filled
-3. Test manual form submission in browser
-4. Fix client-side validation to allow proper submission
-
-**Test Account Available**: test@sunbeam.capital (exists in registered users list)
 
 ## 🚀 CURRENT STATUS (June 24, 2025 - 3:30 PM)
 
