@@ -74,15 +74,27 @@ export async function GET(request: NextRequest) {
     
     // Get current prices for all positions
     const coinIds = positions.map(p => p.project_id).filter(Boolean);
-    const priceResponse = await fetch(`${request.nextUrl.origin}/api/coingecko/price`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ coinIds })
-    });
     
     let prices: Record<string, number> = {};
-    if (priceResponse.ok) {
-      prices = await priceResponse.json();
+    try {
+      // Use the full URL for API call
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://sunbeam.capital/api/coingecko/price'
+        : `${request.nextUrl.origin}/api/coingecko/price`;
+        
+      const priceResponse = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coinIds })
+      });
+      
+      if (priceResponse.ok) {
+        prices = await priceResponse.json();
+      } else {
+        console.log('[Investor Standing] Failed to fetch prices:', priceResponse.status);
+      }
+    } catch (error) {
+      console.log('[Investor Standing] Error fetching prices:', error);
     }
     
     // Calculate fund total value (cost basis and current value)
@@ -106,6 +118,12 @@ export async function GET(request: NextRequest) {
     // If we couldn't get prices, use cost basis as fallback
     if (fundTotalCurrentValue === 0) {
       fundTotalCurrentValue = fundTotalCostBasis;
+    }
+    
+    // If still no value, return error
+    if (fundTotalCurrentValue === 0) {
+      console.log('[Investor Standing] No fund value could be calculated');
+      return NextResponse.json({ error: 'Unable to calculate fund value' }, { status: 500 });
     }
     
     // Calculate investor's portion based on their share percentage
