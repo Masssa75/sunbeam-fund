@@ -3,51 +3,65 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 24, 2025 - 4:30 PM)
+## 🚀 CURRENT STATUS (June 24, 2025 - 5:40 PM)
 
-### ✅ SESSION COMPLETED - UX IMPROVEMENTS & ADMIN FIXES
-**Status**: All high-priority issues resolved, professional landing page implemented
+### ✅ SESSION COMPLETED - USER ROUTING & WELCOME MESSAGE DESIGN
+**Status**: Implemented user status-based routing with ultra minimalist welcome message
 
 **Major Accomplishments This Session**:
-1. **Fixed Manage Investors Page** ✅ - "Failed to load users" error resolved
-2. **Implemented Ultra Minimalist Landing Page** ✅ - Clean, professional design
-3. **Made Login Page the Landing Page** ✅ - Better UX for private fund platform
-4. **Fixed Admin Authentication** ✅ - Hardcoded admin emails now work properly
+1. **User Status-Based Routing** ✅ - Different experiences for admin/investor/regular users
+2. **Ultra Minimalist Welcome Message** ✅ - Clean design for non-investor users
+3. **Design DNA Integration** ✅ - Copied design principles from demos project
+4. **Navigation Hiding** ✅ - Regular users don't see navigation bar
 
-**Technical Changes Made**:
-- Updated `getServerAuth()` to recognize hardcoded admin emails (marc@cyrator.com, marc@minutevideos.com)
-- Created ultra minimalist welcome page design with just title and Login/Sign Up buttons
-- Made homepage redirect non-authenticated users directly to login page
-- Simplified Dashboard component by removing welcome page logic
-- Added URL parameter support for signup mode (`/login?mode=signup`)
+**Technical Implementation**:
+- Updated `/api/auth/session/` to check investor status using `is_investor()` function
+- Created `WelcomeMessage.tsx` component with ultra minimalist design
+- Updated `Dashboard.tsx` to route users based on status (admin/investor/regular)
+- Modified `NavigationSimple.tsx` to hide navigation for regular users
+- Added gradient background and improved typography
 
-**User Experience Improvements**:
-- **Direct Login Flow**: Visitors go straight to login instead of welcome page
-- **Clean Design**: Removed all unnecessary elements for minimal, professional look
-- **Proper Signup Flow**: Sign Up button correctly links to existing auth infrastructure
-- **Admin Access**: Management pages now work correctly for administrators
+**User Experience Flow**:
+- **Admin Users** (marc@cyrator.com, marc@minutevideos.com):
+  - See full dashboard with portfolio management
+  - Have navigation bar with all admin options
+  - Can manage investors and generate reports
+- **Investor Users**:
+  - See investor-friendly portfolio dashboard
+  - Have navigation bar with limited options
+  - Focus on portfolio performance
+- **Regular Users** (non-admin, non-investor):
+  - See ultra minimalist welcome message
+  - No navigation bar (clean experience)
+  - Message: "Thank you for signing up" + "Your investor account is being reviewed and will be activated shortly"
 
-**Files Modified**:
-- `/src/lib/server-auth.ts` - Added hardcoded admin email detection
-- `/src/components/Dashboard.tsx` - Simplified to remove welcome page logic
-- `/src/app/page.tsx` - Added redirect to login for non-authenticated users
-- `/src/app/login/page.tsx` - Added URL parameter support for signup mode
+**Design Details**:
+- Gradient background (gray-50 to white)
+- Extra light font weight with wide letter spacing
+- Properly centered with negative margin adjustment
+- No header or navigation elements for clean look
+- Following Design DNA principles from demos project
 
-**Test Scripts Created**:
-- `scripts/test-investors-page.js` - Tests admin investor management
-- `scripts/test-welcome-page.js` - Tests ultra minimalist design
-- `scripts/test-minimalist-design.js` - Comprehensive design testing
-- `scripts/test-login-landing-page.js` - Tests login as landing page flow
+**Files Created/Modified**:
+- `/src/components/WelcomeMessage.tsx` - Ultra minimalist welcome component
+- `/src/app/api/auth/session/route.ts` - Added investor status check
+- `/src/components/Dashboard.tsx` - User routing logic
+- `/src/components/NavigationSimple.tsx` - Hide nav for regular users
+- `/src/app/page.tsx` - Removed duplicate headers
+- `/DESIGN-DNA.md` - Design principles documentation
 
-**Wireframes Created**:
-- `wireframes/welcome-page-designs.html` - 5 design options from minimalist to detailed
+**Test Account Created**:
+- Email: `testuser@sunbeam.capital`
+- Password: `testpassword123`
+- Status: Regular user (not admin, not investor)
+- Purpose: Testing welcome message display
 
 **Next High Priority Items**:
 1. Fix CoinGecko Price Integration (astronomical values showing)
 2. Copy Twitter Monitoring from Porta project
 3. Set up Telegram Bot for investor notifications
 
-## 🚀 CURRENT STATUS (June 24, 2025 - 4:30 PM) - PREVIOUS ISSUES
+## 🚀 PREVIOUS SESSION (June 24, 2025 - 4:30 PM)
 
 ### 🚨 INVESTOR CREATION FORM ISSUE
 **Problem**: "Failed to create investor" error when trying to convert users to investors
@@ -659,10 +673,10 @@ cat latest-result.json
 ```
 
 ## Version
-- Current Version: 1.6.0
+- Current Version: 1.7.0
 - Created: 2025-06-23
-- Status: PRODUCTION - UX improvements completed, login as landing page implemented
-- Last Updated: 2025-06-24 17:30 PST
+- Status: PRODUCTION - User routing & welcome message design completed
+- Last Updated: 2025-06-24 17:40 PST
 
 ## 🎉 LOGIN ISSUE RESOLVED
 
