@@ -1,4 +1,4 @@
-import InvestorDashboard from '@/components/InvestorDashboard'
+import InvestorDashboard from '@/components/InvestorDashboardSimplified'
 import VersionBadge from '@/components/VersionBadge'
 import ErrorBoundary from '@/components/ErrorBoundary'
 
