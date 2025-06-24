@@ -95,18 +95,14 @@ export default function PortfolioTableEnhanced({ onPositionsChange }: any) {
         // Combine all positions
         const positionsWithPrices = [...coinGeckoWithPrices, ...customWithPrices]
           
-          // Sort positions by current value (highest first)
-          const sortedPositions = positionsWithPrices.sort((a: any, b: any) => 
-            (b.current_value || 0) - (a.current_value || 0)
-          )
-          
-          setPositions(sortedPositions)
-          if (onPositionsChange) {
-            onPositionsChange(sortedPositions)
-          }
-        } catch (priceError) {
-          console.error('Price fetch error:', priceError)
-          setPositions(posData)
+        // Sort positions by current value (highest first)
+        const sortedPositions = positionsWithPrices.sort((a: any, b: any) => 
+          (b.current_value || 0) - (a.current_value || 0)
+        )
+        
+        setPositions(sortedPositions)
+        if (onPositionsChange) {
+          onPositionsChange(sortedPositions)
         }
       } else {
         setPositions([])
