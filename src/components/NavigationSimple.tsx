@@ -16,6 +16,8 @@ export default function NavigationSimple() {
     setMounted(true)
   }, [])
 
+  const [isInvestor, setIsInvestor] = useState(false)
+
   useEffect(() => {
     if (!mounted) return
     const checkAuth = async () => {
@@ -26,14 +28,17 @@ export default function NavigationSimple() {
         if (data.authenticated && data.user) {
           setUser(data.user)
           setIsAdmin(data.isAdmin || false)
+          setIsInvestor(data.isInvestor || false)
         } else {
           setUser(null)
           setIsAdmin(false)
+          setIsInvestor(false)
         }
       } catch (error) {
         console.error('Error checking auth:', error)
         setUser(null)
         setIsAdmin(false)
+        setIsInvestor(false)
       } finally {
         setLoading(false)
       }
@@ -76,6 +81,11 @@ export default function NavigationSimple() {
         </div>
       </nav>
     )
+  }
+
+  // Hide navigation for regular users (non-admin, non-investor)
+  if (user && !isAdmin && !isInvestor) {
+    return null
   }
 
   return (

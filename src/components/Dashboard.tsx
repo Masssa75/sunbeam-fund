@@ -68,34 +68,50 @@ export default function Dashboard() {
   // Admin users see the full dashboard
   if (sessionData.isAdmin) {
     return (
-      <div>
-        <PortfolioTableWithPrices onPositionsChange={setPositions} />
-        <ReportGenerator positions={positions} />
-        
-        <div className="mt-8 bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Report Management</h3>
-          <div className="flex gap-4">
-            <Link
-              href="/admin/reports"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              View All Reports
-            </Link>
-            <Link
-              href="/admin/reports/upload"
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-            >
-              Upload Historical Report
-            </Link>
+      <main className="min-h-screen p-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-2">Sunbeam Fund Management</h1>
+            <p className="text-lg text-gray-600">Crypto portfolio tracking and reporting system</p>
+          </div>
+          <PortfolioTableWithPrices onPositionsChange={setPositions} />
+          <ReportGenerator positions={positions} />
+          
+          <div className="mt-8 bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-semibold mb-4">Report Management</h3>
+            <div className="flex gap-4">
+              <Link
+                href="/admin/reports"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                View All Reports
+              </Link>
+              <Link
+                href="/admin/reports/upload"
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              >
+                Upload Historical Report
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     )
   }
 
   // Investor users see the investor dashboard
   if (sessionData.isInvestor) {
-    return <InvestorDashboard />
+    return (
+      <main className="min-h-screen p-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-2">Sunbeam Fund</h1>
+            <p className="text-lg text-gray-600">Portfolio Performance Overview</p>
+          </div>
+          <InvestorDashboard />
+        </div>
+      </main>
+    )
   }
 
   // Regular users see the welcome message
