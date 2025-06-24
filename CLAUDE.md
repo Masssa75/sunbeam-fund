@@ -3,12 +3,37 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 24, 2025 - 6:30 PM)
+## 🚀 CURRENT STATUS (June 24, 2025 - 7:30 PM)
+
+### ✅ SESSION COMPLETED - VIEW AS INVESTOR FEATURE
+**Status**: Added ability for admins to view the investor portal as any investor
+
+**Major Accomplishments This Session**:
+1. **View as Investor Button** ✅ - Added green "View as" button for each investor in admin panel
+2. **Investor Impersonation** ✅ - Admins can see exactly what each investor sees
+3. **Security Implementation** ✅ - Only admins can use the viewAs feature
+4. **Visual Indicator** ✅ - Shows yellow badge "Viewing as [investor name]" when in this mode
+
+**Technical Implementation**:
+- **Admin Panel**: Added "View as" button in `/src/app/admin/investors/page.tsx`
+- **Investor Page**: Modified to accept `viewAs` query parameter
+- **API Security**: Updated `/api/positions/` to validate admin access for viewAs
+- **New Endpoint**: Created `/api/investor-info/` to fetch investor details
+- **Visual Feedback**: Yellow indicator shows when viewing as another user
+
+**How It Works**:
+1. Admin goes to Manage Users & Investors page
+2. Clicks green "View as" button next to any investor
+3. Redirected to investor view with `?viewAs=userId` parameter
+4. Sees exact same view that investor would see
+5. Yellow indicator shows they're viewing as that investor
+
+## 🚀 PREVIOUS SESSION (June 24, 2025 - 6:30 PM)
 
 ### ✅ SESSION COMPLETED - INVESTOR MANAGEMENT SYSTEM OVERHAUL
 **Status**: Fixed investor creation, redesigned user management, and added full CRUD operations
 
-**Major Accomplishments This Session**:
+**Major Accomplishments from Previous Session**:
 1. **Fixed Investor Creation Form** ✅ - Resolved authentication and service role key issues
 2. **Unified User Management View** ✅ - Single table showing all users with role badges
 3. **Comprehensive Edit Modal** ✅ - Full editing capabilities for all investor fields
