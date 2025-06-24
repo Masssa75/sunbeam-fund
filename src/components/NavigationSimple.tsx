@@ -40,8 +40,8 @@ export default function NavigationSimple() {
     }
 
     checkAuth()
-    // Check auth status every 10 seconds
-    const interval = setInterval(checkAuth, 10000)
+    // Check auth status every 5 seconds
+    const interval = setInterval(checkAuth, 5000)
     return () => clearInterval(interval)
   }, [mounted])
 
@@ -63,6 +63,21 @@ export default function NavigationSimple() {
     }
   }
   
+  // Show minimal nav during SSR to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <nav className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <Link href="/" className="text-xl font-semibold text-gray-900">Sunbeam Fund</Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+    )
+  }
+
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
