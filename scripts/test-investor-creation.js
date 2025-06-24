@@ -31,56 +31,68 @@ async function testInvestorCreation() {
     // Click "Make Investor" button for test@sunbeam.capital
     console.log('Looking for test@sunbeam.capital user...');
     
-    // Find the row with test@sunbeam.capital and click Make Investor
-    const testUserRow = await page.locator('text=test@sunbeam.capital').locator('..').locator('..');
-    if (await testUserRow.count() > 0) {
-      console.log('Found test@sunbeam.capital user');
-      const makeInvestorButton = testUserRow.locator('button:has-text("Make Investor")');
-      if (await makeInvestorButton.count() > 0) {
-        await makeInvestorButton.click();
-        console.log('Clicked Make Investor button');
+    // Find the specific row with test@sunbeam.capital and click Make Investor
+    console.log('Looking for Make Investor button for test@sunbeam.capital');
+    const makeInvestorButton = page.locator('tr:has-text("test@sunbeam.capital") button:has-text("Make Investor")');
+    if (await makeInvestorButton.count() > 0) {
+      console.log('Found Make Investor button for test@sunbeam.capital');
+      await makeInvestorButton.click();
+      console.log('Clicked Make Investor button');
 
-        // Fill in the form
-        console.log('Filling investor form...');
-        await page.fill('input[name="name"]', 'Test Investor');
-        await page.fill('input[name="account_number"]', '999');
-        await page.fill('input[name="share_percentage"]', '15.5');
-        await page.fill('input[name="initial_investment"]', '25000');
-        await page.fill('textarea[name="notes"]', 'Test investor created via browser automation');
+      // Wait for modal to appear and take screenshot
+      await page.waitForTimeout(2000);
+      await page.screenshot({ path: 'after-click-modal.png', fullPage: true });
+      console.log('Screenshot taken after clicking button');
 
-        // Submit the form
-        console.log('Submitting form...');
-        await page.click('button:has-text("Create Investor")');
-
-        // Wait for response
-        await page.waitForTimeout(3000);
-
-        // Check for success or error messages
-        const errorAlert = await page.locator('text=Failed to create investor').count();
-        const successMessage = await page.locator('text=successfully').count();
-
-        if (errorAlert > 0) {
-          console.log('❌ Error: Failed to create investor');
-          
-          // Check if there are any console errors
-          page.on('console', msg => {
-            if (msg.type() === 'error') {
-              console.log('Browser console error:', msg.text());
-            }
-          });
-          
-        } else if (successMessage > 0) {
-          console.log('✅ Investor created successfully!');
-        } else {
-          console.log('⚠️  Unknown result - taking screenshot');
-          await page.screenshot({ path: 'investor-creation-result.png', fullPage: true });
-        }
-
-      } else {
-        console.log('❌ Make Investor button not found');
+      // Fill in the form
+      console.log('Filling investor form...');
+      
+      // Fill all required fields
+      try {
+        // Clear and fill the Share Percentage field that was causing validation error
+        await page.click('input[placeholder*="10.5"]');
+        await page.fill('input[placeholder*="10.5"]', '');
+        await page.fill('input[placeholder*="10.5"]', '15.5');
+        console.log('Filled share percentage field');
+        
+        // Also fill initial investment to be safe
+        await page.fill('input[placeholder*="50000"]', '25000');
+        console.log('Filled initial investment field');
+        
+      } catch (error) {
+        console.log('Error filling additional fields:', error.message);
       }
+
+      // Submit the form with whatever data we have
+      console.log('Submitting form...');
+      await page.click('button:has-text("Create Investor")');
+
+      // Wait for response
+      await page.waitForTimeout(3000);
+
+      // Check for success or error messages
+      const errorAlert = await page.locator('text=Failed to create investor').count();
+      const successMessage = await page.locator('text=successfully').count();
+
+      if (errorAlert > 0) {
+        console.log('❌ Error: Failed to create investor');
+        
+        // Check if there are any console errors
+        page.on('console', msg => {
+          if (msg.type() === 'error') {
+            console.log('Browser console error:', msg.text());
+          }
+        });
+        
+      } else if (successMessage > 0) {
+        console.log('✅ Investor created successfully!');
+      } else {
+        console.log('⚠️  Unknown result - taking screenshot');
+        await page.screenshot({ path: 'investor-creation-result.png', fullPage: true });
+      }
+
     } else {
-      console.log('❌ test@sunbeam.capital user not found');
+      console.log('❌ Make Investor button not found');
       await page.screenshot({ path: 'investors-page.png', fullPage: true });
     }
 
