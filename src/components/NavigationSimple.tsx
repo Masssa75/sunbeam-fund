@@ -1,10 +1,56 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function NavigationSimple() {
+  const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/session/')
+        const data = await response.json()
+        
+        if (data.authenticated && data.user) {
+          setUser(data.user)
+          setIsAdmin(data.isAdmin || false)
+        }
+      } catch (error) {
+        console.error('Error checking auth:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    checkAuth()
+    // Check auth status every 10 seconds
+    const interval = setInterval(checkAuth, 10000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch('/api/auth/logout/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      
+      if (response.ok) {
+        setUser(null)
+        setIsAdmin(false)
+        router.push('/login')
+      }
+    } catch (error) {
+      console.error('Error signing out:', error)
+      router.push('/login')
+    }
+  }
   
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
@@ -21,12 +67,31 @@ export default function NavigationSimple() {
 
           <div className="flex items-center">
             <div className="flex items-center space-x-4">
-              <Link
-                href="/login"
-                className="text-sm text-blue-600 hover:text-blue-700"
-              >
-                Sign In
-              </Link>
+              {user ? (
+                <>
+                  <span className="text-sm text-gray-700">
+                    {user.email}
+                    {isAdmin && (
+                      <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                        Admin
+                      </span>
+                    )}
+                  </span>
+                  <button
+                    onClick={handleSignOut}
+                    className="text-sm text-gray-500 hover:text-gray-700"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="text-sm text-blue-600 hover:text-blue-700"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
             
             {/* Menu button for all screen sizes */}
@@ -44,7 +109,7 @@ export default function NavigationSimple() {
         </div>
         
         {/* Menu dropdown for all screen sizes */}
-        {mobileMenuOpen && (
+        {mobileMenuOpen && user && (
           <div className="pb-3 pt-2">
             <div className="space-y-1">
               <Link
@@ -54,27 +119,31 @@ export default function NavigationSimple() {
               >
                 Portfolio
               </Link>
-              <Link
-                href="/admin/investors"
-                className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Manage Investors
-              </Link>
-              <Link
-                href="/report"
-                className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Reports
-              </Link>
-              <Link
-                href="/investor"
-                className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Preview Investor View
-              </Link>
+              {isAdmin && (
+                <>
+                  <Link
+                    href="/admin/investors"
+                    className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Manage Investors
+                  </Link>
+                  <Link
+                    href="/report"
+                    className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Reports
+                  </Link>
+                  <Link
+                    href="/investor"
+                    className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Preview Investor View
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}
