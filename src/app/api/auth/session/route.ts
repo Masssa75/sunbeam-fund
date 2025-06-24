@@ -32,7 +32,12 @@ export async function GET() {
     
     // Check if user is admin
     let isAdmin = false
-    if (session.user.id) {
+    
+    // First check hardcoded admin emails
+    if (session.user.email === 'marc@cyrator.com' || session.user.email === 'marc@minutevideos.com') {
+      isAdmin = true
+    } else if (session.user.id) {
+      // Fall back to admin_users table
       const { data } = await supabase
         .from('admin_users')
         .select('id')
