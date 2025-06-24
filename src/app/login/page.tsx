@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { auth } from '@/lib/supabase/auth'
 
 type AuthMode = 'signin' | 'signup' | 'forgot'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [mode, setMode] = useState<AuthMode>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -16,8 +17,14 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [checkingAuth, setCheckingAuth] = useState(true)
 
-  // Check if user is already authenticated
+  // Check if user is already authenticated and set mode from URL
   useEffect(() => {
+    // Set mode from URL parameter
+    const urlMode = searchParams.get('mode')
+    if (urlMode === 'signup' || urlMode === 'forgot') {
+      setMode(urlMode as AuthMode)
+    }
+    
     const checkAuth = async () => {
       try {
         const session = await auth.getSession()
@@ -32,7 +39,7 @@ export default function LoginPage() {
       }
     }
     checkAuth()
-  }, [])
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

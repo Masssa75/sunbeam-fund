@@ -51,44 +51,30 @@ export default function Dashboard() {
   // Show welcome message for non-authenticated users
   if (!authenticated) {
     return (
-      <div className="bg-white p-12 rounded-lg shadow text-center max-w-2xl mx-auto">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Welcome to Sunbeam Capital</h2>
-          <p className="text-lg text-gray-600 mb-6">
-            Professional crypto fund management and portfolio tracking system
-          </p>
-          <p className="text-gray-500 mb-8">
-            Please log in to access your portfolio, view reports, and manage investments.
-          </p>
+      <div className="bg-white p-8 rounded-lg shadow max-w-md mx-auto">
+        {/* Header with hamburger menu only */}
+        <div className="flex justify-end items-center mb-12">
+          <div className="w-6 h-6 bg-gray-300 rounded"></div>
         </div>
         
-        <div className="space-y-4">
-          <Link
-            href="/login"
-            className="inline-block px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Log In to Continue
-          </Link>
+        {/* Main Content */}
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-6">Welcome to Sunbeam Capital</h2>
           
-          <div className="text-sm text-gray-500">
-            <p>Authorized investors and administrators only</p>
-          </div>
-        </div>
-        
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Portfolio Tracking</h3>
-              <p className="text-sm text-gray-600">Real-time crypto portfolio monitoring and performance analytics</p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Monthly Reports</h3>
-              <p className="text-sm text-gray-600">Comprehensive investment reports and market analysis</p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Professional Management</h3>
-              <p className="text-sm text-gray-600">Expert fund management with institutional-grade tools</p>
-            </div>
+          <div className="space-y-3">
+            <Link
+              href="/login"
+              className="block w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            >
+              Login
+            </Link>
+            
+            <Link
+              href="/login?mode=signup"
+              className="block w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+            >
+              Sign Up
+            </Link>
           </div>
         </div>
       </div>

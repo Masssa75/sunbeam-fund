@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { investorService } from '@/lib/supabase/investor-service';
-import { getServerAuth } from '@/lib/server-auth';
+import { getServerAuth } from '@/lib/supabase/server-auth';
 
 export async function GET(request: NextRequest) {
   try {
