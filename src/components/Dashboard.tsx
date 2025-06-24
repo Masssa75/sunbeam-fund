@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import PortfolioTableWithPrices from './PortfolioTableSimplified'
+import PortfolioTableWithPrices from './PortfolioTableEnhanced'
 import ReportGenerator from './ReportGenerator'
 import InvestorDashboard from './InvestorDashboardNew'
 import WelcomeMessage from './WelcomeMessage'

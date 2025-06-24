@@ -9,6 +9,8 @@ export async function GET(request: Request) {
   }
 
   try {
+    console.log('[API Route] Searching CoinGecko for:', query)
+    
     // Search for coins
     const searchResponse = await fetch(
       `https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(query)}`,
@@ -17,18 +19,17 @@ export async function GET(request: Request) {
     const searchData = await searchResponse.json()
 
     if (!searchData.coins || searchData.coins.length === 0) {
-      return NextResponse.json([])
+      return NextResponse.json({ coins: [] })
     }
 
-    // Get price data for the first 10 results
-    const coinIds = searchData.coins.slice(0, 10).map((coin: any) => coin.id).join(',')
-    const priceResponse = await fetch(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&sparkline=false`,
-      { next: { revalidate: 60 } } // Cache for 60 seconds
-    )
-    const priceData = await priceResponse.json()
+    // Return the search results in the format expected by the component
+    const results = {
+      coins: searchData.coins.slice(0, 10) // First 10 results
+    }
 
-    return NextResponse.json(priceData)
+    console.log('[API Route] Found', results.coins.length, 'coins')
+    
+    return NextResponse.json(results)
   } catch (error) {
     console.error('Error in CoinGecko search:', error)
     return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 })
