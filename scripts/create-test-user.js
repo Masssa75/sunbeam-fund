@@ -1,64 +1,41 @@
-const fetch = require('node-fetch')
+// Create a test user directly in the database to test welcome message
+
+const { createClient } = require('@supabase/supabase-js');
 
 async function createTestUser() {
-  const projectRef = 'gualxudgbmpuhjbumfeh'
-  const apiKey = 'sbp_6f04b779bfc9e9fb52600595aabdfb3545a84add'
+  console.log('🛠️  Creating test user directly in database...');
   
-  console.log('Creating test user via Management API...\n')
+  const supabase = createClient(
+    'https://gualxudgbmpuhjbumfeh.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDY2MjkxMywiZXhwIjoyMDY2MjM4OTEzfQ.yFbFAuMR1kDsQ5Tni-FJIruKT9AmCsJg0uyNyEvNyH4' // service role key
+  );
   
   try {
-    // First, let's check if we can access user management
-    const response = await fetch(`https://api.supabase.com/v1/projects/${projectRef}/config/auth`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      }
-    })
+    // Create a test user via admin API
+    const { data: user, error: createError } = await supabase.auth.admin.createUser({
+      email: 'testuser@sunbeam.capital',
+      password: 'testpassword123',
+      email_confirm: true // Skip email confirmation
+    });
     
-    if (!response.ok) {
-      const error = await response.json()
-      console.error('Failed to get auth config:', error)
-      return
+    if (createError) {
+      if (createError.message.includes('already registered')) {
+        console.log('✅ Test user already exists');
+        return;
+      } else {
+        throw createError;
+      }
     }
     
-    const authConfig = await response.json()
-    console.log('Auth config retrieved successfully')
-    console.log('Email enabled:', authConfig.email_auth_enabled)
-    
-    // Create a user via SQL (alternative approach)
-    console.log('\nCreating user via SQL...')
-    const sql = `
-      -- Create a test admin user entry
-      INSERT INTO admin_users (user_email, created_at)
-      VALUES ('test@sunbeam.capital', NOW())
-      ON CONFLICT (user_email) DO NOTHING;
-      
-      -- Return the result
-      SELECT * FROM admin_users WHERE user_email = 'test@sunbeam.capital';
-    `
-    
-    const sqlResponse = await fetch(`https://api.supabase.com/v1/projects/${projectRef}/database/query`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ query: sql })
-    })
-    
-    const sqlResult = await sqlResponse.json()
-    console.log('SQL Result:', sqlResult)
-    
-    console.log('\n✅ Admin user entry created. You can now:')
-    console.log('1. Go to Supabase Dashboard > Authentication > Users')
-    console.log('2. Click "Invite User"')
-    console.log('3. Enter email: test@sunbeam.capital')
-    console.log('4. They will receive an invite to set their password')
+    console.log('✅ Test user created successfully:', user.user.email);
+    console.log('📧 Email:', user.user.email);
+    console.log('🔑 Password: testpassword123');
+    console.log('📝 This user is NOT an admin and NOT an investor');
+    console.log('👁️  Should see welcome message when logging in');
     
   } catch (error) {
-    console.error('Error:', error.message)
+    console.error('❌ Failed to create test user:', error.message);
   }
 }
 
-createTestUser()
+createTestUser().catch(console.error);

@@ -33,10 +33,17 @@ export class InvestorService {
     return data;
   }
 
-  async createInvestor(investor: Omit<Investor, 'id' | 'created_at' | 'updated_at'>): Promise<Investor | null> {
+  async createInvestor(investor: Omit<Investor, 'created_at' | 'updated_at' | 'join_date' | 'status'>): Promise<Investor | null> {
+    // Add default values that are handled by the database
+    const investorData = {
+      ...investor,
+      // join_date and status have defaults in the database
+      // created_at and updated_at are auto-generated
+    };
+    
     const { data, error } = await this.supabase
       .from('investors')
-      .insert(investor)
+      .insert(investorData)
       .select()
       .single();
 
