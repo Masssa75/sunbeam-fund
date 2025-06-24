@@ -10,19 +10,32 @@ export default function NavigationSimple() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
     const checkAuth = async () => {
       try {
         const response = await fetch('/api/auth/session/')
         const data = await response.json()
         
+        console.log('[NavigationSimple] Auth check response:', data)
+        
         if (data.authenticated && data.user) {
           setUser(data.user)
           setIsAdmin(data.isAdmin || false)
+        } else {
+          setUser(null)
+          setIsAdmin(false)
         }
       } catch (error) {
         console.error('Error checking auth:', error)
+        setUser(null)
+        setIsAdmin(false)
       } finally {
         setLoading(false)
       }
@@ -32,7 +45,7 @@ export default function NavigationSimple() {
     // Check auth status every 10 seconds
     const interval = setInterval(checkAuth, 10000)
     return () => clearInterval(interval)
-  }, [])
+  }, [mounted])
 
   const handleSignOut = async () => {
     try {
