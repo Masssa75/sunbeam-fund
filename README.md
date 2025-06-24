@@ -1,6 +1,6 @@
-# Sunbeam Fund Management System
+# Sunbeam Capital Management System
 
-A comprehensive crypto fund management system for Sunbeam Fund that tracks portfolio positions, generates monthly reports, monitors project updates, and sends alerts to investors.
+A comprehensive crypto fund management system for Sunbeam Capital that tracks portfolio positions, generates monthly reports, monitors project updates, and sends alerts to investors.
 
 ## Quick Start
 

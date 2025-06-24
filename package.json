@@ -1,7 +1,7 @@
 {
   "name": "sunbeam",
   "version": "1.1.0",
-  "description": "Sunbeam Fund Management System - Portfolio tracking and reporting for crypto funds",
+  "description": "Sunbeam Capital Management System - Portfolio tracking and reporting for crypto funds",
   "private": true,
   "scripts": {
     "dev": "next dev",

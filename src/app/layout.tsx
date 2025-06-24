@@ -6,8 +6,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Sunbeam Fund Management',
-  description: 'Crypto portfolio management system for Sunbeam Fund',
+  title: 'Sunbeam Capital Management',
+  description: 'Crypto portfolio management system for Sunbeam Capital',
 }
 
 export default function RootLayout({

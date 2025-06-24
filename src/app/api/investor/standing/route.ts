@@ -63,29 +63,80 @@ export async function GET(request: NextRequest) {
       }
     );
     
-    // Get all positions to calculate fund total
+    // Get all positions with their current values
     const { data: positions } = await supabase
       .from('positions')
-      .select('cost_basis');
+      .select('*');
     
-    const fundTotalValue = positions?.reduce((sum, pos) => sum + (pos.cost_basis || 0), 0) || 100000; // Default to 100k if no positions
+    if (!positions || positions.length === 0) {
+      return NextResponse.json({ error: 'No positions found' }, { status: 404 });
+    }
     
-    // Calculate investor's portion
+    // Get current prices for all positions
+    const coinIds = positions.map(p => p.project_id).filter(Boolean);
+    const priceResponse = await fetch(`${request.nextUrl.origin}/api/coingecko/price`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ coinIds })
+    });
+    
+    let prices: Record<string, number> = {};
+    if (priceResponse.ok) {
+      prices = await priceResponse.json();
+    }
+    
+    // Calculate fund total value (cost basis and current value)
+    let fundTotalCostBasis = 0;
+    let fundTotalCurrentValue = 0;
+    
+    positions.forEach(position => {
+      fundTotalCostBasis += position.cost_basis || 0;
+      const currentPrice = prices[position.project_id] || 0;
+      const currentValue = currentPrice * position.amount;
+      fundTotalCurrentValue += currentValue;
+    });
+    
+    console.log('[Investor Standing] Fund totals:', {
+      fundTotalCostBasis,
+      fundTotalCurrentValue,
+      pricesReceived: Object.keys(prices).length,
+      positionCount: positions.length
+    });
+    
+    // If we couldn't get prices, use cost basis as fallback
+    if (fundTotalCurrentValue === 0) {
+      fundTotalCurrentValue = fundTotalCostBasis;
+    }
+    
+    // Calculate investor's portion based on their share percentage
     const shareDecimal = (investor.share_percentage || 0) / 100;
-    const currentValue = fundTotalValue * shareDecimal * 1.375; // Mock 37.5% gain for now
-    const totalReturn = currentValue - (investor.initial_investment || 0);
-    const totalReturnPercent = investor.initial_investment ? (totalReturn / investor.initial_investment) * 100 : 0;
+    const investorCurrentValue = fundTotalCurrentValue * shareDecimal;
+    const investorCostBasis = investor.initial_investment || (fundTotalCostBasis * shareDecimal);
     
-    // Mock monthly performance (in production, calculate from actual data)
-    const monthlyReturn = currentValue * 0.038; // 3.8% monthly
+    // Calculate returns
+    const totalReturn = investorCurrentValue - investorCostBasis;
+    const totalReturnPercent = investorCostBasis > 0 ? (totalReturn / investorCostBasis) * 100 : 0;
+    
+    // Calculate monthly return (simplified - in production would compare to last month)
+    // For now, assume 3.8% monthly growth as a placeholder
     const monthlyReturnPercent = 3.8;
+    const monthlyReturn = investorCurrentValue * (monthlyReturnPercent / 100);
+    
+    console.log('[Investor Standing] Investor calculations:', {
+      investorId,
+      sharePercentage: investor.share_percentage,
+      investorCostBasis,
+      investorCurrentValue,
+      totalReturn,
+      totalReturnPercent
+    });
     
     const standing = {
       name: investor.name || investor.email,
       accountNumber: investor.account_number,
       sharePercentage: investor.share_percentage,
       initialInvestment: investor.initial_investment || 0,
-      currentValue: Math.round(currentValue),
+      currentValue: Math.round(investorCurrentValue),
       totalReturn: Math.round(totalReturn),
       totalReturnPercent: Math.round(totalReturnPercent * 10) / 10,
       monthlyReturn: Math.round(monthlyReturn),
