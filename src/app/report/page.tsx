@@ -23,7 +23,7 @@ export default function ReportPage() {
       try {
         setLoading(true)
         // Use public report-data endpoint that doesn't require auth
-        const response = await fetch('/api/report-data')
+        const response = await fetch(`/api/report-data?month=${month}`)
         if (!response.ok) {
           throw new Error('Failed to fetch positions')
         }

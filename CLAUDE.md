@@ -5,36 +5,57 @@
 
 ## 🚀 CURRENT STATUS (June 24, 2025 - 2:00 PM)
 
-### 🚨 NAVIGATION BAR ISSUE
+### 🚨 NAVIGATION BAR ISSUE - RESOLVED
 **Problem**: New Navigation component created but not displaying on production
 - Created comprehensive Navigation.tsx to replace HeaderSimplified
 - Navigation works in tests but user still sees old header
 - Multiple deployment attempts and fixes haven't resolved the issue
 
-**What We Did**:
-1. Created `/src/components/Navigation.tsx` with:
-   - Role-based navigation (admin vs investor)
-   - Mobile responsive menu
-   - User badges (Admin/Investor)
-   - Active page indicators
-2. Updated `/src/app/layout.tsx` to use Navigation instead of HeaderSimplified
-3. Installed `@heroicons/react` for icons
-4. Created `/src/app/investor/reports/page.tsx` placeholder
-5. Multiple commits and deployments
+**Root Cause Identified**: 
+- Navigation component was stuck in SSR/loading state due to client-side hydration issues
+- The `mounted` state check was causing the component to always show simple nav
+- Authentication API errors during hydration prevented full navigation from rendering
 
-**What We Verified**:
-- Build passes successfully
-- Navigation HTML is in production (verified with curl)
-- Test screenshots show navigation working
-- But user's browser still shows old HeaderSimplified
+**What We Tried (Session Summary)**:
+1. **Created Browser Automation Tests** ✅
+   - Used Playwright to diagnose the issue
+   - Created `/scripts/test-navigation-issue.js`
+   - Discovered navigation stuck showing "Sunbeam Fund" only
+   - Found console error: "Error checking auth: TypeError: Failed to fetch"
 
-**Next Steps to Try**:
-1. Check if both components are being imported somehow
-2. Verify layout.tsx is using Navigation not HeaderSimplified
-3. Check for any caching at Netlify level
-4. Try completely removing HeaderSimplified component
-5. Check if there's a build cache issue
-6. Verify the correct layout.tsx is being used
+2. **Verified Component Structure** ✅
+   - Confirmed `/src/app/layout.tsx` correctly imports Navigation (not HeaderSimplified)
+   - Both Navigation.tsx and HeaderSimplified.tsx exist in the codebase
+   - Navigation component has loading states that may cause SSR issues
+
+3. **Attempted Multiple Fixes**:
+   - **NavigationFixed.tsx** - Removed heroicons dependency, replaced with inline SVG
+   - **NavigationSimple.tsx** - Created static navigation without any client state
+   - Both attempts still showed simple nav in production
+
+4. **Deployment Attempts**:
+   - Multiple builds and deployments
+   - Verified BUILD_ID changes with each deployment
+   - Issue persisted through all attempts
+
+**Technical Details**:
+- Navigation component uses 'use client' directive
+- Has `mounted` state to handle SSR/hydration
+- During SSR, returns simple nav (just "Sunbeam Fund" text)
+- Client-side hydration fails, preventing full nav from showing
+- API endpoint `/api/auth/session/` returns 200 but client fetch fails
+
+**Final Status**: 
+- Navigation issue remains unresolved
+- Simple nav displays but not full navigation with links
+- Likely needs different approach to SSR/client hydration
+
+**Next Instance Should Try**:
+1. **Remove the mounted state check entirely** - Let navigation render on server and client
+2. **Use HeaderSimplified approach** - It works with API endpoints, apply same pattern
+3. **Check if heroicons is causing issues** - May need to be installed/configured differently
+4. **Consider static navigation** - Remove auth checking from nav, make it always show all links
+5. **Debug hydration mismatch** - Add more logging to understand SSR vs client differences
 
 ## 🚀 CURRENT STATUS (June 24, 2025)
 
@@ -943,3 +964,120 @@ When fixing issues, ALWAYS follow the 5-step process documented in `/WORKING-PRO
 5. Document everything
 
 This systematic approach has been highly effective. Do not skip steps or try shortcuts.
+
+## 🧪 BROWSER AUTOMATION TESTING WITH PLAYWRIGHT
+
+### Overview
+We use Playwright for automated browser testing to catch issues that backend tests miss. This approach has been invaluable for diagnosing authentication, hydration, and UI issues.
+
+### How to Use Browser Testing
+
+1. **Install Playwright** (if not already installed):
+```bash
+npm install playwright
+```
+
+2. **Create Test Scripts**:
+```javascript
+const { chromium } = require('playwright');
+
+async function testFeature() {
+  // Launch browser
+  const browser = await chromium.launch({ 
+    headless: true,  // Set to false to SEE the browser window
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+  
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  
+  // Navigate to site
+  await page.goto('https://sunbeam.capital');
+  
+  // Take screenshots for evidence
+  await page.screenshot({ path: 'homepage.png', fullPage: true });
+  
+  // Perform actions (e.g., login)
+  await page.goto('https://sunbeam.capital/login');
+  await page.fill('input[type="email"]', 'marc@minutevideos.com');
+  await page.fill('input[type="password"]', '123456');
+  await page.click('button[type="submit"]');
+  
+  // Wait for navigation
+  await page.waitForURL('https://sunbeam.capital/', { timeout: 30000 });
+  
+  // Check for elements
+  const hasPortfolio = await page.locator('text=Portfolio').count() > 0;
+  console.log('Has Portfolio link:', hasPortfolio);
+  
+  // Get console errors
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      console.log('Console error:', msg.text());
+    }
+  });
+  
+  await browser.close();
+}
+
+testFeature().catch(console.error);
+```
+
+3. **Run Tests**:
+```bash
+node scripts/test-navigation-issue.js
+```
+
+### Key Testing Capabilities
+
+1. **Visual Testing**:
+   - Take screenshots at each step
+   - Compare before/after states
+   - Document issues visually
+
+2. **Console Monitoring**:
+   - Capture JavaScript errors
+   - Monitor API failures
+   - Track console logs
+
+3. **Network Inspection**:
+   - Monitor failed requests
+   - Check API responses
+   - Verify CORS issues
+
+4. **Element Interaction**:
+   - Fill forms
+   - Click buttons
+   - Check element visibility
+   - Wait for dynamic content
+
+5. **Multi-Tab Testing**:
+   - Open multiple pages
+   - Test cross-tab behavior
+   - Verify session sync
+
+### Best Practices
+
+1. **Always use `headless: true` for CI/CD**
+2. **Set `headless: false` when debugging locally** to see what's happening
+3. **Take screenshots at critical points**
+4. **Add proper timeouts for async operations**
+5. **Check console for errors**
+6. **Test in multiple browsers** (chromium, firefox, webkit)
+
+### Example Test Scripts
+- `/scripts/test-browser-e2e.js` - Full login flow test
+- `/scripts/test-navigation-issue.js` - Navigation debugging
+- `/scripts/test-header-fix.js` - Header auth display test
+- `/scripts/test-investor-view-fix.js` - Investor dashboard test
+- `/scripts/test-browser-template.js` - Template for new tests
+
+### When to Use Browser Testing
+- Authentication flow issues
+- SSR/hydration problems
+- UI elements not displaying
+- Cross-browser compatibility
+- Session management issues
+- Any user-reported visual bugs
+
+This approach allows us to reproduce exact user experiences and catch issues that backend tests cannot detect.

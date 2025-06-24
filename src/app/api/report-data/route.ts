@@ -1,4 +1,5 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { getSupabaseClient } from '@/lib/supabase/client'
 
 // Hardcoded portfolio data for public reports
 // In production, this could be updated via a separate admin process
@@ -95,12 +96,32 @@ const PORTFOLIO_DATA = [
   }
 ]
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   console.log('[API Route] GET /api/report-data called - PUBLIC ENDPOINT')
   
   try {
-    // Return hardcoded data for now
-    // In production, this could fetch from a public cache or read-only DB view
+    // Check if a specific month is requested
+    const searchParams = request.nextUrl.searchParams
+    const month = searchParams.get('month')
+    
+    if (month) {
+      // Try to fetch historical report from database
+      const supabase = getSupabaseClient()
+      if (supabase) {
+        const { data: report } = await supabase
+          .from('reports')
+          .select('*')
+          .eq('report_month', `${month}-01`)
+          .single()
+        
+        if (report && report.report_data?.positions) {
+          console.log('[API Route] Found historical report for', month)
+          return NextResponse.json(report.report_data.positions)
+        }
+      }
+    }
+    
+    // Return hardcoded data as fallback
     console.log('[API Route] Returning', PORTFOLIO_DATA.length, 'positions for report')
     
     return NextResponse.json(PORTFOLIO_DATA)
