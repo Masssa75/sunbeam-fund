@@ -40,6 +40,15 @@ export const auth = {
   async signOut() {
     const supabase = getSupabaseClient()
     
+    // Clear any stored session data
+    if (typeof window !== 'undefined') {
+      // Clear localStorage items that might contain auth data
+      const keysToRemove = Object.keys(localStorage).filter(key => 
+        key.includes('supabase') || key.includes('auth')
+      )
+      keysToRemove.forEach(key => localStorage.removeItem(key))
+    }
+    
     const { error } = await supabase.auth.signOut()
     if (error) throw error
   },

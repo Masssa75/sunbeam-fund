@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { auth } from '@/lib/supabase/auth'
 
@@ -14,6 +14,25 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [checkingAuth, setCheckingAuth] = useState(true)
+
+  // Check if user is already authenticated
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const session = await auth.getSession()
+        if (session) {
+          // User is already logged in, redirect to home
+          router.push('/')
+        }
+      } catch (err) {
+        // Ignore errors, just show login page
+      } finally {
+        setCheckingAuth(false)
+      }
+    }
+    checkAuth()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,6 +50,13 @@ export default function LoginPage() {
       if (mode === 'signin') {
         let result;
         try {
+          // Clear any existing session first to ensure clean login
+          try {
+            await auth.signOut()
+          } catch (signOutError) {
+            // Ignore signout errors, proceed with login
+          }
+          
           // Try client-side auth first
           result = await auth.signIn(email, password)
         } catch (signInError: any) {
@@ -110,6 +136,17 @@ export default function LoginPage() {
       setError(errorMessage)
       setLoading(false)
     }
+  }
+
+  // Show loading while checking auth status
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

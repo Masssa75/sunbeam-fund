@@ -41,10 +41,26 @@ export default function Header() {
 
   const handleSignOut = async () => {
     try {
-      await auth.signOut()
-      router.push('/login')
+      // Use API endpoint to ensure proper cookie cleanup
+      const response = await fetch('/api/auth/logout/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      
+      if (!response.ok) {
+        throw new Error('Logout failed')
+      }
+      
+      // Clear local state
+      setUser(null)
+      setIsAdmin(false)
+      
+      // Force a hard redirect to clear any client-side cache
+      window.location.href = '/login'
     } catch (error) {
       console.error('Error signing out:', error)
+      // Even if logout fails, redirect to login
+      window.location.href = '/login'
     }
   }
 
