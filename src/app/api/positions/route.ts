@@ -117,7 +117,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase
       .from('positions')
       .select('*')
-      .order('entry_date', { ascending: false })
+      .order('cost_basis', { ascending: false })
 
     if (error) {
       console.error('[API Route] Error fetching positions:', error)
