@@ -53,10 +53,16 @@ export default function ReportsListPage() {
           <h1 className="text-3xl font-bold text-gray-900">Monthly Reports</h1>
           <div className="flex gap-4">
             <Link
+              href="/admin/reports/import-google-docs"
+              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+            >
+              Import Google Docs
+            </Link>
+            <Link
               href="/admin/reports/upload"
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
             >
-              Upload Historical Report
+              Upload File
             </Link>
             <Link
               href="/admin"
