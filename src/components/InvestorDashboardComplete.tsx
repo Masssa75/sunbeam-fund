@@ -18,6 +18,7 @@ interface Tweet {
   id: string
   project_name: string
   tweet_text: string
+  summary?: string
   importance_score: number
   created_at: string
 }
@@ -95,15 +96,16 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
         console.log('Could not load investor standing:', err)
       }
       
-      // Load recent tweets (for Recent Developments)
+      // Load recent developments (important tweets)
       try {
-        const tweetsRes = await fetch('/api/twitter/tweets')
-        if (tweetsRes.ok) {
-          const tweetsData = await tweetsRes.json()
-          setTweets(tweetsData.tweets || [])
+        const recentDevUrl = viewAsId ? `/api/investor/recent-developments?viewAs=${viewAsId}` : '/api/investor/recent-developments'
+        const recentDevRes = await fetch(recentDevUrl)
+        if (recentDevRes.ok) {
+          const recentDevData = await recentDevRes.json()
+          setTweets(recentDevData.tweets || [])
         }
       } catch (err) {
-        console.log('Could not load tweets (may not be admin):', err)
+        console.log('Could not load recent developments:', err)
       }
       
     } catch (error) {
@@ -418,7 +420,8 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 <div className="flex-1">
                   <div className="font-semibold text-base mb-1">{tweet.project_name}</div>
                   <div className="text-sm text-gray-600 leading-relaxed">
-                    {tweet.tweet_text.substring(0, 200)}...
+                    {tweet.summary || tweet.tweet_text.substring(0, 200)}
+                    {!tweet.summary && tweet.tweet_text.length > 200 && '...'}
                   </div>
                 </div>
               </div>

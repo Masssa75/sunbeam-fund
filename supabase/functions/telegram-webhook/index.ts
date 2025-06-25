@@ -165,10 +165,25 @@ serve(async (req) => {
           `/status - Check your connection status\n` +
           `/preferences - Manage notification preferences\n` +
           `/disconnect - Disconnect from notifications\n` +
-          `/help - Show this help message\n\n` +
+          `/help - Show this help message\n` +
+          `/debug - Show your Telegram info\n\n` +
           `For support, please contact your fund administrator.`;
 
         await sendMessage(TELEGRAM_BOT_TOKEN, chatId, helpMessage, { parseMode: 'HTML' });
+        return new Response('OK', { status: 200 });
+      }
+
+      // Handle /debug command
+      if (text === '/debug') {
+        const debugMessage = 
+          `<b>🔍 Debug Information</b>\n\n` +
+          `Chat ID: <code>${chatId}</code>\n` +
+          `Username: @${username || 'not set'}\n` +
+          `User ID: ${update.message.from.id}\n` +
+          `First Name: ${update.message.from.first_name || 'not set'}\n\n` +
+          `Use this Chat ID when connecting: <code>${chatId}</code>`;
+
+        await sendMessage(TELEGRAM_BOT_TOKEN, chatId, debugMessage, { parseMode: 'HTML' });
         return new Response('OK', { status: 200 });
       }
 
