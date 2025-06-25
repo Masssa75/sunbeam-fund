@@ -75,8 +75,20 @@ serve(async (req) => {
         const token = text.split(' ')[1]?.trim();
         
         if (!token) {
+          // Show welcome message with clear instructions
           await sendMessage(TELEGRAM_BOT_TOKEN, chatId, 
-            '❌ Please use the connection link provided by Sunbeam Fund to connect your account.'
+            `<b>Welcome to Sunbeam Capital Bot! 👋</b>\n\n` +
+            `I help Sunbeam Fund investors stay updated with:\n` +
+            `• Important market alerts\n` +
+            `• Monthly reports\n` +
+            `• Portfolio updates\n\n` +
+            `To connect your account:\n` +
+            `1. Visit https://sunbeam.capital\n` +
+            `2. Click the notification bell (🔔)\n` +
+            `3. Click "Enable Push Notifications"\n` +
+            `4. You'll be redirected here with your connection code\n\n` +
+            `<i>The link will automatically include your unique token.</i>`,
+            { parseMode: 'HTML' }
           );
           return new Response('OK', { status: 200 });
         }
@@ -158,6 +170,7 @@ serve(async (req) => {
         return new Response('OK', { status: 200 });
       }
 
+
       // Handle /help command
       if (text === '/help') {
         const helpMessage = 
@@ -165,8 +178,7 @@ serve(async (req) => {
           `/status - Check your connection status\n` +
           `/preferences - Manage notification preferences\n` +
           `/disconnect - Disconnect from notifications\n` +
-          `/help - Show this help message\n` +
-          `/debug - Show your Telegram info\n\n` +
+          `/help - Show this help message\n\n` +
           `For support, please contact your fund administrator.`;
 
         await sendMessage(TELEGRAM_BOT_TOKEN, chatId, helpMessage, { parseMode: 'HTML' });
