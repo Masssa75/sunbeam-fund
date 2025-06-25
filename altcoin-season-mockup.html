@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altcoin Season Indicator Options</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-4xl mx-auto space-y-8">
+        <h1 class="text-2xl font-bold mb-8">Altcoin Season Indicator Options</h1>
+        
+        <!-- Option 1: Simple Custom Indicator -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold mb-4">Option 1: Custom Visual Indicator</h2>
+            <div class="bg-gray-100 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-700">Altcoin Season Index</span>
+                    <span class="text-sm text-gray-500">Currently: Bitcoin Season</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3 relative">
+                    <div class="absolute top-0 left-0 h-3 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full" style="width: 25%"></div>
+                    <div class="absolute top-0 left-[25%] h-3 w-1 bg-gray-800"></div>
+                </div>
+                <div class="flex justify-between mt-2 text-xs text-gray-500">
+                    <span>Bitcoin Season</span>
+                    <span>Altcoin Season</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 2: Link to External -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold mb-4">Option 2: Link to Blockchain Center</h2>
+            <div class="bg-gray-100 rounded-lg p-4">
+                <p class="text-sm text-gray-600 mb-3">
+                    According to the Altcoin Season Index, we're currently in extreme Bitcoin dominance territory.
+                </p>
+                <a href="https://www.blockchaincenter.net/altcoin-season-index/" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm underline">
+                    View Live Altcoin Season Index →
+                </a>
+            </div>
+        </div>
+
+        <!-- Option 3: Embedded Widget (if allowed) -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold mb-4">Option 3: Embedded Widget</h2>
+            <div class="bg-gray-100 rounded-lg p-4">
+                <p class="text-sm text-gray-600 mb-3">
+                    Live Altcoin Season Index:
+                </p>
+                <!-- This would be an iframe if the service allows embedding -->
+                <div class="border-2 border-dashed border-gray-300 rounded p-8 text-center text-gray-500">
+                    [Altcoin Season Index Widget Would Go Here]
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 4: Text-based Status -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold mb-4">Option 4: Simple Text Status</h2>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <span class="text-sm font-medium text-red-800">Extreme Bitcoin Season</span>
+                </div>
+                <p class="text-sm text-red-700 mt-1">
+                    Only 25% of top altcoins outperforming Bitcoin over the last 90 days
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

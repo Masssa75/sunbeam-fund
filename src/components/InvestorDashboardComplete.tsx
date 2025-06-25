@@ -318,6 +318,34 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                   Let's be clear about where we are: <span className="font-medium text-black">this is one of the worst periods for altcoins in recent memory</span>. Bitcoin holds steady while altcoins bleed—a pattern that signals maximum pessimism. Everyone expected the Trump crypto boom. Instead, we got stubborn inflation, unprecedented tariff wars, Middle East conflicts, and an administration whose unpredictability paralyzes decision-making.
                 </p>
 
+                {/* Altcoin Season Indicator */}
+                <div className="bg-red-50 rounded-lg p-4 my-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <div className="text-2xl font-bold text-red-600">14</div>
+                        <div className="text-xs text-red-600 font-medium">Bitcoin Season</div>
+                      </div>
+                      <div className="h-12 w-px bg-red-200"></div>
+                      <div className="text-sm text-gray-600">
+                        <div className="font-medium">Altcoin Season Index</div>
+                        <div className="text-xs">Only 14% of altcoins outperforming BTC</div>
+                      </div>
+                    </div>
+                    <a 
+                      href="https://www.blockchaincenter.net/en/altcoin-season-index/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-600 hover:text-blue-800 underline"
+                    >
+                      Live data →
+                    </a>
+                  </div>
+                  <div className="relative h-2 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 to-blue-500 rounded-full">
+                    <div className="absolute top-1/2 -translate-y-1/2 left-[14%] w-0.5 h-4 bg-gray-800"></div>
+                  </div>
+                </div>
+
                 <p>
                   But here's what experience teaches us: <span className="font-medium text-black">these periods of maximum pain often precede extraordinary returns</span>. The fundamentals are aligning—institutional investment flowing in, the world's largest economy now pro-crypto, infrastructure maturing rapidly. The altcoin season isn't cancelled; it's delayed. And delays create opportunities for those who understand what they own.
                 </p>
