@@ -359,56 +359,8 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
           )}
         </div>
 
-        {/* Portfolio Holdings */}
-        <div className="space-y-0">
-          <h3 className="text-sm font-light text-gray-500 uppercase tracking-wider mb-6">Core Holdings</h3>
-          {displayHoldings.map((position) => (
-            <div key={position.id} className="border-t border-gray-200 py-10 cursor-pointer transition-all hover:pl-5" onClick={() => setExpandedProject(expandedProject === position.project_name ? null : position.project_name)}>
-              <div className="flex justify-between items-baseline mb-3">
-                <h2 className="text-2xl font-medium">{position.project_name}</h2>
-                <span className="text-2xl text-gray-400">{position.allocation.toFixed(1)}%</span>
-              </div>
-              <p className="text-gray-500 leading-relaxed mb-3">
-                {getProjectDescription(position.project_name)}
-              </p>
-              <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-medium">
-                {getProjectTag(position.project_name)}
-              </span>
-              
-              {/* Expandable Content */}
-              {expandedProject === position.project_name && (
-                <div className="mt-6 bg-gray-50 rounded-lg p-6 animate-in slide-in-from-top-2 duration-300">
-                  <div className="text-base font-semibold mb-4">
-                    Why {position.project_name}: {getProjectThesis(position.project_name)}
-                  </div>
-                  
-                  {position.project_name === 'Kaspa' && <KaspaDeepDive />}
-                  {position.project_name === 'Bittensor' && <BittensorDeepDive />}
-                  {position.project_name === 'Toncoin' && <ToncoinDeepDive />}
-                </div>
-              )}
-            </div>
-          ))}
-          
-          {/* Other Holdings */}
-          {others.length > 0 && (
-            <div className="border-t border-gray-200 py-10">
-              <div className="flex justify-between items-baseline mb-3">
-                <h2 className="text-2xl font-medium">{others.length} Additional Holdings</h2>
-                <span className="text-2xl text-gray-400">{othersTotal.toFixed(1)}%</span>
-              </div>
-              <p className="text-gray-500 leading-relaxed mb-3">
-                {others.map(p => p.project_name).join(', ')}, and other strategic positions.
-              </p>
-              <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-medium">
-                Diversified
-              </span>
-            </div>
-          )}
-        </div>
-
         {/* Recent Developments */}
-        <div className="mt-20 pt-10 border-t border-gray-200">
+        <div className="mb-20">
           <h3 className="text-xl font-medium mb-8">Recent Developments</h3>
           
           {tweets.length > 0 ? (
@@ -459,6 +411,54 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </div>
               </div>
             </>
+          )}
+        </div>
+
+        {/* Portfolio Holdings */}
+        <div className="mt-20 pt-10 border-t border-gray-200 space-y-0">
+          <h3 className="text-sm font-light text-gray-500 uppercase tracking-wider mb-6">Core Holdings</h3>
+          {displayHoldings.map((position) => (
+            <div key={position.id} className="border-t border-gray-200 py-10 cursor-pointer transition-all hover:pl-5" onClick={() => setExpandedProject(expandedProject === position.project_name ? null : position.project_name)}>
+              <div className="flex justify-between items-baseline mb-3">
+                <h2 className="text-2xl font-medium">{position.project_name}</h2>
+                <span className="text-2xl text-gray-400">{position.allocation.toFixed(1)}%</span>
+              </div>
+              <p className="text-gray-500 leading-relaxed mb-3">
+                {getProjectDescription(position.project_name)}
+              </p>
+              <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-medium">
+                {getProjectTag(position.project_name)}
+              </span>
+              
+              {/* Expandable Content */}
+              {expandedProject === position.project_name && (
+                <div className="mt-6 bg-gray-50 rounded-lg p-6 animate-in slide-in-from-top-2 duration-300">
+                  <div className="text-base font-semibold mb-4">
+                    Why {position.project_name}: {getProjectThesis(position.project_name)}
+                  </div>
+                  
+                  {position.project_name === 'Kaspa' && <KaspaDeepDive />}
+                  {position.project_name === 'Bittensor' && <BittensorDeepDive />}
+                  {position.project_name === 'Toncoin' && <ToncoinDeepDive />}
+                </div>
+              )}
+            </div>
+          ))}
+          
+          {/* Other Holdings */}
+          {others.length > 0 && (
+            <div className="border-t border-gray-200 py-10">
+              <div className="flex justify-between items-baseline mb-3">
+                <h2 className="text-2xl font-medium">{others.length} Additional Holdings</h2>
+                <span className="text-2xl text-gray-400">{othersTotal.toFixed(1)}%</span>
+              </div>
+              <p className="text-gray-500 leading-relaxed mb-3">
+                {others.map(p => p.project_name).join(', ')}, and other strategic positions.
+              </p>
+              <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-medium">
+                Diversified
+              </span>
+            </div>
           )}
         </div>
 
