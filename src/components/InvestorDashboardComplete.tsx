@@ -303,15 +303,15 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
                 
                 <p>
-                  Multiple forces compound this uncertainty. Unprecedented tariff wars and Middle East conflicts directly impact inflation expectations. Meanwhile, the Trump administration's willingness to pursue radical policies keeps markets off balance. <span className="font-medium text-black">This perfect storm of uncertainty prevents the rally everyone expects</span>.
+                  Multiple forces compound this uncertainty. Unprecedented tariff wars and Middle East conflicts directly impact inflation expectations. The Trump administration's willingness to pursue radical policies keeps markets constantly guessing. <span className="font-medium text-black">Together, these factors create a holding pattern</span>—everyone's waiting for clarity that hasn't arrived.
                 </p>
 
                 <p>
-                  Yet beneath this uncertainty lies <span className="font-medium text-black">enormous opportunity</span>. The world's largest economy has shifted from crypto skepticism to full embrace—a historic transformation whose impact is merely being delayed, not denied. These containing factors are temporary; the structural shift is permanent.
+                  We believe this uncertainty masks <span className="font-medium text-black">significant opportunity</span>. The world's largest economy has pivoted from crypto skepticism to embrace—a shift we view as fundamentally important. While current headwinds may delay market response, we think the underlying change in stance matters more than short-term volatility.
                 </p>
                 
                 <p>
-                  In this environment, our positioning proves its worth. We've invested in projects built to endure: Kaspa's unmatched transaction speeds, Bittensor's expanding AI marketplace, Sui's enterprise-grade scalability. These aren't speculative bets hoping for the next pump—they're <span className="font-medium text-black">infrastructure investments designed to survive market cycles and capture exponential growth</span> when conditions align.
+                  Our approach remains consistent: focus on infrastructure that matters. Kaspa processes transactions faster than any proof-of-work chain. Bittensor connects AI models in ways traditional tech can't. Toncoin leverages Telegram's billion users. <span className="font-medium text-black">We see these as foundational technologies</span>, not momentum trades. They're built to operate through cycles, not just ride them.
                 </p>
                 
                 {/* Historical Examples */}
