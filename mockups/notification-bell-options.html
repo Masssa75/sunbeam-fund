@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Bell Options - Sunbeam Capital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .option-container {
+      margin-bottom: 80px;
+      border: 2px dashed #e5e7eb;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .dropdown {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 p-8">
+  <h1 class="text-3xl font-bold mb-8">Notification Bell Design Options</h1>
+
+  <!-- Option 1: Simple Dropdown -->
+  <div class="option-container">
+    <h2 class="text-xl font-semibold mb-4 text-blue-600">Option 1: Simple Dropdown</h2>
+    <div class="bg-white shadow-sm border border-gray-200 p-4 rounded-lg max-w-7xl">
+      <div class="flex justify-between items-center">
+        <div class="text-xl font-semibold">Sunbeam Capital</div>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <!-- Notification Bell -->
+            <button class="p-2 hover:bg-gray-100 rounded-lg relative">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              </svg>
+              <!-- Red dot for new notifications -->
+              <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+            
+            <!-- Dropdown -->
+            <div class="dropdown absolute right-0 mt-2 w-80 bg-white rounded-lg border border-gray-200 py-2">
+              <div class="px-4 py-3 border-b border-gray-100">
+                <h3 class="font-semibold text-gray-900">Notifications</h3>
+                <p class="text-sm text-gray-500 mt-1">Stay updated with important fund alerts</p>
+              </div>
+              
+              <div class="p-4">
+                <div class="mb-4">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-700">Enable Notifications</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" class="sr-only peer" checked>
+                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                  <p class="text-xs text-gray-500">Receive alerts for high-importance market updates</p>
+                </div>
+                
+                <a href="https://t.me/sunbeam_capital_bot?start=connect" class="flex items-center justify-center gap-2 w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                  </svg>
+                  Connect Telegram
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- User menu -->
+          <button class="p-2 hover:bg-gray-100 rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 2: Status-Based Design -->
+  <div class="option-container">
+    <h2 class="text-xl font-semibold mb-4 text-blue-600">Option 2: Status-Based Design</h2>
+    <div class="bg-white shadow-sm border border-gray-200 p-4 rounded-lg max-w-7xl">
+      <div class="flex justify-between items-center">
+        <div class="text-xl font-semibold">Sunbeam Capital</div>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <!-- Notification Bell -->
+            <button class="p-2 hover:bg-gray-100 rounded-lg">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              </svg>
+            </button>
+            
+            <!-- Dropdown -->
+            <div class="dropdown absolute right-0 mt-2 w-80 bg-white rounded-lg border border-gray-200">
+              <!-- Not Connected State -->
+              <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                  </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Enable Notifications</h3>
+                <p class="text-sm text-gray-500 mb-6">Get instant alerts for important fund updates and market movements</p>
+                
+                <a href="https://t.me/sunbeam_capital_bot?start=connect" class="inline-flex items-center justify-center gap-2 bg-blue-500 text-white rounded-lg px-6 py-3 hover:bg-blue-600 transition-colors font-medium">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                  </svg>
+                  Set Up Telegram Alerts
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- User menu -->
+          <button class="p-2 hover:bg-gray-100 rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 3: With Recent Alerts Preview -->
+  <div class="option-container">
+    <h2 class="text-xl font-semibold mb-4 text-blue-600">Option 3: With Recent Alerts Preview</h2>
+    <div class="bg-white shadow-sm border border-gray-200 p-4 rounded-lg max-w-7xl">
+      <div class="flex justify-between items-center">
+        <div class="text-xl font-semibold">Sunbeam Capital</div>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <!-- Notification Bell -->
+            <button class="p-2 hover:bg-gray-100 rounded-lg relative">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              </svg>
+              <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+            
+            <!-- Dropdown -->
+            <div class="dropdown absolute right-0 mt-2 w-96 bg-white rounded-lg border border-gray-200">
+              <div class="px-4 py-3 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-semibold text-gray-900">Notifications</h3>
+                  <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">3 new</span>
+                </div>
+              </div>
+              
+              <!-- Recent Alerts -->
+              <div class="max-h-64 overflow-y-auto">
+                <div class="px-4 py-3 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="flex items-start gap-3">
+                    <div class="w-2 h-2 bg-red-500 rounded-full mt-1.5"></div>
+                    <div class="flex-1">
+                      <p class="text-sm font-medium text-gray-900">Kaspa Alert (Score: 8/10)</p>
+                      <p class="text-xs text-gray-500 mt-1">Major partnership announcement with leading payment processor...</p>
+                      <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="px-4 py-3 hover:bg-gray-50 border-b border-gray-100">
+                  <div class="flex items-start gap-3">
+                    <div class="w-2 h-2 bg-yellow-500 rounded-full mt-1.5"></div>
+                    <div class="flex-1">
+                      <p class="text-sm font-medium text-gray-900">Bittensor Update (Score: 7/10)</p>
+                      <p class="text-xs text-gray-500 mt-1">Network upgrade scheduled for next week...</p>
+                      <p class="text-xs text-gray-400 mt-1">5 hours ago</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Connect CTA -->
+              <div class="p-4 bg-gray-50 border-t border-gray-100">
+                <p class="text-xs text-gray-600 mb-3">Get instant alerts on Telegram</p>
+                <a href="https://t.me/sunbeam_capital_bot?start=connect" class="flex items-center justify-center gap-2 w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors text-sm font-medium">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                  </svg>
+                  Enable Push Notifications
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- User menu -->
+          <button class="p-2 hover:bg-gray-100 rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 4: Connected State -->
+  <div class="option-container">
+    <h2 class="text-xl font-semibold mb-4 text-blue-600">Option 4: Connected State (What users see after connecting)</h2>
+    <div class="bg-white shadow-sm border border-gray-200 p-4 rounded-lg max-w-7xl">
+      <div class="flex justify-between items-center">
+        <div class="text-xl font-semibold">Sunbeam Capital</div>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <!-- Notification Bell (no red dot when connected) -->
+            <button class="p-2 hover:bg-gray-100 rounded-lg">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              </svg>
+            </button>
+            
+            <!-- Dropdown -->
+            <div class="dropdown absolute right-0 mt-2 w-80 bg-white rounded-lg border border-gray-200">
+              <div class="px-4 py-3 border-b border-gray-100">
+                <h3 class="font-semibold text-gray-900">Notifications</h3>
+                <div class="flex items-center gap-2 mt-1">
+                  <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span class="text-sm text-green-600">Connected to Telegram</span>
+                </div>
+              </div>
+              
+              <div class="p-4">
+                <div class="bg-gray-50 rounded-lg p-3 mb-3">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                    </svg>
+                    <div class="flex-1">
+                      <p class="text-sm font-medium text-gray-900">@your_username</p>
+                      <p class="text-xs text-gray-500">Receiving all alerts</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="space-y-2">
+                  <label class="flex items-center justify-between py-2">
+                    <span class="text-sm text-gray-700">High Priority Alerts</span>
+                    <input type="checkbox" checked class="rounded text-blue-600">
+                  </label>
+                  <label class="flex items-center justify-between py-2">
+                    <span class="text-sm text-gray-700">Monthly Reports</span>
+                    <input type="checkbox" checked class="rounded text-blue-600">
+                  </label>
+                  <label class="flex items-center justify-between py-2">
+                    <span class="text-sm text-gray-700">Portfolio Updates</span>
+                    <input type="checkbox" checked class="rounded text-blue-600">
+                  </label>
+                </div>
+                
+                <button class="w-full text-center text-sm text-gray-500 hover:text-gray-700 mt-4">
+                  Manage settings in Telegram
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- User menu -->
+          <button class="p-2 hover:bg-gray-100 rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 5: Minimal Bell Only -->
+  <div class="option-container">
+    <h2 class="text-xl font-semibold mb-4 text-blue-600">Option 5: Minimal - Bell Only</h2>
+    <div class="bg-white shadow-sm border border-gray-200 p-4 rounded-lg max-w-7xl">
+      <div class="flex justify-between items-center">
+        <div class="text-xl font-semibold">Sunbeam Capital</div>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <!-- Notification Bell -->
+            <button class="p-2 hover:bg-gray-100 rounded-lg relative group">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              </svg>
+              <!-- Tooltip -->
+              <div class="absolute right-0 mt-2 w-48 bg-gray-900 text-white text-xs rounded-lg p-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                Click to enable notifications
+              </div>
+            </button>
+            
+            <!-- Simple Dropdown -->
+            <div class="dropdown absolute right-0 mt-2 w-72 bg-white rounded-lg border border-gray-200 p-4">
+              <h3 class="font-semibold text-gray-900 mb-3">Get Notified</h3>
+              <p class="text-sm text-gray-600 mb-4">Receive important fund updates instantly</p>
+              <a href="https://t.me/sunbeam_capital_bot?start=connect" class="flex items-center justify-center gap-2 w-full bg-black text-white rounded-lg px-4 py-2.5 hover:bg-gray-800 transition-colors">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                </svg>
+                Connect Telegram
+              </a>
+            </div>
+          </div>
+          
+          <!-- User menu -->
+          <button class="p-2 hover:bg-gray-100 rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Add click handlers to show/hide dropdowns
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const dropdown = e.currentTarget.parentElement.querySelector('.dropdown');
+        if (dropdown) {
+          dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+      });
+    });
+    
+    // Initially hide all dropdowns
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+      dropdown.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

@@ -205,6 +205,32 @@ export default function InvestorsPage() {
     }
   }
 
+  const handleGenerateTelegramToken = async (investorId: string) => {
+    try {
+      const response = await fetch('/api/telegram/generate-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ investorId }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate token')
+      }
+
+      const data = await response.json()
+      const link = `https://t.me/sunbeam_capital_bot?start=${data.token}`
+      
+      // Copy to clipboard
+      await navigator.clipboard.writeText(link)
+      
+      alert(`Telegram connection link copied to clipboard!\n\nShare this link with the investor:\n${link}\n\nThe investor should:\n1. Click the link or search for @sunbeam_capital_bot\n2. Start a chat and send: /start ${data.token}\n3. They will receive notifications for important updates`)
+      
+    } catch (err) {
+      alert('Failed to generate Telegram connection link')
+      console.error(err)
+    }
+  }
+
   if (loading) return <div className="p-8">Loading...</div>
   if (error) return <div className="p-8 text-red-600">{error}</div>
 
@@ -305,6 +331,18 @@ export default function InvestorsPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                   </svg>
                                   Edit investor
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    handleGenerateTelegramToken(user.id)
+                                    setOpenMenuId(null)
+                                  }}
+                                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                  <svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                  </svg>
+                                  Connect Telegram
                                 </button>
                               </>
                             )}

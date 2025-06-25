@@ -77,30 +77,51 @@ serve(async (req) => {
 
     // Check if any tweets have importance >= threshold and send notifications
     if (searchResult.tweets && searchResult.tweets.length > 0) {
-      // Get all telegram connections that want notifications for this project
+      // Get all active telegram connections for investors
       const { data: connections } = await supabase
-        .from('telegram_connections')
+        .from('investor_telegram')
         .select('*')
+        .eq('is_active', true)
         .not('telegram_chat_id', 'is', null)
       
       if (connections && connections.length > 0) {
-        for (const connection of connections) {
-          const prefs = connection.notification_preferences || {}
-          const threshold = prefs.threshold || 7
+        // Filter tweets that meet the importance threshold
+        const threshold = project.alert_threshold || 7
+        const importantTweets = searchResult.tweets.filter(
+          (tweet: any) => tweet.importance_score >= threshold
+        )
+        
+        if (importantTweets.length > 0) {
+          console.log(`Found ${importantTweets.length} important tweets (score >= ${threshold})`)
           
-          // Filter tweets based on project's threshold
-          const importantTweets = searchResult.tweets.filter(
-            (tweet: any) => tweet.importance_score >= (project.alert_threshold || 7)
-          )
-          
-          if (importantTweets.length > 0) {
-            console.log(`Sending ${importantTweets.length} important tweets to ${connection.telegram_username}`)
+          for (const connection of connections) {
+            const prefs = connection.notification_preferences || {}
             
-            // Format notification message
-            const message = formatNotificationMessage(project, importantTweets)
-            
-            // Send via Telegram
-            await sendTelegramNotification(connection.telegram_chat_id, message, supabaseUrl, supabaseServiceKey)
+            // Check if user wants important alerts
+            if (prefs.important_alerts !== false) { // Default to true if not specified
+              console.log(`Sending ${importantTweets.length} important tweets to ${connection.telegram_username || connection.telegram_chat_id}`)
+              
+              // Format notification message
+              const message = formatNotificationMessage(project, importantTweets)
+              
+              // Send via Telegram
+              await sendTelegramNotification(connection.telegram_chat_id, message, supabaseUrl, supabaseServiceKey)
+              
+              // Log the notification
+              await supabase
+                .from('notification_logs')
+                .insert({
+                  investor_telegram_id: connection.id,
+                  notification_type: 'alert',
+                  message: message,
+                  metadata: {
+                    project_id: project.project_id,
+                    project_name: project.project_name,
+                    tweet_count: importantTweets.length,
+                    tweet_ids: importantTweets.map((t: any) => t.tweet_id)
+                  }
+                })
+            }
           }
         }
       }

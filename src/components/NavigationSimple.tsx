@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import NotificationBell from './NotificationBell'
 
 export default function NavigationSimple() {
   const router = useRouter()
@@ -118,7 +119,10 @@ export default function NavigationSimple() {
             
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            {/* Notification Bell - only show for logged in users */}
+            {user && <NotificationBell />}
+            
             {/* Menu button for all screen sizes */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -171,6 +175,20 @@ export default function NavigationSimple() {
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Reports
+                      </Link>
+                      <Link
+                        href="/admin/telegram"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Telegram Notifications
+                      </Link>
+                      <Link
+                        href="/admin/twitter-monitoring"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Twitter Monitoring
                       </Link>
                       <Link
                         href="/investor"

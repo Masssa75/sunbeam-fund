@@ -4,22 +4,33 @@ import { supabaseAdmin } from '@/lib/supabase/client';
 
 export async function POST(request: NextRequest) {
   try {
-    // Check if user is admin
-    const { user, isAdmin } = await getServerAuth();
+    // Check if user is authenticated
+    const { user, isAdmin, authenticated } = await getServerAuth();
     
-    if (!user) {
+    if (!user || !authenticated) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    if (!isAdmin) {
-      return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
     // Use admin client for data operations
     const supabase = supabaseAdmin;
 
     const body = await request.json();
-    const { investorId } = body;
+    let { investorId } = body;
+
+    // If no investorId provided and user is not admin, use their own investor ID
+    if (!investorId && !isAdmin) {
+      const { data: investor } = await supabase
+        .from('investors')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+        
+      if (!investor) {
+        return NextResponse.json({ error: 'Not an investor' }, { status: 403 });
+      }
+      
+      investorId = investor.id;
+    }
 
     if (!investorId) {
       return NextResponse.json({ error: 'Investor ID is required' }, { status: 400 });
@@ -59,13 +70,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate new connection token
-    const { data: tokenData, error: tokenError } = await supabase
-      .rpc('generate_connection_token');
-
-    if (tokenError || !tokenData) {
-      console.error('Error generating token:', tokenError);
-      return NextResponse.json({ error: 'Failed to generate token' }, { status: 500 });
-    }
+    const tokenData = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
     // Create new connection record
     const { data: newConnection, error: createError } = await supabase
@@ -73,6 +78,7 @@ export async function POST(request: NextRequest) {
       .insert({
         investor_id: investorId,
         connection_token: tokenData,
+        telegram_chat_id: 0, // Placeholder, will be updated when they connect
         is_active: false, // Will be activated when they connect
       })
       .select()
