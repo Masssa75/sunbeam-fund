@@ -9,8 +9,8 @@ async function deleteTelegramConnection() {
     SELECT it.*, i.name as investor_name 
     FROM investor_telegram it
     LEFT JOIN investors i ON it.investor_id = i.id
-    WHERE it.telegram_chat_id IN ('5089502326', '582076')
-    OR i.name LIKE '%Marc%';
+    WHERE i.name LIKE '%Marc%' OR i.email LIKE '%marc%'
+    ORDER BY it.created_at DESC;
   `
   
   console.log('Checking existing Telegram connections...')

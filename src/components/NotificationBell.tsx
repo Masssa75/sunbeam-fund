@@ -175,23 +175,36 @@ export default function NotificationBell() {
           {!telegramConnection.is_connected ? (
             <div className="p-4 bg-gray-50 border-t border-gray-100">
               <p className="text-xs text-gray-600 mb-3">Get instant alerts on Telegram</p>
-              <a 
-                href={telegramLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  // Show a helpful message
-                  setTimeout(() => {
-                    alert('Opening Telegram... Click "START" in the bot chat to complete connection.');
-                  }, 100);
+              <button
+                onClick={async () => {
+                  if (!connectionToken) {
+                    // Generate token if not already generated
+                    try {
+                      const tokenResponse = await fetch('/api/telegram/generate-token', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                      })
+                      if (tokenResponse.ok) {
+                        const tokenData = await tokenResponse.json()
+                        const link = `https://t.me/sunbeam_capital_bot?start=${tokenData.token}`
+                        window.open(link, '_blank')
+                      }
+                    } catch (error) {
+                      alert('Failed to generate connection link. Please try again.')
+                    }
+                  } else {
+                    // Token already exists, use it
+                    window.open(telegramLink, '_blank')
+                  }
                 }}
-                className="flex items-center justify-center gap-2 w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors text-sm font-medium"
+                disabled={loading}
+                className="flex items-center justify-center gap-2 w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors text-sm font-medium disabled:bg-gray-400"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
                 </svg>
                 Enable Push Notifications
-              </a>
+              </button>
             </div>
           ) : (
             <div className="p-4 bg-gray-50 border-t border-gray-100">
