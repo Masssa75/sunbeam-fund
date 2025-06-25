@@ -1,18 +1,16 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-import { cookies } from 'next/headers'
+import { supabaseAdmin } from '@/lib/supabase/client'
 
 export async function GET() {
   try {
-    // Get user session
-    const cookieStore = cookies()
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+    console.log('[recent-alerts] API called')
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    // Use the admin client that has hardcoded fallbacks
+    const supabase = supabaseAdmin
     
     // Get recent high-importance tweets (last 24 hours)
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    console.log('[recent-alerts] Fetching tweets since:', twentyFourHoursAgo)
     
     const { data: alerts, error } = await supabase
       .from('tweet_analyses')
@@ -23,9 +21,11 @@ export async function GET() {
       .limit(5)
     
     if (error) {
-      console.error('Error fetching alerts:', error)
+      console.error('[recent-alerts] Error fetching alerts:', error)
       return NextResponse.json({ alerts: [] })
     }
+    
+    console.log(`[recent-alerts] Found ${alerts?.length || 0} alerts with score 9+`)
     
     // Get project names
     const projectIds = Array.from(new Set(alerts?.map(a => a.project_id) || []))
@@ -42,6 +42,7 @@ export async function GET() {
       project_name: projectMap.get(alert.project_id) || alert.project_id
     })) || []
     
+    console.log(`[recent-alerts] Returning ${enrichedAlerts.length} enriched alerts`)
     return NextResponse.json({ alerts: enrichedAlerts })
     
   } catch (error) {
