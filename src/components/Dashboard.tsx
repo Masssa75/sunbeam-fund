@@ -94,6 +94,18 @@ export default function Dashboard() {
               </Link>
             </div>
           </div>
+
+          <div className="mt-6 bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-semibold mb-4">Notifications & Communications</h3>
+            <div className="flex gap-4">
+              <Link
+                href="/admin/telegram"
+                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+              >
+                Telegram Notifications
+              </Link>
+            </div>
+          </div>
         </div>
       </main>
     )
