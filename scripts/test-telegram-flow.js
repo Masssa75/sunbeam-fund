@@ -58,6 +58,9 @@ async function testTelegramFlow() {
     console.log('✓ Notification dropdown opened');
     
     console.log('4. Looking for Enable Push Notifications button...');
+    // Wait a bit for loading to complete
+    await page.waitForTimeout(3000);
+    
     // Check if the button exists and is clickable
     const enableButton = await page.locator('button:has-text("Enable Push Notifications")').first();
     const isVisible = await enableButton.isVisible();
@@ -65,6 +68,10 @@ async function testTelegramFlow() {
     
     console.log(`   Button visible: ${isVisible}`);
     console.log(`   Button enabled: ${isEnabled}`);
+    
+    // Check for loading state
+    const loadingElements = await page.locator('text=Loading').count();
+    console.log(`   Loading elements: ${loadingElements}`);
     
     if (isVisible && isEnabled) {
       // Intercept the window.open call
