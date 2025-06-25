@@ -3,7 +3,55 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 25, 2025 - 6:00 PM)
+## 🚀 CURRENT STATUS (June 25, 2025 - 8:30 PM)
+
+### ⚠️ SESSION ENDING - TELEGRAM CONNECTION ISSUE PERSISTS
+**Status**: Fixed multiple issues but "Failed to create connection" error remains
+
+**Work Done This Session**:
+
+1. **Fixed Telegram Bot Welcome Message** ✅
+   - Updated webhook to show friendly welcome instead of error
+   - Simplified `/start` command handling
+   - Improved UX with clear instructions
+
+2. **Fixed Multiple API Issues** ✅
+   - Fixed JSON parse error in generate-token API
+   - Fixed telegram_chat_id NULL constraint (changed to 0)
+   - Fixed investor lookup from user_id to id column
+   - Fixed connection-status API same issue
+   - Added better error handling and logging
+
+3. **Created Investor Records** ✅
+   - Created investor for marc@minutevideos.com (ID: a78cd233-9372-43af-9304-ee4a3e2c0547)
+   - Created investor for marc@cyrator.com (ID: 74c1ca77-4b94-4a76-ab4d-6f77b93ab920)
+   - Both properly linked to auth.users table
+
+4. **Updated UI/UX** ✅
+   - Changed connect button from link to button with better control
+   - Added settings icon when connected
+   - Improved error messages
+
+**Current Issue**: "Failed to create connection" error persists
+- API tests show token generation works (returns 200)
+- Tokens are being created in database
+- But frontend still shows error message
+- Happens for both marc@cyrator.com and marc@minutevideos.com
+
+**Database State**:
+- investor_telegram table has multiple test tokens created
+- Both Marc accounts have investor records
+- Foreign key constraints satisfied
+
+**CRITICAL FOR NEXT SESSION**:
+1. Debug why frontend shows "Failed to create connection" when API succeeds
+2. Check if there's a race condition or state issue
+3. May need to add more detailed logging to trace exact failure point
+4. Consider if the error is coming from a different API call
+
+**Key Discovery**: The generate-token API returns 200 and creates tokens successfully, but user still sees error. This suggests the error might be coming from somewhere else in the flow.
+
+## 🚀 PREVIOUS SESSION (June 25, 2025 - 6:00 PM)
 
 ### ✅ SESSION COMPLETED - INVESTOR DASHBOARD UI REFINEMENTS & TWEET FILTERING
 **Status**: Enhanced investor dashboard with improved UI/UX and advanced tweet filtering
