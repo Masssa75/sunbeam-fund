@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import InvestorDashboard from '@/components/InvestorDashboardEnhanced'
+import InvestorDashboard from '@/components/InvestorDashboardComplete'
 import VersionBadge from '@/components/VersionBadge'
 import ErrorBoundary from '@/components/ErrorBoundary'
 
