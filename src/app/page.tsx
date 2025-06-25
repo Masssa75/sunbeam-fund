@@ -27,6 +27,12 @@ export default function Home() {
         router.push('/login')
         return
       }
+      
+      // If admin, redirect to admin page
+      if (data.isAdmin) {
+        router.push('/admin')
+        return
+      }
     } catch (error) {
       setAuthenticated(false)
       router.push('/login')
