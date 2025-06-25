@@ -299,11 +299,11 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
 
                 <p>
-                  The irony is striking: <span className="font-medium text-black">the United States has become extraordinarily pro-crypto</span>, with everything positioned for the market to take off following Trump's inauguration.
+                  The irony is striking: <span className="font-medium text-black">the United States has become extraordinarily pro-crypto</span>, with everything positioned for the market to take off following Trump's inauguration. Yet the rally hasn't materialized.
                 </p>
                 
                 <p>
-                  Multiple forces compound this uncertainty. Unprecedented tariff wars and Middle East conflicts directly impact inflation expectations. The Trump administration's willingness to pursue radical policies keeps markets constantly guessing. <span className="font-medium text-black">Together, these factors create a holding pattern</span>—everyone's waiting for clarity that hasn't arrived.
+                  Why? Multiple forces are keeping the market in check. Unprecedented tariff wars and Middle East conflicts directly impact inflation expectations. The Trump administration's willingness to pursue radical policies keeps markets constantly guessing. <span className="font-medium text-black">Together, these factors create a holding pattern</span>—everyone's waiting for clarity that hasn't arrived.
                 </p>
 
                 <p>
