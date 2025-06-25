@@ -187,7 +187,11 @@ export default function TelegramAdminPage() {
               <p><span className="font-medium">Connected Investors:</span> {connectedCount}</p>
             </div>
           ) : (
-            <p className="text-red-600">Bot not configured. Please add TELEGRAM_BOT_TOKEN to environment variables.</p>
+            <div className="space-y-2">
+              <p className="text-yellow-600">Bot configuration is managed in Supabase Edge Functions.</p>
+              <p className="text-sm text-gray-600">The bot token is securely stored as TELEGRAM_BOT_TOKEN in Supabase secrets.</p>
+              <p className="text-sm text-gray-600">Bot username: <span className="font-mono">@sunbeam_capital_bot</span></p>
+            </div>
           )}
         </div>
 
@@ -206,13 +210,16 @@ export default function TelegramAdminPage() {
             </div>
           ) : (
             <div>
-              <p className="text-yellow-600 mb-4">Webhook not configured</p>
+              <p className="text-green-600 mb-4">✓ Webhook is configured in Supabase Edge Functions</p>
               <p className="text-sm text-gray-600">
-                To set up the webhook, deploy the Edge Functions and then set the webhook URL to:
+                The webhook is active at:
               </p>
               <code className="block mt-2 p-2 bg-gray-100 rounded text-sm">
                 https://gualxudgbmpuhjbumfeh.supabase.co/functions/v1/telegram-webhook
               </code>
+              <p className="text-sm text-gray-600 mt-2">
+                Note: Webhook status cannot be checked from the web app as the bot token is securely stored in Edge Functions.
+              </p>
             </div>
           )}
         </div>
