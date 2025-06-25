@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       .insert({
         investor_id: investorId,
         connection_token: tokenData,
-        telegram_chat_id: null, // Will be updated when they connect
+        telegram_chat_id: 0, // Placeholder, will be updated when they connect
         is_active: false, // Will be activated when they connect
       })
       .select()
