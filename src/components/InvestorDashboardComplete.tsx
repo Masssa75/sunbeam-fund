@@ -125,10 +125,26 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
       totalCost += pos.cost_basis
       
       const price = prices[pos.project_id] || 0
-      const currentValue = pos.project_id.startsWith('custom-') ? pos.cost_basis : pos.amount * price
-      totalValue += currentValue
+      let currentValue = pos.project_id.startsWith('custom-') ? pos.cost_basis : pos.amount * price
       
-      allocations[pos.project_name] = (currentValue / totalValue) * 100
+      // If no price and not custom, use cost basis as fallback
+      if (currentValue === 0 && !pos.project_id.startsWith('custom-')) {
+        currentValue = pos.cost_basis
+      }
+      
+      totalValue += currentValue
+    })
+    
+    // Recalculate allocations after we have the total
+    positions.forEach(pos => {
+      const price = prices[pos.project_id] || 0
+      let currentValue = pos.project_id.startsWith('custom-') ? pos.cost_basis : pos.amount * price
+      
+      if (currentValue === 0 && !pos.project_id.startsWith('custom-')) {
+        currentValue = pos.cost_basis
+      }
+      
+      allocations[pos.project_name] = totalValue > 0 ? (currentValue / totalValue) * 100 : 0
     })
     
     const totalReturn = totalValue - totalCost
@@ -152,14 +168,19 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
         ? pos.cost_basis 
         : pos.amount * currentPrice
       
+      // If no current price and not custom, use cost basis as fallback
+      const fallbackValue = currentPrice === 0 && !pos.project_id.startsWith('custom-') 
+        ? pos.cost_basis 
+        : value
+      
       // Calculate allocation - handle division by zero
       const allocation = (metrics.totalValue > 0) 
-        ? (value / metrics.totalValue) * 100 
+        ? (fallbackValue / metrics.totalValue) * 100 
         : 0
       
       return {
         ...pos,
-        value,
+        value: fallbackValue,
         allocation,
         currentPrice
       }
