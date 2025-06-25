@@ -45,35 +45,51 @@ export default function NotificationBell() {
   }, [])
 
   const loadNotificationData = async () => {
+    setLoading(true)
     try {
       // Load recent high-importance alerts
-      const alertsResponse = await fetch('/api/notifications/recent-alerts')
-      if (alertsResponse.ok) {
-        const alertsData = await alertsResponse.json()
-        setRecentAlerts(alertsData.alerts || [])
+      try {
+        const alertsResponse = await fetch('/api/notifications/recent-alerts')
+        if (alertsResponse.ok) {
+          const alertsData = await alertsResponse.json()
+          setRecentAlerts(alertsData.alerts || [])
+        }
+      } catch (e) {
+        console.error('Error loading alerts:', e)
       }
 
       // Check Telegram connection status
-      const connectionResponse = await fetch('/api/notifications/connection-status')
-      if (connectionResponse.ok) {
-        const connectionData = await connectionResponse.json()
-        setTelegramConnection(connectionData)
-        
-        // If not connected, generate a connection token
-        if (!connectionData.is_connected) {
-          const tokenResponse = await fetch('/api/telegram/generate-token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-          })
-          if (tokenResponse.ok) {
-            const tokenData = await tokenResponse.json()
-            setConnectionToken(tokenData.token)
+      try {
+        const connectionResponse = await fetch('/api/notifications/connection-status')
+        if (connectionResponse.ok) {
+          const connectionData = await connectionResponse.json()
+          setTelegramConnection(connectionData)
+          
+          // If not connected, generate a connection token
+          if (!connectionData.is_connected) {
+            try {
+              const tokenResponse = await fetch('/api/telegram/generate-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+              })
+              if (tokenResponse.ok) {
+                const tokenData = await tokenResponse.json()
+                setConnectionToken(tokenData.token)
+              } else {
+                console.error('Failed to generate token:', tokenResponse.status)
+              }
+            } catch (e) {
+              console.error('Error generating token:', e)
+            }
           }
         }
+      } catch (e) {
+        console.error('Error checking connection status:', e)
       }
     } catch (error) {
       console.error('Error loading notification data:', error)
     } finally {
+      // Always set loading to false
       setLoading(false)
     }
   }
