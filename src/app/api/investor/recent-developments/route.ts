@@ -17,46 +17,53 @@ export async function GET(request: NextRequest) {
     const supabase = supabaseAdmin;
     console.log('Supabase admin client created');
 
-    // Get recent important tweets with project information
-    console.log('Querying tweet_analyses with monitored_projects join...');
-    const { data: tweets, error } = await supabase
+    // Get recent important tweets
+    console.log('Querying tweet_analyses...');
+    const { data: tweets, error: tweetsError } = await supabase
       .from('tweet_analyses')
-      .select(`
-        id,
-        project_id,
-        tweet_text,
-        summary,
-        importance_score,
-        category,
-        created_at,
-        monitored_projects (
-          project_name,
-          symbol
-        )
-      `)
+      .select('*')
       .gte('importance_score', 7)  // Only show important tweets
       .order('created_at', { ascending: false })
       .limit(10);
-
-    console.log('Query result:', { tweetsCount: tweets?.length, hasError: !!error });
     
-    if (error) {
-      console.error('Error fetching recent developments:', error);
-      return NextResponse.json({ error: 'Failed to fetch recent developments', details: error }, { status: 500 });
+    if (tweetsError) {
+      console.error('Error fetching tweets:', tweetsError);
+      return NextResponse.json({ error: 'Failed to fetch tweets', details: tweetsError }, { status: 500 });
     }
+    
+    // Get monitored projects to map project_id to project_name
+    console.log('Fetching monitored projects...');
+    const { data: projects, error: projectsError } = await supabase
+      .from('monitored_projects')
+      .select('project_id, project_name, symbol');
+    
+    if (projectsError) {
+      console.error('Error fetching projects:', projectsError);
+      return NextResponse.json({ error: 'Failed to fetch projects', details: projectsError }, { status: 500 });
+    }
+    
+    // Create a map for quick lookup
+    const projectMap = new Map(
+      (projects || []).map(p => [p.project_id, { name: p.project_name, symbol: p.symbol }])
+    );
+
+    console.log('Query result:', { tweetsCount: tweets?.length, projectsCount: projects?.length });
 
     // Transform the data to match the component's expected format
-    const formattedTweets = (tweets || []).map((tweet: any) => ({
-      id: tweet.id,
-      project_id: tweet.project_id,
-      project_name: tweet.monitored_projects?.project_name || 'Unknown Project',
-      symbol: tweet.monitored_projects?.symbol || '',
-      tweet_text: tweet.tweet_text,
-      summary: tweet.summary,
-      importance_score: tweet.importance_score,
-      category: tweet.category,
-      created_at: tweet.created_at
-    }));
+    const formattedTweets = (tweets || []).map((tweet: any) => {
+      const project = projectMap.get(tweet.project_id);
+      return {
+        id: tweet.id,
+        project_id: tweet.project_id,
+        project_name: project?.name || 'Unknown Project',
+        symbol: project?.symbol || '',
+        tweet_text: tweet.tweet_text,
+        summary: tweet.summary,
+        importance_score: tweet.importance_score,
+        category: tweet.category,
+        created_at: tweet.created_at
+      };
+    });
 
     console.log('✅ Returning recent developments successfully');
     return NextResponse.json({ tweets: formattedTweets });
