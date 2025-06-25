@@ -22,6 +22,7 @@ export default function NotificationBell() {
   const [telegramConnection, setTelegramConnection] = useState<TelegramConnection>({ is_connected: false })
   const [loading, setLoading] = useState(true)
   const [connectionToken, setConnectionToken] = useState<string | null>(null)
+  const [isConnecting, setIsConnecting] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -198,61 +199,115 @@ export default function NotificationBell() {
               <p className="text-xs text-gray-600 mb-3">Get instant alerts on Telegram</p>
               <button
                 onClick={async () => {
+                  // Prevent multiple clicks
+                  if (isConnecting) {
+                    console.log('[NotificationBell] Already connecting, ignoring click')
+                    return
+                  }
+                  
                   console.log('[NotificationBell] Connect button clicked')
                   console.log('[NotificationBell] Current connectionToken:', connectionToken)
+                  setIsConnecting(true)
                   
-                  if (!connectionToken) {
-                    // Generate token if not already generated
-                    console.log('[NotificationBell] No token exists, generating new one...')
-                    try {
+                  try {
+                    if (!connectionToken) {
+                      // Generate token if not already generated
+                      console.log('[NotificationBell] No token exists, generating new one...')
+                      
                       const tokenResponse = await fetch('/api/telegram/generate-token/', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({})
                       })
-                      console.log('[NotificationBell] Button click - Token generation response status:', tokenResponse.status)
-                      console.log('[NotificationBell] Response headers:', Array.from(tokenResponse.headers.entries()))
+                      
+                      console.log('[NotificationBell] Token generation response:', {
+                        status: tokenResponse.status,
+                        statusText: tokenResponse.statusText,
+                        headers: Object.fromEntries(tokenResponse.headers.entries())
+                      })
+                      
+                      const responseText = await tokenResponse.text()
+                      console.log('[NotificationBell] Response body:', responseText)
                       
                       if (tokenResponse.ok) {
-                        const tokenData = await tokenResponse.json()
-                        console.log('[NotificationBell] Button click - Token generated successfully:', tokenData)
-                        const link = `https://t.me/sunbeam_capital_bot?start=${tokenData.token}`
-                        console.log('[NotificationBell] Opening Telegram link:', link)
-                        window.open(link, '_blank')
-                      } else {
-                        const errorText = await tokenResponse.text()
-                        console.error('[NotificationBell] Button click - Token generation failed:', tokenResponse.status, errorText)
-                        
-                        // Try to parse as JSON if possible
-                        let errorMessage = 'Unknown error'
                         try {
-                          const errorData = JSON.parse(errorText)
-                          errorMessage = errorData.error || errorMessage
+                          const tokenData = JSON.parse(responseText)
+                          console.log('[NotificationBell] Token generated successfully:', tokenData)
+                          
+                          if (tokenData.token) {
+                            const link = `https://t.me/sunbeam_capital_bot?start=${tokenData.token}`
+                            console.log('[NotificationBell] Opening Telegram link:', link)
+                            window.open(link, '_blank')
+                            setConnectionToken(tokenData.token)
+                          } else {
+                            console.error('[NotificationBell] No token in response:', tokenData)
+                            alert('Failed to generate connection link: No token received from server')
+                          }
+                        } catch (parseError) {
+                          console.error('[NotificationBell] Failed to parse response:', parseError)
+                          alert('Failed to generate connection link: Invalid server response')
+                        }
+                      } else {
+                        console.error('[NotificationBell] Token generation failed:', tokenResponse.status, responseText)
+                        
+                        // Try to parse error message
+                        let errorMessage = `Server error (${tokenResponse.status})`
+                        try {
+                          const errorData = JSON.parse(responseText)
+                          errorMessage = errorData.error || errorData.message || errorMessage
                         } catch {
-                          errorMessage = errorText || errorMessage
+                          if (responseText && responseText.length < 200) {
+                            errorMessage = responseText
+                          }
                         }
                         
                         alert(`Failed to generate connection link: ${errorMessage}`)
                       }
-                    } catch (error) {
-                      console.error('[NotificationBell] Button click - Token generation exception:', error)
-                      console.error('[NotificationBell] Error stack:', error.stack)
-                      alert('Failed to generate connection link. Please try again.')
+                    } else {
+                      // Token already exists, use it
+                      console.log('[NotificationBell] Using existing token:', connectionToken)
+                      console.log('[NotificationBell] Opening Telegram link:', telegramLink)
+                      window.open(telegramLink, '_blank')
                     }
-                  } else {
-                    // Token already exists, use it
-                    console.log('[NotificationBell] Using existing token:', connectionToken)
-                    console.log('[NotificationBell] Opening Telegram link:', telegramLink)
-                    window.open(telegramLink, '_blank')
+                  } catch (error) {
+                    console.error('[NotificationBell] Connection error:', error)
+                    console.error('[NotificationBell] Error details:', {
+                      message: error.message,
+                      stack: error.stack,
+                      name: error.name
+                    })
+                    
+                    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                      alert('Network error: Unable to connect to server. Please check your internet connection.')
+                    } else {
+                      alert(`Connection error: ${error.message || 'Unknown error occurred'}`)
+                    }
+                  } finally {
+                    // Re-enable button after 2 seconds to prevent rapid clicks
+                    setTimeout(() => {
+                      setIsConnecting(false)
+                    }, 2000)
                   }
                 }}
-                disabled={loading}
+                disabled={loading || isConnecting}
                 className="flex items-center justify-center gap-2 w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors text-sm font-medium disabled:bg-gray-400"
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
-                </svg>
-                Enable Push Notifications
+                {isConnecting ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Connecting...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                    </svg>
+                    Enable Push Notifications
+                  </>
+                )}
               </button>
             </div>
           ) : (

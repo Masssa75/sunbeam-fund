@@ -115,7 +115,18 @@ export async function POST(request: NextRequest) {
         details: createError.details,
         hint: createError.hint
       });
-      return NextResponse.json({ error: 'Failed to create connection' }, { status: 500 });
+      
+      // Provide more specific error messages based on the error code
+      let errorMessage = 'Failed to create connection';
+      if (createError.code === '23505') {
+        errorMessage = 'A connection attempt is already in progress. Please try again in a moment.';
+      } else if (createError.code === '23503') {
+        errorMessage = 'Invalid investor account. Please contact support.';
+      } else if (createError.code === '42P01') {
+        errorMessage = 'Database configuration error. Please contact support.';
+      }
+      
+      return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 
     console.log('[generate-token] Successfully created connection, returning token');
