@@ -45,6 +45,13 @@ export default function NotificationBell() {
 
   useEffect(() => {
     loadNotificationData()
+    
+    // Refresh connection status every 10 seconds to catch Telegram connections
+    const interval = setInterval(() => {
+      loadNotificationData()
+    }, 10000)
+    
+    return () => clearInterval(interval)
   }, [])
   
   useEffect(() => {
