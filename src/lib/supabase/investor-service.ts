@@ -28,12 +28,25 @@ export class InvestorService {
     return data || [];
   }
 
-  async getInvestorById(id: string): Promise<Investor | null> {
-    const { data, error } = await this.supabase
+  async getInvestorById(userId: string): Promise<Investor | null> {
+    // First try to find by user_id (for regular investors)
+    let { data, error } = await this.supabase
       .from('investors')
       .select('*')
-      .eq('id', id)
+      .eq('user_id', userId)
       .single();
+
+    if (error || !data) {
+      // If not found by user_id, try by id (for legacy or test data)
+      const result = await this.supabase
+        .from('investors')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      data = result.data;
+      error = result.error;
+    }
 
     if (error) {
       console.error('Error fetching investor:', error);
