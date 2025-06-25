@@ -367,7 +367,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
             tweets.map((tweet, index) => (
               <div key={tweet.id} className="flex gap-6 mb-8">
                 <div className="text-sm text-gray-400 min-w-24 flex-shrink-0">
-                  {new Date(tweet.created_at).toLocaleDateString()}
+                  {getRelativeTime(tweet.created_at)}
                 </div>
                 <div className="flex-1">
                   <div className="font-semibold text-base mb-1">{tweet.project_name}</div>
@@ -498,6 +498,34 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
       </main>
     </div>
   )
+}
+
+// Helper function for relative time
+function getRelativeTime(dateString: string): string {
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffTime = Math.abs(now.getTime() - date.getTime())
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+  
+  // Check if it's today
+  if (date.toDateString() === now.toDateString()) {
+    return 'Today'
+  }
+  
+  // Check if it's yesterday
+  const yesterday = new Date(now)
+  yesterday.setDate(yesterday.getDate() - 1)
+  if (date.toDateString() === yesterday.toDateString()) {
+    return 'Yesterday'
+  }
+  
+  // If older than 2 days, show the date
+  if (diffDays > 2) {
+    return date.toLocaleDateString()
+  }
+  
+  // For 2 days ago
+  return '2 days ago'
 }
 
 // Helper functions for project data

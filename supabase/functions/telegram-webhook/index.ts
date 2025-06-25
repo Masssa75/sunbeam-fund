@@ -75,19 +75,16 @@ serve(async (req) => {
         const token = text.split(' ')[1]?.trim();
         
         if (!token) {
-          // Show welcome message with clear instructions
+          // Show welcome message
           await sendMessage(TELEGRAM_BOT_TOKEN, chatId, 
             `<b>Welcome to Sunbeam Capital Bot! 👋</b>\n\n` +
             `I help Sunbeam Fund investors stay updated with:\n` +
-            `• Important market alerts\n` +
-            `• Monthly reports\n` +
+            `• Important market alerts (score 7+/10)\n` +
+            `• Monthly investment reports\n` +
             `• Portfolio updates\n\n` +
-            `To connect your account:\n` +
-            `1. Visit https://sunbeam.capital\n` +
-            `2. Click the notification bell (🔔)\n` +
-            `3. Click "Enable Push Notifications"\n` +
-            `4. You'll be redirected here with your connection code\n\n` +
-            `<i>The link will automatically include your unique token.</i>`,
+            `<b>Looks like you need a connection token.</b>\n\n` +
+            `Please return to https://sunbeam.capital and click the notification bell to get your unique connection link.\n\n` +
+            `Questions? Contact your fund administrator.`,
             { parseMode: 'HTML' }
           );
           return new Response('OK', { status: 200 });
