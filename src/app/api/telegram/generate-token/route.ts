@@ -5,9 +5,9 @@ import { supabaseAdmin } from '@/lib/supabase/client';
 export async function POST(request: NextRequest) {
   try {
     // Check if user is authenticated
-    const { user, isAdmin, authenticated } = await getServerAuth();
+    const { user, isAdmin } = await getServerAuth();
     
-    if (!user || !authenticated) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

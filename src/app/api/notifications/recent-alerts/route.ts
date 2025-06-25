@@ -28,7 +28,7 @@ export async function GET() {
     }
     
     // Get project names
-    const projectIds = [...new Set(alerts?.map(a => a.project_id) || [])]
+    const projectIds = Array.from(new Set(alerts?.map(a => a.project_id) || []))
     const { data: projects } = await supabase
       .from('monitored_projects')
       .select('project_id, project_name')

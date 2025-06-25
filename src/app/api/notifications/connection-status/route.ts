@@ -6,7 +6,7 @@ export async function GET() {
   try {
     const authResult = await getServerAuth()
     
-    if (!authResult.authenticated || !authResult.user) {
+    if (!authResult.user) {
       return NextResponse.json({ is_connected: false })
     }
     
