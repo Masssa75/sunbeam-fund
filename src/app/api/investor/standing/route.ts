@@ -38,11 +38,19 @@ export async function GET(request: NextRequest) {
     }
     
     // Get investor info
+    console.log('[Investor Standing] Looking for investor:', investorId);
     const investor = await investorService.getInvestorById(investorId);
     
     if (!investor) {
+      console.log('[Investor Standing] Investor not found for ID:', investorId);
       return NextResponse.json({ error: 'Investor not found' }, { status: 404 });
     }
+    
+    console.log('[Investor Standing] Found investor:', {
+      name: investor.name,
+      accountNumber: investor.account_number,
+      sharePercentage: investor.share_percentage
+    });
     
     // Get fund total value (sum of all positions)
     const cookieStore = cookies();
@@ -78,9 +86,7 @@ export async function GET(request: NextRequest) {
     let prices: Record<string, number> = {};
     try {
       // Use the full URL for API call
-      const apiUrl = process.env.NODE_ENV === 'production' 
-        ? 'https://sunbeam.capital/api/coingecko/price'
-        : `${request.nextUrl.origin}/api/coingecko/price`;
+      const apiUrl = 'https://sunbeam.capital/api/coingecko/price';
         
       const priceResponse = await fetch(apiUrl, {
         method: 'POST',
