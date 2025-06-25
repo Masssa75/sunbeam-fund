@@ -59,12 +59,20 @@ export default function NotificationBell() {
 
   const loadNotificationData = async () => {
     setLoading(true)
+    console.log('[NotificationBell] Loading notification data...')
     try {
       // Load recent high-importance alerts
       try {
-        const alertsResponse = await fetch('/api/notifications/recent-alerts/')
+        const alertsResponse = await fetch('/api/notifications/recent-alerts/', {
+          cache: 'no-store'
+        })
+        console.log('[NotificationBell] Alerts response status:', alertsResponse.status)
         if (alertsResponse.ok) {
           const alertsData = await alertsResponse.json()
+          console.log('[NotificationBell] Received alerts:', alertsData.alerts?.length || 0)
+          alertsData.alerts?.forEach(a => {
+            console.log(`  - ${a.id}: dismissed=${a.is_dismissed}, seen=${a.is_seen}`)
+          })
           setRecentAlerts(alertsData.alerts || [])
         }
       } catch (e) {
@@ -142,6 +150,7 @@ export default function NotificationBell() {
     : 'https://t.me/sunbeam_capital_bot'
   
   const dismissAlert = async (alertId: string) => {
+    console.log('[NotificationBell] Dismissing alert:', alertId)
     try {
       const response = await fetch('/api/notifications/dismiss/', {
         method: 'POST',
@@ -149,12 +158,18 @@ export default function NotificationBell() {
         body: JSON.stringify({ tweetId: alertId })
       })
       
+      console.log('[NotificationBell] Dismiss response:', response.status)
+      
       if (response.ok) {
+        console.log('[NotificationBell] Successfully dismissed, updating local state')
         // Remove from local state
         setRecentAlerts(alerts => alerts.filter(a => a.id !== alertId))
+      } else {
+        const error = await response.text()
+        console.error('[NotificationBell] Dismiss failed:', response.status, error)
       }
     } catch (error) {
-      console.error('Failed to dismiss notification:', error)
+      console.error('[NotificationBell] Failed to dismiss notification:', error)
     }
   }
   

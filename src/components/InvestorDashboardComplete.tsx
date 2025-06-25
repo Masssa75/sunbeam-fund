@@ -164,8 +164,10 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
   const metrics = portfolioMetrics()
   
   // Get top 4 holdings and group others
+  // Only show projects with detailed explanations
+  const projectsWithExplanations = ['Kaspa', 'Bittensor', 'Toncoin']
   const topHoldings = positions
-    .filter(pos => pos.project_name !== 'CURE Protocol') // Exclude CURE from investor view
+    .filter(pos => projectsWithExplanations.includes(pos.project_name)) // Only show projects with deep dives
     .map(pos => {
       const currentPrice = prices[pos.project_id] || 0
       const value = pos.project_id.startsWith('custom-') 
@@ -193,8 +195,13 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
     .sort((a, b) => b.value - a.value)
   
   const top4 = topHoldings.slice(0, 4)
-  const others = topHoldings.slice(4)
-  const othersTotal = others.reduce((sum, pos) => sum + pos.allocation, 0)
+  
+  // Calculate "others" as all positions not in the projects with explanations
+  const allOtherPositions = positions.filter(pos => 
+    !projectsWithExplanations.includes(pos.project_name) && 
+    pos.project_name !== 'CURE Protocol'
+  )
+  const othersTotal = 100 - topHoldings.reduce((sum, pos) => sum + pos.allocation, 0)
 
   if (!mounted) {
     return <div className="min-h-screen bg-white" />
@@ -210,10 +217,9 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
 
   // Always show portfolio holdings with fallback data
   const displayHoldings = top4.length > 0 ? top4 : [
-    { id: '1', project_name: 'Kaspa', allocation: 18.2, project_id: 'kaspa' },
-    { id: '2', project_name: 'Bittensor', allocation: 15.7, project_id: 'bittensor' },
-    { id: '3', project_name: 'Sui', allocation: 14.3, project_id: 'sui' },
-    { id: '4', project_name: 'Toncoin', allocation: 12.8, project_id: 'toncoin' }
+    { id: '1', project_name: 'Kaspa', allocation: 35.0, project_id: 'kaspa' },
+    { id: '2', project_name: 'Bittensor', allocation: 35.0, project_id: 'bittensor' },
+    { id: '3', project_name: 'Toncoin', allocation: 30.0, project_id: 'toncoin' }
   ]
 
   return (
@@ -479,14 +485,14 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
           ))}
           
           {/* Other Holdings */}
-          {others.length > 0 && (
+          {othersTotal > 0 && (
             <div className="border-t border-gray-200 py-10">
               <div className="flex justify-between items-baseline mb-3">
-                <h2 className="text-2xl font-medium">{others.length} Additional Holdings</h2>
+                <h2 className="text-2xl font-medium">{allOtherPositions.length} Additional Holdings</h2>
                 <span className="text-2xl text-gray-400">{othersTotal.toFixed(1)}%</span>
               </div>
               <p className="text-gray-500 leading-relaxed mb-3">
-                {others.map(p => p.project_name).join(', ')}, and other strategic positions.
+                Sui, Ethereum, Solana, and other strategic positions.
               </p>
               <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-medium">
                 Diversified
