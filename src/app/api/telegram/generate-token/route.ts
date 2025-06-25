@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
       .limit(1);
 
     console.log('[generate-token] Existing connections query result:', existingConnections, 'Error:', checkError);
+    console.log('[generate-token] Query returned', existingConnections?.length || 0, 'connections');
 
     if (existingConnections && existingConnections.length > 0) {
       const existingConnection = existingConnections[0];
