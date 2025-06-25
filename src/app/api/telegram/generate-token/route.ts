@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       const { data: investor } = await supabase
         .from('investors')
         .select('id')
-        .eq('user_id', user.id)
+        .eq('id', user.id)
         .single();
         
       if (!investor) {
