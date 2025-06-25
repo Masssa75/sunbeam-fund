@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getServerAuth } from '@/lib/supabase/server-auth'
-import { createClient } from '@supabase/supabase-js'
+import { supabaseAdmin } from '@/lib/supabase/server-client'
 
 export async function GET() {
   try {
@@ -10,9 +10,7 @@ export async function GET() {
       return NextResponse.json({ is_connected: false })
     }
     
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    const supabase = supabaseAdmin
     
     // Check if user has an investor record
     const { data: investor } = await supabase

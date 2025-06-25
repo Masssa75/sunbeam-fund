@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { TelegramBot } from '@/lib/telegram';
 import { getServerAuth } from '@/lib/supabase/server-auth';
-import { supabaseAdmin } from '@/lib/supabase/client';
+import { supabaseAdmin } from '@/lib/supabase/server-client';
 
 export async function POST(request: NextRequest) {
   try {

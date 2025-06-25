@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerAuth } from '@/lib/supabase/server-auth';
 import { investorService } from '@/lib/supabase/investor-service';
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { cookies } from 'next/headers';
-import type { Database } from '@/lib/supabase/types';
+import { supabaseAdmin } from '@/lib/supabase/server-client';
 
 const ADMIN_EMAILS = [
   'marc@cyrator.com',
@@ -53,26 +51,9 @@ export async function GET(request: NextRequest) {
     });
     
     // Get fund total value (sum of all positions)
-    const cookieStore = cookies();
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co';
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDY2MjkxMywiZXhwIjoyMDY2MjM4OTEzfQ.yFbFAuMR1kDsQ5Tni-FJIruKT9AmCsJg0uyNyEvNyH4';
-    
-    const supabase = createServerClient<Database>(
-      supabaseUrl,
-      supabaseServiceKey,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
-          },
-          set() {},
-          remove() {},
-        },
-      }
-    );
     
     // Get all positions with their current values
-    const { data: positions } = await supabase
+    const { data: positions } = await supabaseAdmin
       .from('positions')
       .select('*');
     

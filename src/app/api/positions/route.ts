@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { supabaseAdmin } from '@/lib/supabase/server-client'
 import type { Database } from '@/lib/supabase/types'
 
 const ADMIN_EMAILS = [
@@ -20,14 +21,11 @@ export async function GET(request: NextRequest) {
     
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co'
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM'
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDY2MjkxMywiZXhwIjoyMDY2MjM4OTEzfQ.yFbFAuMR1kDsQ5Tni-FJIruKT9AmCsJg0uyNyEvNyH4'
     
-    // Use service role key if viewAs is provided (admin viewing as investor)
-    const supabaseKey = viewAsId ? supabaseServiceKey : supabaseAnonKey
-    
+    // Create anon client for auth checks only
     const supabase = createServerClient<Database>(
       supabaseUrl,
-      supabaseKey,
+      supabaseAnonKey,
       {
         cookies: {
           get(name: string) {
@@ -85,7 +83,7 @@ export async function GET(request: NextRequest) {
       console.log('[API Route] Admin viewing as investor:', viewAsId)
       
       // Get investor details to verify they exist
-      const { data: investor, error: investorError } = await supabase
+      const { data: investor, error: investorError } = await supabaseAdmin
         .from('investors')
         .select('*')
         .eq('id', viewAsId)
@@ -114,7 +112,7 @@ export async function GET(request: NextRequest) {
     }
     
     // Fetch positions with authenticated context
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('positions')
       .select('*')
       .order('cost_basis', { ascending: false })
@@ -219,7 +217,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Insert the position
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('positions')
       .insert({
         project_id: body.project_id,

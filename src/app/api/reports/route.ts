@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase/client'
+import { supabaseAdmin } from '@/lib/supabase/server-client'
 import { getServerAuth } from '@/lib/supabase/server-auth'
 
 export async function GET(request: NextRequest) {
   try {
-    if (!supabase) {
-      return NextResponse.json({ error: 'Database not configured' }, { status: 500 })
-    }
-
     // Get month parameter
     const searchParams = request.nextUrl.searchParams
     const month = searchParams.get('month')
 
-    let query = supabase.from('reports').select('*').order('report_month', { ascending: false })
+    let query = supabaseAdmin.from('reports').select('*').order('report_month', { ascending: false })
     
     if (month) {
       query = query.eq('report_month', `${month}-01`)
@@ -40,10 +36,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
 
-    if (!supabase) {
-      return NextResponse.json({ error: 'Database not configured' }, { status: 500 })
-    }
-
     const body = await request.json()
     const { report_month, report_data, report_type = 'monthly' } = body
 
@@ -51,7 +43,7 @@ export async function POST(request: NextRequest) {
     const formattedMonth = report_month.includes('-01') ? report_month : `${report_month}-01`
 
     // Check if report already exists for this month
-    const { data: existing } = await supabase
+    const { data: existing } = await supabaseAdmin
       .from('reports')
       .select('id')
       .eq('report_month', formattedMonth)
@@ -59,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     if (existing) {
       // Update existing report
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('reports')
         .update({
           report_data,
@@ -78,7 +70,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(data)
     } else {
       // Create new report
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('reports')
         .insert({
           report_month: formattedMonth,

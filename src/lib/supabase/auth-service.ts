@@ -1,14 +1,8 @@
-import { createClient } from '@supabase/supabase-js'
+import { supabaseAdmin } from './server-client'
 import { cookies } from 'next/headers'
 
 // Server-side auth service for API routes
 export class AuthService {
-  private getSupabase() {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co'
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDY2MjkxMywiZXhwIjoyMDY2MjM4OTEzfQ.yFbFAuMR1kDsQ5Tni-FJIruKT9AmCsJg0uyNyEvNyH4'
-    
-    return createClient(supabaseUrl, supabaseKey)
-  }
 
   async getCurrentUser() {
     try {
@@ -52,8 +46,7 @@ export class AuthService {
       }
       
       // Verify the token and get user
-      const supabase = this.getSupabase()
-      const { data: { user }, error } = await supabase.auth.getUser(accessToken)
+      const { data: { user }, error } = await supabaseAdmin.auth.getUser(accessToken)
       
       if (error || !user) {
         console.error('Error verifying token:', error)
@@ -69,9 +62,7 @@ export class AuthService {
 
   async isAdmin(userId: string): Promise<boolean> {
     try {
-      const supabase = this.getSupabase()
-      
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('admin_users')
         .select('id')
         .eq('id', userId)

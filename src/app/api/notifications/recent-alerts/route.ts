@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/server-client'
+import { getServerAuth } from '@/lib/supabase/server-auth'
 
 export async function GET() {
   try {
     console.log('[recent-alerts] API called')
+    
+    // Get current user
+    const { user } = await getServerAuth()
+    const userId = user?.id
     
     // Use the admin client that has hardcoded fallbacks
     const supabase = supabaseAdmin
@@ -42,8 +47,36 @@ export async function GET() {
       project_name: projectMap.get(alert.project_id) || alert.project_id
     })) || []
     
-    console.log(`[recent-alerts] Returning ${enrichedAlerts.length} enriched alerts`)
-    return NextResponse.json({ alerts: enrichedAlerts })
+    // If user is logged in and table exists, get their notification states
+    let notificationStates = new Map()
+    if (userId) {
+      const { data: userNotifications } = await supabase
+        .from('user_notifications')
+        .select('tweet_analysis_id, seen_at, dismissed_at')
+        .eq('user_id', userId)
+        .in('tweet_analysis_id', enrichedAlerts.map(a => a.id))
+      
+      if (userNotifications) {
+        notificationStates = new Map(
+          userNotifications.map(n => [n.tweet_analysis_id, n])
+        )
+      }
+    }
+    
+    // Add notification state to each alert and filter out dismissed ones
+    const alertsWithState = enrichedAlerts
+      .map(alert => {
+        const state = notificationStates.get(alert.id)
+        return {
+          ...alert,
+          is_seen: !!state?.seen_at,
+          is_dismissed: !!state?.dismissed_at
+        }
+      })
+      .filter(alert => !alert.is_dismissed) // Don't show dismissed notifications
+    
+    console.log(`[recent-alerts] Returning ${alertsWithState.length} alerts (filtered from ${enrichedAlerts.length})`)
+    return NextResponse.json({ alerts: alertsWithState })
     
   } catch (error) {
     console.error('Error in recent-alerts:', error)

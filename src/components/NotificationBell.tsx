@@ -9,6 +9,8 @@ interface RecentAlert {
   importance_score: number
   summary: string
   created_at: string
+  is_seen?: boolean
+  is_dismissed?: boolean
 }
 
 interface TelegramConnection {
@@ -44,6 +46,16 @@ export default function NotificationBell() {
   useEffect(() => {
     loadNotificationData()
   }, [])
+  
+  useEffect(() => {
+    // Mark notifications as seen when dropdown opens
+    if (dropdownOpen && recentAlerts.length > 0) {
+      const unseenAlerts = recentAlerts.filter(alert => !alert.is_seen)
+      if (unseenAlerts.length > 0) {
+        markAsSeen(unseenAlerts.map(a => a.id))
+      }
+    }
+  }, [dropdownOpen, recentAlerts])
 
   const loadNotificationData = async () => {
     setLoading(true)
@@ -123,11 +135,51 @@ export default function NotificationBell() {
     return 'bg-green-500'
   }
 
-  const hasNewAlerts = recentAlerts.length > 0 && !telegramConnection.is_connected
+  const hasNewAlerts = recentAlerts.some(alert => !alert.is_seen)
 
   const telegramLink = connectionToken 
     ? `https://t.me/sunbeam_capital_bot?start=${connectionToken}`
     : 'https://t.me/sunbeam_capital_bot'
+  
+  const dismissAlert = async (alertId: string) => {
+    try {
+      const response = await fetch('/api/notifications/dismiss/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tweetId: alertId })
+      })
+      
+      if (response.ok) {
+        // Remove from local state
+        setRecentAlerts(alerts => alerts.filter(a => a.id !== alertId))
+      }
+    } catch (error) {
+      console.error('Failed to dismiss notification:', error)
+    }
+  }
+  
+  const markAsSeen = async (tweetIds: string[]) => {
+    try {
+      const response = await fetch('/api/notifications/mark-seen/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tweetIds })
+      })
+      
+      if (response.ok) {
+        // Update local state
+        setRecentAlerts(alerts => 
+          alerts.map(alert => 
+            tweetIds.includes(alert.id) 
+              ? { ...alert, is_seen: true }
+              : alert
+          )
+        )
+      }
+    } catch (error) {
+      console.error('Failed to mark notifications as seen:', error)
+    }
+  }
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -169,19 +221,35 @@ export default function NotificationBell() {
           {recentAlerts.length > 0 ? (
             <div className="max-h-64 overflow-y-auto">
               {recentAlerts.map(alert => (
-                <div key={alert.id} className="px-4 py-3 hover:bg-gray-50 border-b border-gray-100">
+                <div key={alert.id} className={`px-4 py-3 hover:bg-gray-50 border-b border-gray-100 ${alert.is_seen ? 'opacity-60' : ''}`}>
                   <div className="flex items-start gap-3">
                     <div className={`w-2 h-2 ${getScoreColor(alert.importance_score)} rounded-full mt-1.5`}></div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">
-                        {alert.project_name} Alert (Score: {alert.importance_score}/10)
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {alert.summary}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {formatTimeAgo(alert.created_at)}
-                      </p>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-900">
+                            {alert.project_name} Alert (Score: {alert.importance_score}/10)
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {alert.summary}
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            {formatTimeAgo(alert.created_at)}
+                          </p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            dismissAlert(alert.id)
+                          }}
+                          className="ml-2 text-gray-400 hover:text-gray-600"
+                          title="Dismiss notification"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
