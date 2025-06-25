@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altcoin Season Chart Alternatives</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-4xl mx-auto space-y-8">
+        <h1 class="text-2xl font-bold mb-8">Alternative Approaches for Altcoin Season Chart</h1>
+        
+        <!-- Option 1: Enhanced Custom Indicator with Chart Preview -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold mb-4">Option 1: Enhanced Custom Indicator with Chart Preview</h2>
+            <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-center mb-4">
+                    <div class="text-sm text-gray-600 mb-1">Altcoin Season Index</div>
+                    <div class="text-5xl font-bold text-red-600">14</div>
+                    <div className="text-sm text-red-600 font-medium mt-1">Deep Bitcoin Season</div>
+                </div>
+                
+                <!-- Mini chart representation -->
+                <div class="mb-4">
+                    <svg viewBox="0 0 400 100" class="w-full h-24">
+                        <!-- Background gradient -->
+                        <defs>
+                            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.2" />
+                                <stop offset="25%" style="stop-color:#f59e0b;stop-opacity:0.2" />
+                                <stop offset="50%" style="stop-color:#10b981;stop-opacity:0.2" />
+                                <stop offset="75%" style="stop-color:#3b82f6;stop-opacity:0.2" />
+                                <stop offset="100%" style="stop-color:#ef4444;stop-opacity:0.2" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="400" height="100" fill="url(#bgGradient)" />
+                        
+                        <!-- Chart line (simplified) -->
+                        <polyline points="10,80 50,70 100,85 150,60 200,40 250,45 300,75 350,85 390,90" 
+                                  fill="none" stroke="#1f2937" stroke-width="2" />
+                        
+                        <!-- Current position marker -->
+                        <circle cx="390" cy="90" r="4" fill="#dc2626" />
+                        <line x1="390" y1="0" x2="390" y2="100" stroke="#dc2626" stroke-width="1" opacity="0.5" />
+                    </svg>
+                </div>
+                
+                <div class="flex justify-between text-xs text-gray-600 mb-4">
+                    <span>0 (Bitcoin)</span>
+                    <span>25</span>
+                    <span>50</span>
+                    <span>75</span>
+                    <span>100 (Altcoin)</span>
+                </div>
+                
+                <div class="text-xs text-gray-500 text-center">
+                    <p class="mb-2">Historical chart shows we're at extreme lows similar to late 2022</p>
+                    <a href="https://www.blockchaincenter.net/en/altcoin-season-index/" target="_blank" class="text-blue-600 hover:text-blue-800 underline">
+                        View full interactive chart →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 2: Static Screenshot -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold mb-4">Option 2: Static Chart Screenshot</h2>
+            <div class="bg-gray-50 rounded-lg p-4">
+                <div class="border-2 border-dashed border-gray-300 rounded p-8 text-center text-gray-500">
+                    <p class="mb-2">[Screenshot of Altcoin Season Chart]</p>
+                    <p class="text-sm">Would show actual chart image with "Click to view live" overlay</p>
+                </div>
+                <p class="text-xs text-gray-500 text-center mt-2">
+                    Updated daily with latest data from Blockchain Center
+                </p>
+            </div>
+        </div>
+
+        <!-- Option 3: Text-based with Historical Context -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold mb-4">Option 3: Historical Context Box</h2>
+            <div class="bg-red-50 rounded-lg p-4">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="text-3xl font-bold text-red-600">14</div>
+                        <div class="text-xs text-red-600 font-medium">Bitcoin Season</div>
+                    </div>
+                    <div class="text-sm text-gray-700">
+                        <p class="font-medium mb-1">Extreme Bitcoin Dominance</p>
+                        <p class="text-xs text-gray-600 mb-2">
+                            Only 14 out of 100 altcoins outperforming Bitcoin. Historical lows:
+                        </p>
+                        <div class="space-y-1 text-xs">
+                            <div class="flex justify-between">
+                                <span>• Dec 2022:</span>
+                                <span class="font-medium">Score 10</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>• Mar 2020:</span>
+                                <span class="font-medium">Score 8</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>• Current:</span>
+                                <span class="font-medium text-red-600">Score 14</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.blockchaincenter.net/en/altcoin-season-index/" target="_blank" 
+                   class="text-xs text-blue-600 hover:text-blue-800 underline mt-3 block text-center">
+                    View full historical chart →
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

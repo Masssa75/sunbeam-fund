@@ -319,31 +319,62 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
 
                 {/* Altcoin Season Indicator */}
-                <div className="bg-red-50 rounded-lg p-4 my-4">
-                  <div className="flex items-center justify-between mb-2">
+                <div className="bg-red-50 rounded-lg p-5 my-4">
+                  <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div>
-                        <div className="text-2xl font-bold text-red-600">14</div>
-                        <div className="text-xs text-red-600 font-medium">Bitcoin Season</div>
+                        <div className="text-3xl font-bold text-red-600">14</div>
+                        <div className="text-xs text-red-600 font-medium">Deep Bitcoin Season</div>
                       </div>
-                      <div className="h-12 w-px bg-red-200"></div>
+                      <div className="h-14 w-px bg-red-200"></div>
                       <div className="text-sm text-gray-600">
                         <div className="font-medium">Altcoin Season Index</div>
-                        <div className="text-xs">Only 14% of altcoins outperforming BTC</div>
+                        <div className="text-xs">Only 14% of top altcoins outperforming Bitcoin</div>
+                        <div className="text-xs mt-1 text-gray-500">Similar to Dec 2022 lows (score: 10)</div>
                       </div>
                     </div>
-                    <a 
-                      href="https://www.blockchaincenter.net/en/altcoin-season-index/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-xs text-blue-600 hover:text-blue-800 underline"
-                    >
-                      Live data →
-                    </a>
                   </div>
-                  <div className="relative h-2 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 to-blue-500 rounded-full">
-                    <div className="absolute top-1/2 -translate-y-1/2 left-[14%] w-0.5 h-4 bg-gray-800"></div>
+                  
+                  {/* Mini chart visualization */}
+                  <div className="mb-3">
+                    <svg viewBox="0 0 400 60" className="w-full h-12">
+                      <defs>
+                        <linearGradient id="seasonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" style={{stopColor:'#ef4444', stopOpacity:0.2}} />
+                          <stop offset="25%" style={{stopColor:'#f59e0b', stopOpacity:0.2}} />
+                          <stop offset="50%" style={{stopColor:'#10b981', stopOpacity:0.2}} />
+                          <stop offset="75%" style={{stopColor:'#3b82f6', stopOpacity:0.2}} />
+                          <stop offset="100%" style={{stopColor:'#ef4444', stopOpacity:0.2}} />
+                        </linearGradient>
+                      </defs>
+                      <rect width="400" height="60" fill="url(#seasonGradient)" />
+                      
+                      {/* Simplified historical line */}
+                      <polyline points="10,50 50,45 100,30 150,25 200,15 250,20 300,40 350,50 390,52" 
+                                fill="none" stroke="#374151" strokeWidth="2" opacity="0.5" />
+                      
+                      {/* Current position */}
+                      <circle cx="390" cy="52" r="3" fill="#dc2626" />
+                      <line x1="390" y1="0" x2="390" y2="60" stroke="#dc2626" strokeWidth="1" opacity="0.3" />
+                    </svg>
                   </div>
+                  
+                  <div className="flex justify-between text-[10px] text-gray-500 mb-2">
+                    <span>Bitcoin Season</span>
+                    <span>25</span>
+                    <span>50</span>
+                    <span>75</span>
+                    <span>Altcoin Season</span>
+                  </div>
+                  
+                  <a 
+                    href="https://www.blockchaincenter.net/en/altcoin-season-index/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-600 hover:text-blue-800 underline block text-center"
+                  >
+                    View full interactive chart →
+                  </a>
                 </div>
 
                 <p>

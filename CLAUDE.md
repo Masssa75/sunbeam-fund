@@ -3,53 +3,54 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 25, 2025 - 8:30 PM)
+## 🚀 CURRENT STATUS (June 25, 2025 - 9:40 PM)
 
-### ⚠️ SESSION ENDING - TELEGRAM CONNECTION ISSUE PERSISTS
-**Status**: Fixed multiple issues but "Failed to create connection" error remains
+### 🔔 SESSION COMPLETED - NOTIFICATION SYSTEM ENHANCEMENTS
+**Status**: Implemented full notification tracking system with dismiss functionality
 
-**Work Done This Session**:
+**Major Accomplishments This Session**:
 
-1. **Fixed Telegram Bot Welcome Message** ✅
-   - Updated webhook to show friendly welcome instead of error
-   - Simplified `/start` command handling
-   - Improved UX with clear instructions
+1. **Twitter Monitoring Refinements** ✅
+   - Reduced monitored projects to 6 core holdings (removed ETH, SOL, Virtuals, AUKI)
+   - Updated all alert thresholds to 9+ (only truly critical updates)
+   - Projects monitored: Kaspa, Bittensor, Sui, Toncoin, Brickken, Coinweb
+   - Each project checked every ~6 minutes
 
-2. **Fixed Multiple API Issues** ✅
-   - Fixed JSON parse error in generate-token API
-   - Fixed telegram_chat_id NULL constraint (changed to 0)
-   - Fixed investor lookup from user_id to id column
-   - Fixed connection-status API same issue
-   - Added better error handling and logging
+2. **Notification Bell Improvements** ✅
+   - Fixed API endpoint trailing slash issue (was causing "No recent alerts")
+   - Only shows alerts with score 9+ from last 24 hours
+   - 2 Bittensor alerts currently active ($100M TAO allocation, BitGo staking)
 
-3. **Created Investor Records** ✅
-   - Created investor for marc@minutevideos.com (ID: a78cd233-9372-43af-9304-ee4a3e2c0547)
-   - Created investor for marc@cyrator.com (ID: 74c1ca77-4b94-4a76-ab4d-6f77b93ab920)
-   - Both properly linked to auth.users table
+3. **Security Fix - Service Role Key** ✅
+   - Removed service role key from client-side code
+   - Created server-only client file (`/src/lib/supabase/server-client.ts`)
+   - Updated all API routes to use server-only imports
+   - Service role key no longer exposed in browser bundle
 
-4. **Updated UI/UX** ✅
-   - Changed connect button from link to button with better control
-   - Added settings icon when connected
-   - Improved error messages
+4. **Notification Tracking System** ✅
+   - Created `user_notifications` table to track seen/dismissed states per user
+   - Added dismiss functionality (X button on each notification)
+   - Notifications automatically marked as seen when dropdown opens
+   - Seen notifications appear with reduced opacity
+   - Red dot only shows for truly unseen notifications
+   - API endpoints: `/api/notifications/mark-seen/` and `/api/notifications/dismiss/`
 
-**Current Issue**: "Failed to create connection" error persists
-- API tests show token generation works (returns 200)
-- Tokens are being created in database
-- But frontend still shows error message
-- Happens for both marc@cyrator.com and marc@minutevideos.com
+**Current Issue**: Dismissed notifications reappear on refresh
+- Database correctly stores dismissals (verified)
+- API should filter out dismissed notifications
+- Issue persists even in incognito (not a cache problem)
+- Another instance is working on Telegram connection - waiting to avoid conflicts
 
-**Database State**:
-- investor_telegram table has multiple test tokens created
-- Both Marc accounts have investor records
-- Foreign key constraints satisfied
+**Next Session TODO**:
+1. **Fix notification dismissal persistence** - Debug why dismissed notifications reappear
+2. **Resolve Telegram connection issue** (being worked on in parallel)
+3. **Test full notification flow** once both issues are resolved
+4. **Consider adding "Mark all as read" functionality**
 
-**CRITICAL FOR NEXT SESSION**:
-1. Debug why frontend shows "Failed to create connection" when API succeeds
-2. Check if there's a race condition or state issue
-3. May need to add more detailed logging to trace exact failure point
-4. Consider if the error is coming from a different API call
-
-**Key Discovery**: The generate-token API returns 200 and creates tokens successfully, but user still sees error. This suggests the error might be coming from somewhere else in the flow.
+**Technical Notes**:
+- Marc's auth.users ID: 74c1ca77-4b94-4a76-ab4d-6f77b93ab920
+- Notification bell refreshes every 10 seconds to catch new Telegram connections
+- All high-importance tweets (9+) trigger both UI notifications and Telegram alerts
 
 ## 🚀 PREVIOUS SESSION (June 25, 2025 - 6:00 PM)
 
