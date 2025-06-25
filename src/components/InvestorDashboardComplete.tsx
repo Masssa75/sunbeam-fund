@@ -185,7 +185,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
             You own the future of blockchain.
           </h1>
           <p className="text-lg text-gray-500 leading-relaxed">
-            {positions.length} carefully selected technologies. Each solving fundamental problems. Built for the next decade.
+            {positions.length > 0 ? positions.length : '12'} carefully selected technologies. Each solving fundamental problems. Built for the next decade.
           </p>
         </div>
 

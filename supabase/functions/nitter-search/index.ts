@@ -46,8 +46,10 @@ For EACH tweet, provide a JSON array with objects containing:
   * 3-4: Low importance (retweets, general commentary, minor mentions)
   * 0-2: Noise (spam, unrelated, very minor mentions)
 - category: One of: "partnership", "technical", "listing", "community", "price", "general"
-- summary: A news-style headline that clearly states what happened (max 60 chars)
-  Examples: "New exchange listing announced", "Mainnet upgrade completed", "Partnership with Microsoft"
+- summary: A complete executive summary that captures all key information (max 200 chars)
+  Must be self-contained - reader should understand the content without reading the original tweet.
+  Focus on WHAT happened, WHO is involved, WHY it matters. Use complete sentences.
+  Examples: "Binance announces XRP listing effective immediately", "Partnership with Google Cloud for AI infrastructure announced", "Technical analysis shows bullish breakout pattern with target $50k"
 - is_official: Boolean from the input
 - reasoning: Brief explanation of the score (max 100 chars)
 
@@ -201,13 +203,13 @@ serve(async (req) => {
             });
           }
           
-          if (tweets.length >= 10) break;
+          if (tweets.length >= 6) break;
         }
         
         console.log(`Found ${tweets.length} tweets for "${searchQuery}"`);
         allTweets.push(...tweets);
         
-        if (tweets.length > 5) {
+        if (tweets.length > 3) {
           break;
         }
       } catch (error) {
@@ -215,8 +217,8 @@ serve(async (req) => {
       }
     }
     
-    // Prepare tweets for batch analysis
-    const tweetsToCheck = allTweets.slice(0, 20);
+    // Prepare tweets for batch analysis (reduced for performance)
+    const tweetsToCheck = allTweets.slice(0, 8);
     
     // Check for duplicates BEFORE AI analysis to save costs
     console.log(`Checking ${tweetsToCheck.length} tweets for duplicates...`);
