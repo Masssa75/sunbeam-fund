@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaspa Comparison Table Options</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .option {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .option-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        /* Portfolio Item Base */
+        .portfolio-item {
+            padding: 40px 0;
+            border-top: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .portfolio-item:hover {
+            padding-left: 20px;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+        
+        .item-title {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .item-percent {
+            font-size: 24px;
+            color: #999;
+        }
+        
+        .item-description {
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .item-tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 12px;
+            background: #f5f5f5;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        /* Option 1: Slide Down Table */
+        .comparison-slide {
+            height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+            margin-top: 24px;
+        }
+        
+        .comparison-slide.visible {
+            height: auto;
+        }
+        
+        .comparison-table {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 120px repeat(4, 1fr);
+            gap: 16px;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .comparison-header {
+            font-weight: 600;
+            color: #333;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 12px;
+        }
+        
+        .comparison-metric {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .comparison-value {
+            text-align: center;
+        }
+        
+        .comparison-value.highlight {
+            color: #22c55e;
+            font-weight: 600;
+        }
+        
+        /* Option 2: Modal Overlay */
+        .comparison-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .comparison-modal.visible {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        /* Option 3: Inline Cards */
+        .comparison-cards {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .comparison-cards.visible {
+            display: grid;
+        }
+        
+        .comparison-card {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .card-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .card-metrics {
+            display: grid;
+            gap: 8px;
+            font-size: 12px;
+        }
+        
+        .card-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .metric-label {
+            color: #666;
+        }
+        
+        .metric-value {
+            font-weight: 600;
+        }
+        
+        .kaspa-card {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+        }
+        
+        /* Visual Bar Comparison */
+        .visual-comparison {
+            margin-top: 20px;
+        }
+        
+        .metric-row {
+            margin-bottom: 20px;
+        }
+        
+        .metric-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .bars-container {
+            display: grid;
+            gap: 6px;
+        }
+        
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+        }
+        
+        .bar-label {
+            min-width: 80px;
+            color: #666;
+        }
+        
+        .bar-wrapper {
+            flex: 1;
+            background: #f0f0f0;
+            border-radius: 4px;
+            height: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background: #e0e0e0;
+            transition: width 0.5s ease-out;
+        }
+        
+        .bar-fill.kaspa {
+            background: #22c55e;
+        }
+        
+        .bar-value {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kaspa Comparison Table Options</h1>
+
+        <!-- Option 1: Slide Down Table -->
+        <div class="option">
+            <h2 class="option-title">Option 1: Slide Down Table (Clean Grid)</h2>
+            
+            <div class="portfolio-item" onclick="toggleSlide()">
+                <div class="item-header">
+                    <h2 class="item-title">Kaspa</h2>
+                    <span class="item-percent">18.2%</span>
+                </div>
+                <p class="item-description">
+                    The fastest blockchain ever built. Processes blocks in parallel at 1 per second.
+                </p>
+                <span class="item-tag">Speed Revolution</span>
+                
+                <div class="comparison-slide" id="slideComparison">
+                    <div class="comparison-table">
+                        <div class="comparison-grid">
+                            <div class="comparison-header">Metric</div>
+                            <div class="comparison-header">Kaspa</div>
+                            <div class="comparison-header">Bitcoin</div>
+                            <div class="comparison-header">Ethereum</div>
+                            <div class="comparison-header">Solana</div>
+                            
+                            <div class="comparison-metric">Block Time</div>
+                            <div class="comparison-value highlight">1 sec</div>
+                            <div class="comparison-value">10 min</div>
+                            <div class="comparison-value">12 sec</div>
+                            <div class="comparison-value">0.4 sec</div>
+                            
+                            <div class="comparison-metric">TPS (Peak)</div>
+                            <div class="comparison-value highlight">3,000</div>
+                            <div class="comparison-value">7</div>
+                            <div class="comparison-value">15</div>
+                            <div class="comparison-value">65,000</div>
+                            
+                            <div class="comparison-metric">Consensus</div>
+                            <div class="comparison-value highlight">GHOSTDAG</div>
+                            <div class="comparison-value">PoW</div>
+                            <div class="comparison-value">PoS</div>
+                            <div class="comparison-value">PoH</div>
+                            
+                            <div class="comparison-metric">Decentralization</div>
+                            <div class="comparison-value highlight">Very High</div>
+                            <div class="comparison-value">Very High</div>
+                            <div class="comparison-value">High</div>
+                            <div class="comparison-value">Medium</div>
+                            
+                            <div class="comparison-metric">Energy Efficient</div>
+                            <div class="comparison-value">Medium</div>
+                            <div class="comparison-value">Low</div>
+                            <div class="comparison-value highlight">High</div>
+                            <div class="comparison-value highlight">High</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 2: Visual Bar Comparison -->
+        <div class="option">
+            <h2 class="option-title">Option 2: Visual Bar Comparison</h2>
+            
+            <div class="portfolio-item">
+                <div class="item-header">
+                    <h2 class="item-title">Kaspa</h2>
+                    <span class="item-percent">18.2%</span>
+                </div>
+                <p class="item-description">
+                    The fastest blockchain ever built. Processes blocks in parallel at 1 per second.
+                </p>
+                <span class="item-tag">Speed Revolution</span>
+                
+                <div class="visual-comparison">
+                    <div class="metric-row">
+                        <div class="metric-title">Transaction Speed (TPS)</div>
+                        <div class="bars-container">
+                            <div class="bar-item">
+                                <span class="bar-label">Kaspa</span>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill kaspa" style="width: 80%">
+                                        <span class="bar-value">3,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-item">
+                                <span class="bar-label">Bitcoin</span>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill" style="width: 2%">
+                                        <span class="bar-value">7</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-item">
+                                <span class="bar-label">Ethereum</span>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill" style="width: 5%">
+                                        <span class="bar-value">15</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-row">
+                        <div class="metric-title">Block Time (Lower is Better)</div>
+                        <div class="bars-container">
+                            <div class="bar-item">
+                                <span class="bar-label">Kaspa</span>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill kaspa" style="width: 95%">
+                                        <span class="bar-value">1 sec</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-item">
+                                <span class="bar-label">Bitcoin</span>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill" style="width: 5%">
+                                        <span class="bar-value">600 sec</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar-item">
+                                <span class="bar-label">Ethereum</span>
+                                <div class="bar-wrapper">
+                                    <div class="bar-fill" style="width: 85%">
+                                        <span class="bar-value">12 sec</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 3: Inline Feature Cards -->
+        <div class="option">
+            <h2 class="option-title">Option 3: Compact Feature Cards</h2>
+            
+            <div class="portfolio-item" onclick="toggleCards()">
+                <div class="item-header">
+                    <h2 class="item-title">Kaspa</h2>
+                    <span class="item-percent">18.2%</span>
+                </div>
+                <p class="item-description">
+                    The fastest blockchain ever built. Processes blocks in parallel at 1 per second.
+                </p>
+                <span class="item-tag">Speed Revolution</span>
+                
+                <div class="comparison-cards" id="cardComparison">
+                    <div class="comparison-card kaspa-card">
+                        <div class="card-name">Kaspa ✓</div>
+                        <div class="card-metrics">
+                            <div class="card-metric">
+                                <span class="metric-label">Speed</span>
+                                <span class="metric-value">1 sec</span>
+                            </div>
+                            <div class="card-metric">
+                                <span class="metric-label">TPS</span>
+                                <span class="metric-value">3,000</span>
+                            </div>
+                            <div class="card-metric">
+                                <span class="metric-label">Type</span>
+                                <span class="metric-value">DAG</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <div class="card-name">Bitcoin</div>
+                        <div class="card-metrics">
+                            <div class="card-metric">
+                                <span class="metric-label">Speed</span>
+                                <span class="metric-value">10 min</span>
+                            </div>
+                            <div class="card-metric">
+                                <span class="metric-label">TPS</span>
+                                <span class="metric-value">7</span>
+                            </div>
+                            <div class="card-metric">
+                                <span class="metric-label">Type</span>
+                                <span class="metric-value">Chain</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <div class="card-name">Ethereum</div>
+                        <div class="card-metrics">
+                            <div class="card-metric">
+                                <span class="metric-label">Speed</span>
+                                <span class="metric-value">12 sec</span>
+                            </div>
+                            <div class="card-metric">
+                                <span class="metric-label">TPS</span>
+                                <span class="metric-value">15</span>
+                            </div>
+                            <div class="card-metric">
+                                <span class="metric-label">Type</span>
+                                <span class="metric-value">Chain</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <div class="card-name">Solana</div>
+                        <div class="card-metrics">
+                            <div class="card-metric">
+                                <span class="metric-label">Speed</span>
+                                <span class="metric-value">0.4 sec</span>
+                            </div>
+                            <div class="card-metric">
+                                <span class="metric-label">TPS</span>
+                                <span class="metric-value">65,000</span>
+                            </div>
+                            <div class="card-metric">
+                                <span class="metric-label">Type</span>
+                                <span class="metric-value">Chain</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSlide() {
+            const slide = document.getElementById('slideComparison');
+            slide.classList.toggle('visible');
+        }
+        
+        function toggleCards() {
+            const cards = document.getElementById('cardComparison');
+            cards.classList.toggle('visible');
+        }
+    </script>
+</body>
+</html>

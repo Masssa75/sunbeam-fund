@@ -179,6 +179,109 @@
             color: #000;
         }
         
+        /* Example Box Styles */
+        .example-box {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .example-subheader {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding: 0 2px;
+        }
+        
+        .example-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .example-toggle {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .example-toggle:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .example-toggle svg {
+            width: 12px;
+            height: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .example-toggle.expanded svg {
+            transform: rotate(180deg);
+        }
+        
+        .example-content {
+            display: grid;
+            gap: 8px;
+        }
+        
+        .example-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .example-name {
+            font-weight: 500;
+        }
+        
+        .example-stats {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .example-period {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .example-return {
+            color: #22c55e;
+            font-weight: 600;
+        }
+        
+        .example-extra {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .example-extra.visible {
+            display: grid;
+            gap: 8px;
+        }
+        
         .portfolio-list {
             list-style: none;
         }
@@ -188,10 +291,87 @@
             border-top: 1px solid #f0f0f0;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
         
         .portfolio-item:hover {
             padding-left: 20px;
+        }
+        
+        /* Comparison Table Styles */
+        .comparison-slide {
+            height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+        }
+        
+        .comparison-slide.visible {
+            height: auto;
+            padding-top: 24px;
+        }
+        
+        .comparison-table {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        
+        .comparison-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #333;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 140px repeat(5, 1fr);
+            gap: 12px;
+            align-items: center;
+            font-size: 13px;
+        }
+        
+        .comparison-header {
+            font-weight: 600;
+            color: #666;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        .comparison-header:first-child {
+            text-align: left;
+        }
+        
+        .comparison-metric {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .comparison-value {
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .comparison-value.unique {
+            background: #e8f5e9;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #1b5e20;
+            font-weight: 600;
+        }
+        
+        .comparison-value.highlight {
+            color: #22c55e;
+            font-weight: 600;
+        }
+        
+        .comparison-note {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
         }
         
         .item-header {
@@ -241,16 +421,23 @@
         
         .update-item {
             display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #f8f8f8;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding: 0;
+            border: none;
+        }
+        
+        .update-item:last-child {
+            margin-bottom: 0;
         }
         
         .update-date {
-            font-size: 13px;
+            font-size: 14px;
             color: #999;
-            min-width: 80px;
+            min-width: 100px;
+            line-height: 1.4;
+            flex-shrink: 0;
         }
         
         .update-content {
@@ -258,13 +445,16 @@
         }
         
         .update-project {
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 16px;
             margin-bottom: 4px;
+            color: #000;
         }
         
         .update-text {
             font-size: 14px;
             color: #666;
+            line-height: 1.5;
         }
         
         .summary {
@@ -293,10 +483,71 @@
             font-size: 14px;
             border-bottom: 1px solid #ddd;
             padding-bottom: 2px;
+            cursor: pointer;
         }
         
         .summary-links a:hover {
             border-bottom-color: #000;
+        }
+        
+        /* Reports Section */
+        .reports-section {
+            height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+            margin-top: 40px;
+        }
+        
+        .reports-section.visible {
+            height: auto;
+            padding-top: 40px;
+            border-top: 1px solid #e5e5e5;
+        }
+        
+        .reports-title {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .report-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding: 0;
+            border: none;
+            background: none;
+        }
+        
+        .report-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .report-date {
+            font-size: 14px;
+            color: #999;
+            min-width: 100px;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+        
+        .report-content {
+            flex: 1;
+        }
+        
+        .report-month {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: #000;
+        }
+        
+        .report-summary {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
         }
         
         @media (max-width: 600px) {
@@ -329,6 +580,25 @@
             .summary-links {
                 flex-direction: column;
                 gap: 15px;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 100px repeat(2, 1fr);
+                font-size: 12px;
+                gap: 8px;
+            }
+            
+            .comparison-header:nth-child(4),
+            .comparison-header:nth-child(5),
+            .comparison-header:nth-child(6),
+            .comparison-value:nth-child(4),
+            .comparison-value:nth-child(5),
+            .comparison-value:nth-child(6) {
+                display: none;
+            }
+            
+            .comparison-table {
+                padding: 16px;
             }
         }
     </style>
@@ -380,15 +650,94 @@
                     
                     <p>In this context, our portfolio's -40% performance represents a <span class="commentary-highlight">50% outperformance</span> versus the altcoin market. This resilience stems from our focus on infrastructure projects with real utility rather than speculative assets.</p>
                     
-                    <p>The technology fundamentals remain unchanged. Kaspa continues processing blocks at unprecedented speeds. Bittensor's AI marketplace grows daily. Sui's throughput capabilities position it for the next adoption wave. <span class="commentary-highlight">We invest for 3-5 year horizons</span>, allowing us to weather these storms.</p>
+                    <p>The technology fundamentals remain unchanged. Kaspa continues processing blocks at unprecedented speeds. Bittensor's AI marketplace grows daily. Sui's throughput capabilities position it for the next adoption wave. <span class="commentary-highlight">While we aim to capture bull market peaks, our focus on fundamental infrastructure ensures our projects survive and build through bear markets</span>, unlike speculative assets that disappear entirely.</p>
                     
-                    <p>History shows that the most significant returns come to those who maintain conviction through downturns. <span class="commentary-highlight">Chainlink: $0.30 → $52 (173x). Polygon: $0.003 → $2.92 (973x). Ethereum: $80 → $4,800 (60x).</span> Each survived the 2018-2019 depths to deliver extraordinary returns. Today's prices may represent a similar opportunity.</p>
+                    <p>History shows that the most significant returns come to those who maintain conviction through downturns.</p>
+                    
+                    <div class="example-box">
+                        <div class="example-header">
+                            <div class="example-title">Historical Perspective: Bear Market Survivors</div>
+                            <button class="example-toggle" onclick="toggleExamples()">
+                                <span>Show more</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="example-subheader">
+                            <span>Project</span>
+                            <span>2018-19 Bear → 2021 Bull</span>
+                        </div>
+                        <div class="example-content">
+                            <div class="example-item">
+                                <span class="example-name">Chainlink</span>
+                                <div class="example-stats">
+                                    <span>$0.30 → $52</span>
+                                    <span class="example-return">(173x)</span>
+                                </div>
+                            </div>
+                            <div class="example-item">
+                                <span class="example-name">Polygon</span>
+                                <div class="example-stats">
+                                    <span>$0.003 → $2.92</span>
+                                    <span class="example-return">(973x)</span>
+                                </div>
+                            </div>
+                            <div class="example-item">
+                                <span class="example-name">Ethereum</span>
+                                <div class="example-stats">
+                                    <span>$80 → $4,800</span>
+                                    <span class="example-return">(60x)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="example-extra" id="extraExamples">
+                                <div class="example-item">
+                                    <span class="example-name">Binance Coin</span>
+                                    <div class="example-stats">
+                                        <span>$6 → $690</span>
+                                        <span class="example-return">(115x)</span>
+                                    </div>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-name">Solana</span>
+                                    <div class="example-stats">
+                                        <span>$0.50 → $260</span>
+                                        <span class="example-return">(520x)</span>
+                                    </div>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-name">Cardano</span>
+                                    <div class="example-stats">
+                                        <span>$0.03 → $3.10</span>
+                                        <span class="example-return">(103x)</span>
+                                    </div>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-name">Avalanche</span>
+                                    <div class="example-stats">
+                                        <span>$2.80 → $146</span>
+                                        <span class="example-return">(52x)</span>
+                                    </div>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-name">Fantom</span>
+                                    <div class="example-stats">
+                                        <span>$0.002 → $3.46</span>
+                                        <span class="example-return">(1,730x)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>These projects endured 90%+ drawdowns before delivering extraordinary returns. Today's market conditions, while challenging, may present similar opportunities for patient investors.</p>
                 </div>
             </div>
         </div>
 
         <ul class="portfolio-list">
-            <li class="portfolio-item">
+            <li class="portfolio-item" onclick="toggleComparison('kaspa')">
                 <div class="item-header">
                     <h2 class="item-title">Kaspa</h2>
                     <span class="item-percent">18.2%</span>
@@ -397,9 +746,104 @@
                     The fastest blockchain ever built. Processes blocks in parallel at 1 per second.
                 </p>
                 <span class="item-tag">Speed Revolution</span>
+                
+                <div class="comparison-slide" id="kaspa-comparison">
+                    <div class="comparison-table">
+                        <div class="comparison-title">Why Kaspa: The Next Bitcoin</div>
+                        
+                        <!-- Core Thesis -->
+                        <div style="background: #f0f8ff; border-radius: 8px; padding: 24px; margin-bottom: 24px; text-align: center;">
+                            <p style="font-size: 18px; line-height: 1.6; margin: 0; font-weight: 500;">
+                                "If we sacrifice decentralization for speed,<br>
+                                why not just use AWS?"
+                            </p>
+                        </div>
+                        
+                        <!-- Quick Comparison -->
+                        <div class="comparison-grid" style="margin-bottom: 32px;">
+                            <div class="comparison-header">Technology</div>
+                            <div class="comparison-header">Kaspa</div>
+                            <div class="comparison-header">Bitcoin</div>
+                            <div class="comparison-header">Ethereum</div>
+                            <div class="comparison-header">Solana</div>
+                            <div class="comparison-header">Avalanche</div>
+                            
+                            <div class="comparison-metric">Architecture</div>
+                            <div class="comparison-value unique">BlockDAG</div>
+                            <div class="comparison-value">Chain</div>
+                            <div class="comparison-value">Chain</div>
+                            <div class="comparison-value">Chain</div>
+                            <div class="comparison-value">Chain</div>
+                            
+                            <div class="comparison-metric">Block Time</div>
+                            <div class="comparison-value highlight">1 sec</div>
+                            <div class="comparison-value">600 sec</div>
+                            <div class="comparison-value">12 sec</div>
+                            <div class="comparison-value">0.4 sec*</div>
+                            <div class="comparison-value">2 sec*</div>
+                            
+                            <div class="comparison-metric">Decentralization</div>
+                            <div class="comparison-value highlight">High</div>
+                            <div class="comparison-value highlight">Very High</div>
+                            <div class="comparison-value">Medium</div>
+                            <div class="comparison-value" style="color: #ef4444;">Low</div>
+                            <div class="comparison-value">Medium</div>
+                            
+                            <div class="comparison-metric">Node Requirements</div>
+                            <div class="comparison-value highlight">Home PC</div>
+                            <div class="comparison-value highlight">Home PC</div>
+                            <div class="comparison-value">32 ETH</div>
+                            <div class="comparison-value" style="color: #ef4444;">$100K+ HW</div>
+                            <div class="comparison-value">2000 AVAX</div>
+                        </div>
+                        
+                        <p class="comparison-note" style="margin-bottom: 32px;">* Achieved through centralization. Kaspa is 600x faster than Bitcoin while maintaining the same decentralization.</p>
+                        
+                        <!-- The Story -->
+                        <div style="border-top: 1px solid #e5e5e5; padding-top: 24px;">
+                            <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">10 Years to Solve the "Impossible"</h4>
+                            <p style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 16px;">
+                                Dr. Yonatan Sompolinsky didn't create Kaspa overnight. Starting in 2013, he spent a decade researching how to scale blockchains without sacrificing decentralization. His GHOST protocol papers became required reading—even Vitalik Buterin cited them as the future of blockchain scaling.
+                            </p>
+                            
+                            <div style="background: #e8f5e9; border-left: 4px solid #22c55e; padding: 16px; margin: 20px 0; border-radius: 4px;">
+                                <p style="font-weight: 600; margin-bottom: 4px; font-size: 14px;">The Breakthrough: Parallel Blocks</p>
+                                <p style="font-size: 14px; margin: 0;">While every other blockchain processes blocks one after another, Kaspa processes multiple blocks simultaneously using GHOSTDAG. This is like upgrading from a single-lane road to a multi-lane highway.</p>
+                            </div>
+                            
+                            <h4 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px;">What This Enables</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Instant Payments</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">10-second finality for real commerce</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">True P2P Cash</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Satoshi's vision, finally realized</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Micropayments</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Economical for $0.01 transactions</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Global Scale</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Without compromising security</p>
+                                </div>
+                            </div>
+                            
+                            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; text-align: center;">
+                                <p style="font-size: 15px; line-height: 1.6; margin: 0;">
+                                    <strong>We're not investing in hype.</strong><br>
+                                    We're investing in the only project that achieves Bitcoin-level security<br>
+                                    at 600x the speed—a breakthrough the entire industry recognizes as the future.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </li>
 
-            <li class="portfolio-item">
+            <li class="portfolio-item" onclick="toggleComparison('bittensor')">
                 <div class="item-header">
                     <h2 class="item-title">Bittensor</h2>
                     <span class="item-percent">15.7%</span>
@@ -408,6 +852,120 @@
                     Open marketplace for artificial intelligence. Decentralized neural networks.
                 </p>
                 <span class="item-tag">AI Infrastructure</span>
+                
+                <div class="comparison-slide" id="bittensor-comparison">
+                    <div class="comparison-table">
+                        <div class="comparison-title">Why Bittensor: The Decentralized Alternative to OpenAI</div>
+                        
+                        <!-- Core Thesis -->
+                        <div style="background: #f0f8ff; border-radius: 8px; padding: 24px; margin-bottom: 24px; text-align: center;">
+                            <p style="font-size: 18px; line-height: 1.6; margin: 0; font-weight: 500;">
+                                "AI will either be controlled by a few tech giants,<br>
+                                or it will be owned by everyone."
+                            </p>
+                        </div>
+                        
+                        <!-- Quick Comparison -->
+                        <div class="comparison-grid" style="margin-bottom: 32px;">
+                            <div class="comparison-header">AI Platform</div>
+                            <div class="comparison-header">Bittensor</div>
+                            <div class="comparison-header">OpenAI</div>
+                            <div class="comparison-header">Google AI</div>
+                            <div class="comparison-header">Anthropic</div>
+                            <div class="comparison-header">Meta AI</div>
+                            
+                            <div class="comparison-metric">Ownership</div>
+                            <div class="comparison-value unique">Decentralized</div>
+                            <div class="comparison-value" style="color: #ef4444;">Centralized</div>
+                            <div class="comparison-value" style="color: #ef4444;">Centralized</div>
+                            <div class="comparison-value" style="color: #ef4444;">Centralized</div>
+                            <div class="comparison-value" style="color: #ef4444;">Centralized</div>
+                            
+                            <div class="comparison-metric">Contribute Processing</div>
+                            <div class="comparison-value unique">Yes ✓</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                            
+                            <div class="comparison-metric">Deploy AI Models</div>
+                            <div class="comparison-value highlight">Anyone</div>
+                            <div class="comparison-value">OpenAI Only</div>
+                            <div class="comparison-value">Google Only</div>
+                            <div class="comparison-value">Anthropic Only</div>
+                            <div class="comparison-value">Meta Only</div>
+                            
+                            <div class="comparison-metric">Censorship</div>
+                            <div class="comparison-value highlight">Resistant</div>
+                            <div class="comparison-value" style="color: #ef4444;">Possible</div>
+                            <div class="comparison-value" style="color: #ef4444;">Possible</div>
+                            <div class="comparison-value" style="color: #ef4444;">Possible</div>
+                            <div class="comparison-value" style="color: #ef4444;">Possible</div>
+                            
+                            <div class="comparison-metric">Revenue Model</div>
+                            <div class="comparison-value highlight">Community Owned</div>
+                            <div class="comparison-value">Corporate</div>
+                            <div class="comparison-value">Corporate</div>
+                            <div class="comparison-value">Corporate</div>
+                            <div class="comparison-value">Corporate</div>
+                            
+                            <div class="comparison-metric">Current Status</div>
+                            <div class="comparison-value highlight">Live & Working</div>
+                            <div class="comparison-value highlight">Live</div>
+                            <div class="comparison-value highlight">Live</div>
+                            <div class="comparison-value highlight">Live</div>
+                            <div class="comparison-value highlight">Live</div>
+                        </div>
+                        
+                        <p class="comparison-note" style="margin-bottom: 32px;">Bittensor is the only platform where you can contribute computing power, deploy AI models, AND earn rewards - while maintaining decentralization.</p>
+                        
+                        <!-- The Story -->
+                        <div style="border-top: 1px solid #e5e5e5; padding-top: 24px;">
+                            <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Beyond Marketplaces: Running Real AI Networks</h4>
+                            <p style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 16px;">
+                                Bittensor isn't just another "AI marketplace." It's building the infrastructure to run decentralized AI networks that can compete with OpenAI and Google. Anyone can contribute processing power, deploy AI systems, and these systems can communicate with each other—creating a truly decentralized alternative to Big Tech AI.
+                            </p>
+                            
+                            <div style="background: #e8f5e9; border-left: 4px solid #22c55e; padding: 16px; margin: 20px 0; border-radius: 4px;">
+                                <p style="font-weight: 600; margin-bottom: 4px; font-size: 14px;">Already Working: Real AI Products</p>
+                                <p style="font-size: 14px; margin: 0;">Bittensor networks are already running chatbots, image generation, and specialized AI models. This isn't vaporware—it's a functioning decentralized AI ecosystem growing every day.</p>
+                            </div>
+                            
+                            <h4 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px;">What Makes This Revolutionary</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Mining Through AI</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Earn rewards by contributing useful AI computation</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Subnet Specialization</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Dedicated networks for specific AI tasks</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Interoperable AI</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">AI systems that can communicate and build on each other</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Open Deployment</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Anyone can launch and monetize AI models</p>
+                                </div>
+                            </div>
+                            
+                            <h4 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px;">The Only Project With This Potential</h4>
+                            <p style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 16px;">
+                                In all of crypto, Bittensor is the most sophisticated AI project with the genuine potential to create decentralized AI networks comparable to centralized giants. If they achieve this vision, they could become the most valuable crypto project ever created—potentially surpassing even Bitcoin.
+                            </p>
+                            
+                            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; text-align: center;">
+                                <p style="font-size: 15px; line-height: 1.6; margin: 0;">
+                                    <strong>This is the AI revolution's defining moment.</strong><br>
+                                    Either Big Tech controls all AI, or we build the decentralized alternative.<br>
+                                    Bittensor is humanity's best shot at option two.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </li>
 
             <li class="portfolio-item">
@@ -421,7 +979,7 @@
                 <span class="item-tag">Mass Scale</span>
             </li>
 
-            <li class="portfolio-item">
+            <li class="portfolio-item" onclick="toggleComparison('toncoin')">
                 <div class="item-header">
                     <h2 class="item-title">Toncoin</h2>
                     <span class="item-percent">12.8%</span>
@@ -430,6 +988,120 @@
                     Telegram's native blockchain. 900 million users at your fingertips.
                 </p>
                 <span class="item-tag">Global Reach</span>
+                
+                <div class="comparison-slide" id="toncoin-comparison">
+                    <div class="comparison-table">
+                        <div class="comparison-title">Why TON: The Only Crypto With Built-In Mass Adoption</div>
+                        
+                        <!-- Core Thesis -->
+                        <div style="background: #f0f8ff; border-radius: 8px; padding: 24px; margin-bottom: 24px; text-align: center;">
+                            <p style="font-size: 18px; line-height: 1.6; margin: 0; font-weight: 500;">
+                                "While other blockchains are trying to get users,<br>
+                                TON already has 900 million of them."
+                            </p>
+                        </div>
+                        
+                        <!-- Quick Comparison -->
+                        <div class="comparison-grid" style="margin-bottom: 32px;">
+                            <div class="comparison-header">Distribution</div>
+                            <div class="comparison-header">TON</div>
+                            <div class="comparison-header">Ethereum</div>
+                            <div class="comparison-header">Solana</div>
+                            <div class="comparison-header">Polygon</div>
+                            <div class="comparison-header">Arbitrum</div>
+                            
+                            <div class="comparison-metric">Built-in Users</div>
+                            <div class="comparison-value unique">900M Users</div>
+                            <div class="comparison-value">~1M Active</div>
+                            <div class="comparison-value">~500K Active</div>
+                            <div class="comparison-value">~300K Active</div>
+                            <div class="comparison-value">~200K Active</div>
+                            
+                            <div class="comparison-metric">App Integration</div>
+                            <div class="comparison-value unique">Native to Telegram</div>
+                            <div class="comparison-value">External Apps</div>
+                            <div class="comparison-value">External Apps</div>
+                            <div class="comparison-value">External Apps</div>
+                            <div class="comparison-value">External Apps</div>
+                            
+                            <div class="comparison-metric">User Onboarding</div>
+                            <div class="comparison-value highlight">Already Done</div>
+                            <div class="comparison-value" style="color: #ef4444;">Complex</div>
+                            <div class="comparison-value" style="color: #ef4444;">Complex</div>
+                            <div class="comparison-value" style="color: #ef4444;">Complex</div>
+                            <div class="comparison-value" style="color: #ef4444;">Complex</div>
+                            
+                            <div class="comparison-metric">Mini-Apps</div>
+                            <div class="comparison-value unique">Built-in Platform</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                            
+                            <div class="comparison-metric">Regulatory Status</div>
+                            <div class="comparison-value highlight">US Compliant</div>
+                            <div class="comparison-value">Uncertain</div>
+                            <div class="comparison-value">Uncertain</div>
+                            <div class="comparison-value">Uncertain</div>
+                            <div class="comparison-value">Uncertain</div>
+                            
+                            <div class="comparison-metric">Exclusive Integration</div>
+                            <div class="comparison-value unique">Yes ✓</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                            <div class="comparison-value">No</div>
+                        </div>
+                        
+                        <p class="comparison-note" style="margin-bottom: 32px;">TON is the only blockchain with exclusive access to a 900M+ user platform. Telegram no longer officially supports other cryptocurrencies.</p>
+                        
+                        <!-- The Story -->
+                        <div style="border-top: 1px solid #e5e5e5; padding-top: 24px;">
+                            <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Telegram: The Operating System of the Future</h4>
+                            <p style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 16px;">
+                                Telegram isn't just a messaging app—it's evolving into a complete digital operating system. With mini-apps, bots, channels, and seamless integrations, it's becoming the platform where people live their digital lives. And TON is the native currency of this ecosystem.
+                            </p>
+                            
+                            <div style="background: #e8f5e9; border-left: 4px solid #22c55e; padding: 16px; margin: 20px 0; border-radius: 4px;">
+                                <p style="font-weight: 600; margin-bottom: 4px; font-size: 14px;">The Exclusive Advantage</p>
+                                <p style="font-size: 14px; margin: 0;">Telegram has made TON their official blockchain partner and no longer supports other cryptocurrencies in their platform. This gives TON an exclusive pathway to mainstream adoption that no other project can replicate.</p>
+                            </div>
+                            
+                            <h4 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px;">What Makes This Unstoppable</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Zero Friction Adoption</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Users don't need to learn crypto - it's built into their daily app</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Mini-App Ecosystem</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Games, services, and tools all using TON natively</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Regulatory Compliance</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">Working with US government - clear regulatory path</p>
+                                </div>
+                                <div style="background: #f8f8f8; padding: 12px; border-radius: 6px;">
+                                    <strong style="font-size: 13px;">Global Reach</strong>
+                                    <p style="font-size: 12px; color: #666; margin: 4px 0 0;">900M users across every continent and demographic</p>
+                                </div>
+                            </div>
+                            
+                            <h4 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px;">The Adoption Pathway No One Else Has</h4>
+                            <p style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 16px;">
+                                Every other blockchain faces the same challenge: how do you get people to use crypto? TON solved this by integrating directly into an app 900 million people already use daily. When Telegram becomes the driver of crypto adoption, TON will be the primary beneficiary.
+                            </p>
+                            
+                            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; text-align: center;">
+                                <p style="font-size: 15px; line-height: 1.6; margin: 0;">
+                                    <strong>This isn't about technology—it's about distribution.</strong><br>
+                                    TON has exclusive access to the world's most advanced messaging platform.<br>
+                                    No other crypto project comes close to this opportunity.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </li>
 
             <li class="portfolio-item">
@@ -476,9 +1148,41 @@
         <div class="summary">
             <p>Initial investment $74,000 · 47.28% ownership · 3-5 year horizon</p>
             <div class="summary-links">
-                <a href="#">View Reports</a>
+                <a onclick="toggleReports()">View Reports</a>
                 <a href="#">Investment Philosophy</a>
                 <a href="#">Contact Team</a>
+            </div>
+            
+            <!-- Expandable Reports Section -->
+            <div class="reports-section" id="reportsSection">
+                <h3 class="reports-title">Monthly Reports</h3>
+                
+                <!-- June 2025 Report -->
+                <div class="report-item">
+                    <div class="report-date">Jun 2025</div>
+                    <div class="report-content">
+                        <div class="report-month">Monthly Report</div>
+                        <div class="report-summary">+3.8% month, -40.2% YTD. Portfolio value $38,621. Outperformed market by 50% during correction.</div>
+                    </div>
+                </div>
+                
+                <!-- May 2025 Report -->
+                <div class="report-item">
+                    <div class="report-date">May 2025</div>
+                    <div class="report-content">
+                        <div class="report-month">Monthly Report</div>
+                        <div class="report-summary">-12.4% month, -42.8% YTD. Portfolio value $37,195. Fund maintained superior risk-adjusted returns.</div>
+                    </div>
+                </div>
+                
+                <!-- April 2025 Report -->
+                <div class="report-item">
+                    <div class="report-date">Apr 2025</div>
+                    <div class="report-content">
+                        <div class="report-month">Monthly Report</div>
+                        <div class="report-summary">-8.1% month, -35.2% YTD. Portfolio value $42,472. Positioning favored infrastructure over DeFi.</div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -490,6 +1194,41 @@
             
             commentary.classList.toggle('visible');
             toggle.classList.toggle('expanded');
+        }
+        
+        function toggleExamples() {
+            const extraExamples = document.getElementById('extraExamples');
+            const toggle = document.querySelector('.example-toggle');
+            const toggleText = toggle.querySelector('span');
+            
+            extraExamples.classList.toggle('visible');
+            toggle.classList.toggle('expanded');
+            
+            if (extraExamples.classList.contains('visible')) {
+                toggleText.textContent = 'Show less';
+            } else {
+                toggleText.textContent = 'Show more';
+            }
+        }
+        
+        function toggleComparison(project) {
+            const comparison = document.getElementById(project + '-comparison');
+            if (comparison) {
+                comparison.classList.toggle('visible');
+                
+                // Close other comparisons
+                const allComparisons = document.querySelectorAll('.comparison-slide');
+                allComparisons.forEach(comp => {
+                    if (comp !== comparison) {
+                        comp.classList.remove('visible');
+                    }
+                });
+            }
+        }
+        
+        function toggleReports() {
+            const reportsSection = document.getElementById('reportsSection');
+            reportsSection.classList.toggle('visible');
         }
     </script>
 </body>

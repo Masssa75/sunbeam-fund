@@ -3,42 +3,89 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 25, 2025 - 10:55 AM)
+## 🚀 CURRENT STATUS (June 25, 2025 - 11:45 AM)
 
-### 🎨 SESSION IN PROGRESS - INVESTOR DASHBOARD REDESIGN
-**Status**: Exploring minimalist layouts that shift focus from performance to technology potential
+### ✅ SESSION COMPLETED - CRON JOB AUTHENTICATION FIXED
+**Status**: Fixed Twitter monitoring cron job that was failing due to authentication mismatch
 
-**Design Decision**:
-- Selected minimalist editorial layout (Option V3 Enhanced 1)
-- Clean, text-focused design emphasizing what investors own
-- Performance data present but not dominant
-- Need to add expandable market commentary for context
+**Major Accomplishments This Session**:
 
-**Market Commentary Requirement**:
-- Add collapsible commentary section below performance numbers
-- Context: Market down 40% from November peak (altcoins -90%)
-- Key points to communicate:
-  - Extraordinary headwinds (tariffs, Middle East, inflation)
-  - Our -40% vs market -90% = 50% outperformance
-  - Technology fundamentals unchanged
-  - 3-5 year horizon allows weathering storms
-  - Historical 10-100x returns post-crash
-- Implementation: Arrow button that expands commentary bubble
+**🔧 Fixed Cron Job Authentication Issue** ✅
+- **Root Cause**: Environment variable mismatch between Porta and Sunbeam projects
+  - Porta Edge Function: Expected `CRON_SECRET_KEY`
+  - Sunbeam Edge Function: Used `CRONJOB_API_KEY` 
+  - Cron job sent header `x-cron-key: r3DUAv++...` but function expected different format
+
+**🔧 Technical Fixes Applied**:
+1. **Updated monitor-projects Edge Function**: Changed from `CRONJOB_API_KEY` to `CRON_SECRET_KEY`
+2. **Added CRON_SECRET_KEY to .env**: `sunbeam-cron-secure-2025`
+3. **Deployed Fixed Edge Function**: Updated authentication logic
+4. **Created New Cron Job**: Job ID 6263672 with correct `x-cron-key` header
+5. **Disabled Duplicate Jobs**: Cleaned up 2 conflicting cron jobs (6263656, 6263667)
+
+**🎯 Key Differences Found Between Porta (Working) vs Sunbeam (Broken)**:
+1. **Environment Variable**: `CRON_SECRET_KEY` vs `CRONJOB_API_KEY`
+2. **Cron Header**: `x-cron-key: porta-cron-secure-2025` vs API key format
+3. **Database Tables**: `projects` vs `monitored_projects`
+4. **Field Names**: `project.name` vs `project.project_name`
+
+**✅ Current Working Status**:
+- **Cron Job ID**: 6263672 ("Sunbeam Fund - Monitor Crypto Projects")
+- **Authentication**: Working with `x-cron-key: sunbeam-cron-secure-2025`
+- **Monitoring**: Both Kaspa and Bittensor being monitored in rotation
+- **Last Activity**: Bittensor monitored at 11:38 AM, Kaspa at 11:24 AM
+- **Tweet Collection**: Active and working (historical tweets visible in database)
 
 **Next Instance TODO**:
-1. Implement the selected V3 Enhanced 1 layout (`/mockups/investor-layout-v3-enhanced1.html`)
-2. Add expandable market commentary component below performance bar
-3. Replace placeholder tweets with real Twitter monitoring data from database
-4. Ensure responsive design works well
-5. Test with real investor data
+1. Continue with investor dashboard redesign (V3 Enhanced 1 layout)
+2. Add expandable market commentary component
+3. Replace placeholder tweets with real Twitter monitoring data
+4. Test complete notification flow (Twitter → AI analysis → Telegram alerts)
 
-**Design Files Created This Session**:
-- `/mockups/investor-layout-option1-6.html` - Initial 6 options
-- `/mockups/investor-layout-minimal1-3.html` - Ultra minimalist versions
-- `/mockups/investor-layout-v3-enhanced1-3.html` - Enhanced versions with performance
-- `/mockups/investor-layout-market-context1-3.html` - Market commentary approaches
+## 🚀 PREVIOUS SESSION (June 25, 2025 - 11:25 AM)
 
-**Selected Design**: V3 Enhanced 1 - Editorial style with subtle performance bar
+### ✅ SESSION COMPLETED - INVESTOR DASHBOARD REDESIGN WITH KASPA DEEP DIVE
+**Status**: Implemented complete investor dashboard with expandable commentary and project comparisons
+
+**Major Accomplishments This Session**:
+
+1. **Market Commentary System** ✅
+   - Expandable commentary below performance bar
+   - "Market Context" button with smooth animation
+   - Includes all key talking points about market conditions
+   - Historical examples box (2018-19 Bear → 2021 Bull)
+   - "Show more" button reveals additional historical returns
+
+2. **Kaspa Deep Dive Feature** ✅
+   - Click on Kaspa to reveal expansive explanation
+   - Core thesis: "If we sacrifice decentralization for speed, why not just use AWS?"
+   - Comparison table showing Kaspa vs Bitcoin/Ethereum/Solana/Avalanche
+   - 10-year development story highlighting academic rigor
+   - Positions Kaspa as "The Next Bitcoin" with 600x speed improvement
+   - What this enables: instant payments, P2P cash, micropayments, global scale
+
+3. **Design Implementation** ✅
+   - Selected and enhanced V3 Enhanced 1 layout
+   - Updated investment philosophy language
+   - Mobile responsive (comparison shows only 3 columns on mobile)
+   - Maintains minimalist editorial aesthetic throughout
+
+**Key Files**:
+- `/mockups/investor-layout-v3-enhanced1-commentary.html` - Complete implementation
+- Includes market commentary, historical examples, and Kaspa comparison
+
+**Next Instance TODO**:
+1. Convert HTML mockup to React component
+2. Integrate with real portfolio data from database
+3. Replace placeholder tweets with real Twitter monitoring data
+4. Add similar deep dives for other major holdings (Bittensor, Sui, Toncoin)
+5. Test with real investor accounts
+
+**Design Philosophy Refined**:
+- Focus on decentralization as core investment thesis
+- Technology over hype
+- Long-term fundamental value
+- Educational approach for non-technical investors
 
 ## 🚀 PREVIOUS SESSION (June 25, 2025 - 10:35 AM)
 
@@ -64,11 +111,12 @@
    - Currently monitoring Kaspa and Bittensor
    - Admin interface at /admin/twitter-monitoring
    - Cron job active and collecting tweets
+   - Fixed cron job authentication issue (Job ID: 6263656)
    - 10+ tweets already collected and analyzed
 
 3. **Key Technical Details**:
    - Fixed Edge Function secrets (SCRAPERAPI_KEY, GEMINI_API_KEY)
-   - Set up cron job (ID: 6263498) running every minute
+   - Set up cron job (ID: 6263656) running every minute
    - Fixed monitor-projects table references
    - Telegram webhook connected and working
    - High importance tweets (≥7) trigger Telegram alerts

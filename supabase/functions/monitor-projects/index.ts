@@ -18,7 +18,7 @@ serve(async (req) => {
     const authHeader = req.headers.get('authorization')
     
     // Allow both cron key authentication and Supabase service role auth
-    const isValidCronKey = cronKey === Deno.env.get('CRONJOB_API_KEY')
+    const isValidCronKey = cronKey === Deno.env.get('CRON_SECRET_KEY')
     const isValidServiceRole = authHeader === `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`
     
     if (!isValidCronKey && !isValidServiceRole) {
@@ -58,8 +58,8 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        projectId: project.id,
-        projectName: project.name,
+        projectId: project.project_id,
+        projectName: project.project_name,
         symbol: project.symbol,
         twitterHandle: project.twitter_handle
       })
@@ -71,7 +71,7 @@ serve(async (req) => {
 
     // Update last_monitored timestamp
     await supabase
-      .from('projects')
+      .from('monitored_projects')
       .update({ last_monitored: new Date().toISOString() })
       .eq('id', project.id)
 
@@ -127,7 +127,7 @@ serve(async (req) => {
 
 // Helper function to format notification message
 function formatNotificationMessage(project: any, tweets: any[]): string {
-  const header = `🚨 <b>${project.name} (${project.symbol})</b>\n`
+  const header = `🚨 <b>${project.project_name} (${project.symbol})</b>\n`
   const count = tweets.length === 1 ? '1 important update' : `${tweets.length} important updates`
   
   let message = `${header}Found ${count}:\n\n`
@@ -160,7 +160,7 @@ function formatNotificationMessage(project: any, tweets: any[]): string {
     message += `<i>...and ${tweets.length - 3} more updates</i>\n\n`
   }
   
-  message += `<a href="https://portax.netlify.app">View all in Porta</a>`
+  message += `<a href="https://sunbeam.capital/admin/twitter-monitoring">View all tweets</a>`
   
   return message
 }

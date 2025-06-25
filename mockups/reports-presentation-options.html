@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 Report Presentation Options</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .option {
+            background: white;
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .option-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        /* Option 1: Timeline Style (Current) */
+        .timeline-reports .report-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 24px;
+            padding: 0;
+        }
+        
+        .timeline-reports .report-date {
+            font-size: 14px;
+            color: #999;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+        
+        .timeline-reports .report-content {
+            flex: 1;
+        }
+        
+        .timeline-reports .report-month {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .timeline-reports .report-summary {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        /* Option 2: Grid Cards */
+        .grid-reports {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .grid-card {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .grid-card-month {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .grid-card-metrics {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .grid-metric {
+            text-align: center;
+        }
+        
+        .grid-metric-value {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .grid-metric-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .grid-card-action {
+            font-size: 13px;
+            color: #666;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        /* Option 3: Table Style */
+        .table-reports {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table-reports th {
+            text-align: left;
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #666;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .table-reports td {
+            padding: 16px;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 14px;
+        }
+        
+        .table-reports tr:hover {
+            background: #fafafa;
+        }
+        
+        .table-month {
+            font-weight: 600;
+        }
+        
+        .table-positive {
+            color: #22c55e;
+            font-weight: 600;
+        }
+        
+        .table-negative {
+            color: #ef4444;
+            font-weight: 600;
+        }
+        
+        .table-action {
+            color: #666;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        /* Option 4: Minimal List */
+        .minimal-reports .minimal-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .minimal-reports .minimal-item:last-child {
+            border-bottom: none;
+        }
+        
+        .minimal-reports .minimal-item:hover {
+            background: #fafafa;
+            margin: 0 -20px;
+            padding: 16px 20px;
+            border-radius: 4px;
+        }
+        
+        .minimal-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .minimal-month {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .minimal-performance {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .minimal-return {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .minimal-return.positive {
+            color: #22c55e;
+        }
+        
+        .minimal-return.negative {
+            color: #ef4444;
+        }
+        
+        /* Option 5: Accordion Style */
+        .accordion-reports .accordion-item {
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            padding: 20px;
+            background: #fafafa;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .accordion-header:hover {
+            background: #f0f0f0;
+        }
+        
+        .accordion-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .accordion-preview {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .accordion-icon {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .accordion-content {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+        }
+        
+        .accordion-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .accordion-metric {
+            text-align: center;
+        }
+        
+        .accordion-metric-value {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        
+        .accordion-metric-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .accordion-highlights {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>5 Ways to Present Past Reports</h1>
+
+        <!-- Option 1: Timeline Style (Current) -->
+        <div class="option">
+            <h2 class="option-title">Option 1: Timeline Style (Clean & Simple)</h2>
+            <div class="timeline-reports">
+                <div class="report-item">
+                    <div class="report-date">Jun 2025</div>
+                    <div class="report-content">
+                        <div class="report-month">Monthly Report</div>
+                        <div class="report-summary">+3.8% month, -40.2% YTD. Portfolio value $38,621. Outperformed market by 50% during correction.</div>
+                    </div>
+                </div>
+                
+                <div class="report-item">
+                    <div class="report-date">May 2025</div>
+                    <div class="report-content">
+                        <div class="report-month">Monthly Report</div>
+                        <div class="report-summary">-12.4% month, -42.8% YTD. Portfolio value $37,195. Fund maintained superior risk-adjusted returns.</div>
+                    </div>
+                </div>
+                
+                <div class="report-item">
+                    <div class="report-date">Apr 2025</div>
+                    <div class="report-content">
+                        <div class="report-month">Monthly Report</div>
+                        <div class="report-summary">-8.1% month, -35.2% YTD. Portfolio value $42,472. Positioning favored infrastructure over DeFi.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 2: Grid Cards -->
+        <div class="option">
+            <h2 class="option-title">Option 2: Grid Cards (Visual Overview)</h2>
+            <div class="grid-reports">
+                <div class="grid-card">
+                    <div class="grid-card-month">June 2025</div>
+                    <div class="grid-card-metrics">
+                        <div class="grid-metric">
+                            <div class="grid-metric-value" style="color: #22c55e;">+3.8%</div>
+                            <div class="grid-metric-label">Month</div>
+                        </div>
+                        <div class="grid-metric">
+                            <div class="grid-metric-value" style="color: #ef4444;">-40.2%</div>
+                            <div class="grid-metric-label">YTD</div>
+                        </div>
+                        <div class="grid-metric">
+                            <div class="grid-metric-value">$38,621</div>
+                            <div class="grid-metric-label">Value</div>
+                        </div>
+                    </div>
+                    <div class="grid-card-action">View Report →</div>
+                </div>
+                
+                <div class="grid-card">
+                    <div class="grid-card-month">May 2025</div>
+                    <div class="grid-card-metrics">
+                        <div class="grid-metric">
+                            <div class="grid-metric-value" style="color: #ef4444;">-12.4%</div>
+                            <div class="grid-metric-label">Month</div>
+                        </div>
+                        <div class="grid-metric">
+                            <div class="grid-metric-value" style="color: #ef4444;">-42.8%</div>
+                            <div class="grid-metric-label">YTD</div>
+                        </div>
+                        <div class="grid-metric">
+                            <div class="grid-metric-value">$37,195</div>
+                            <div class="grid-metric-label">Value</div>
+                        </div>
+                    </div>
+                    <div class="grid-card-action">View Report →</div>
+                </div>
+                
+                <div class="grid-card">
+                    <div class="grid-card-month">April 2025</div>
+                    <div class="grid-card-metrics">
+                        <div class="grid-metric">
+                            <div class="grid-metric-value" style="color: #ef4444;">-8.1%</div>
+                            <div class="grid-metric-label">Month</div>
+                        </div>
+                        <div class="grid-metric">
+                            <div class="grid-metric-value" style="color: #ef4444;">-35.2%</div>
+                            <div class="grid-metric-label">YTD</div>
+                        </div>
+                        <div class="grid-metric">
+                            <div class="grid-metric-value">$42,472</div>
+                            <div class="grid-metric-label">Value</div>
+                        </div>
+                    </div>
+                    <div class="grid-card-action">View Report →</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 3: Table Style -->
+        <div class="option">
+            <h2 class="option-title">Option 3: Table Format (Data-Dense)</h2>
+            <table class="table-reports">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Monthly Return</th>
+                        <th>YTD Return</th>
+                        <th>Portfolio Value</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="table-month">June 2025</td>
+                        <td class="table-positive">+3.8%</td>
+                        <td class="table-negative">-40.2%</td>
+                        <td>$38,621</td>
+                        <td class="table-action">View Report</td>
+                    </tr>
+                    <tr>
+                        <td class="table-month">May 2025</td>
+                        <td class="table-negative">-12.4%</td>
+                        <td class="table-negative">-42.8%</td>
+                        <td>$37,195</td>
+                        <td class="table-action">View Report</td>
+                    </tr>
+                    <tr>
+                        <td class="table-month">April 2025</td>
+                        <td class="table-negative">-8.1%</td>
+                        <td class="table-negative">-35.2%</td>
+                        <td>$42,472</td>
+                        <td class="table-action">View Report</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Option 4: Minimal List -->
+        <div class="option">
+            <h2 class="option-title">Option 4: Minimal List (Ultra Clean)</h2>
+            <div class="minimal-reports">
+                <div class="minimal-item">
+                    <div class="minimal-left">
+                        <div class="minimal-month">June 2025</div>
+                        <div class="minimal-performance">Portfolio value $38,621</div>
+                    </div>
+                    <div class="minimal-return positive">+3.8%</div>
+                </div>
+                
+                <div class="minimal-item">
+                    <div class="minimal-left">
+                        <div class="minimal-month">May 2025</div>
+                        <div class="minimal-performance">Portfolio value $37,195</div>
+                    </div>
+                    <div class="minimal-return negative">-12.4%</div>
+                </div>
+                
+                <div class="minimal-item">
+                    <div class="minimal-left">
+                        <div class="minimal-month">April 2025</div>
+                        <div class="minimal-performance">Portfolio value $42,472</div>
+                    </div>
+                    <div class="minimal-return negative">-8.1%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 5: Accordion Style -->
+        <div class="option">
+            <h2 class="option-title">Option 5: Accordion (Expandable Details)</h2>
+            <div class="accordion-reports">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div>
+                            <div class="accordion-title">June 2025</div>
+                            <div class="accordion-preview">+3.8% month, -40.2% YTD</div>
+                        </div>
+                        <div class="accordion-icon">▼</div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-metrics">
+                            <div class="accordion-metric">
+                                <div class="accordion-metric-value" style="color: #22c55e;">+3.8%</div>
+                                <div class="accordion-metric-label">Monthly Return</div>
+                            </div>
+                            <div class="accordion-metric">
+                                <div class="accordion-metric-value" style="color: #ef4444;">-40.2%</div>
+                                <div class="accordion-metric-label">YTD Return</div>
+                            </div>
+                            <div class="accordion-metric">
+                                <div class="accordion-metric-value">$38,621</div>
+                                <div class="accordion-metric-label">Portfolio Value</div>
+                            </div>
+                        </div>
+                        <div class="accordion-highlights">
+                            <strong>Key Highlights:</strong> Kaspa development accelerated with new mining optimizations. Bittensor subnet ecosystem expanded to 15+ specialized networks. Portfolio outperformed altcoin market by 50% during correction.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div>
+                            <div class="accordion-title">May 2025</div>
+                            <div class="accordion-preview">-12.4% month, -42.8% YTD</div>
+                        </div>
+                        <div class="accordion-icon">▼</div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-metrics">
+                            <div class="accordion-metric">
+                                <div class="accordion-metric-value" style="color: #ef4444;">-12.4%</div>
+                                <div class="accordion-metric-label">Monthly Return</div>
+                            </div>
+                            <div class="accordion-metric">
+                                <div class="accordion-metric-value" style="color: #ef4444;">-42.8%</div>
+                                <div class="accordion-metric-label">YTD Return</div>
+                            </div>
+                            <div class="accordion-metric">
+                                <div class="accordion-metric-value">$37,195</div>
+                                <div class="accordion-metric-label">Portfolio Value</div>
+                            </div>
+                        </div>
+                        <div class="accordion-highlights">
+                            <strong>Key Highlights:</strong> Market volatility continued with regulatory uncertainty. Kaspa mainnet upgrade completed successfully. Fund maintained superior risk-adjusted returns vs benchmark.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
