@@ -361,7 +361,7 @@ function PositionModal({ position, onSave, onClose, saving }: {
   const [searching, setSearching] = useState(false)
   const [currentPrice, setCurrentPrice] = useState<number>(0)
   const [fetchingPrice, setFetchingPrice] = useState(false)
-  const [isCustomEntry, setIsCustomEntry] = useState(false)
+  const [isCustomEntry, setIsCustomEntry] = useState(position?.project_id?.startsWith('custom-') || false)
 
   // Fetch current price when editing a position
   useEffect(() => {
@@ -559,7 +559,7 @@ function PositionModal({ position, onSave, onClose, saving }: {
             </>
           )}
           
-          {(formData.project_name || position || isCustomEntry) && (
+          {((formData.project_name && !isCustomEntry) || position || isCustomEntry) && (
             <>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-1">Project Name</label>
@@ -658,7 +658,10 @@ function PositionModal({ position, onSave, onClose, saving }: {
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-              disabled={saving || (!position && !isCustomEntry && !formData.project_id)}
+              disabled={saving || (!position && (
+                (!isCustomEntry && !formData.project_id) ||
+                (isCustomEntry && (!formData.project_name || !formData.symbol || formData.amount === 0 || formData.cost_basis === 0))
+              ))}
             >
               {saving ? 'Saving...' : (position ? 'Update' : 'Add')}
             </button>
