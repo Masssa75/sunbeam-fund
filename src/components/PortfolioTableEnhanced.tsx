@@ -658,7 +658,7 @@ function PositionModal({ position, onSave, onClose, saving }: {
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-              disabled={saving || (!position && !formData.project_id)}
+              disabled={saving || (!position && !isCustomEntry && !formData.project_id)}
             >
               {saving ? 'Saving...' : (position ? 'Update' : 'Add')}
             </button>
