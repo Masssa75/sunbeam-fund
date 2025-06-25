@@ -63,29 +63,35 @@ export async function POST(request: NextRequest) {
 
     // Check if connection already exists
     console.log('[generate-token] Checking for existing connection for investor:', investorId);
-    const { data: existingConnection, error: checkError } = await supabase
+    const { data: existingConnections, error: checkError } = await supabase
       .from('investor_telegram')
-      .select('id, connection_token, telegram_chat_id')
+      .select('id, connection_token, telegram_chat_id, is_active')
       .eq('investor_id', investorId)
-      .single();
+      .order('created_at', { ascending: false })
+      .limit(1);
 
-    console.log('[generate-token] Existing connection:', existingConnection, 'Error:', checkError);
+    console.log('[generate-token] Existing connections query result:', existingConnections, 'Error:', checkError);
 
-    if (existingConnection) {
+    if (existingConnections && existingConnections.length > 0) {
+      const existingConnection = existingConnections[0];
+      
       // If already connected, return existing token
-      if (existingConnection.telegram_chat_id && existingConnection.telegram_chat_id !== 0) {
-        console.log('[generate-token] Already connected, returning existing token');
+      if (existingConnection.telegram_chat_id && existingConnection.telegram_chat_id !== 0 && existingConnection.is_active) {
+        console.log('[generate-token] Already connected and active, returning existing token');
         return NextResponse.json({ 
           token: existingConnection.connection_token,
           alreadyConnected: true 
         });
       }
-      // Return existing unused token
-      console.log('[generate-token] Found unused token, returning it');
-      return NextResponse.json({ 
-        token: existingConnection.connection_token,
-        alreadyConnected: false 
-      });
+      
+      // Return existing unused token if it's not connected yet
+      if (!existingConnection.is_active || existingConnection.telegram_chat_id === 0) {
+        console.log('[generate-token] Found unused token, returning it');
+        return NextResponse.json({ 
+          token: existingConnection.connection_token,
+          alreadyConnected: false 
+        });
+      }
     }
 
     // Generate new connection token
