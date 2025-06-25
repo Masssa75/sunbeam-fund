@@ -3,7 +3,44 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 25, 2025 - 10:35 AM)
+## 🚀 CURRENT STATUS (June 25, 2025 - 10:55 AM)
+
+### 🎨 SESSION IN PROGRESS - INVESTOR DASHBOARD REDESIGN
+**Status**: Exploring minimalist layouts that shift focus from performance to technology potential
+
+**Design Decision**:
+- Selected minimalist editorial layout (Option V3 Enhanced 1)
+- Clean, text-focused design emphasizing what investors own
+- Performance data present but not dominant
+- Need to add expandable market commentary for context
+
+**Market Commentary Requirement**:
+- Add collapsible commentary section below performance numbers
+- Context: Market down 40% from November peak (altcoins -90%)
+- Key points to communicate:
+  - Extraordinary headwinds (tariffs, Middle East, inflation)
+  - Our -40% vs market -90% = 50% outperformance
+  - Technology fundamentals unchanged
+  - 3-5 year horizon allows weathering storms
+  - Historical 10-100x returns post-crash
+- Implementation: Arrow button that expands commentary bubble
+
+**Next Instance TODO**:
+1. Implement the selected V3 Enhanced 1 layout (`/mockups/investor-layout-v3-enhanced1.html`)
+2. Add expandable market commentary component below performance bar
+3. Replace placeholder tweets with real Twitter monitoring data from database
+4. Ensure responsive design works well
+5. Test with real investor data
+
+**Design Files Created This Session**:
+- `/mockups/investor-layout-option1-6.html` - Initial 6 options
+- `/mockups/investor-layout-minimal1-3.html` - Ultra minimalist versions
+- `/mockups/investor-layout-v3-enhanced1-3.html` - Enhanced versions with performance
+- `/mockups/investor-layout-market-context1-3.html` - Market commentary approaches
+
+**Selected Design**: V3 Enhanced 1 - Editorial style with subtle performance bar
+
+## 🚀 PREVIOUS SESSION (June 25, 2025 - 10:35 AM)
 
 ### ✅ SESSION COMPLETED - TELEGRAM & TWITTER MONITORING SYSTEMS
 **Status**: Implemented complete notification and monitoring infrastructure

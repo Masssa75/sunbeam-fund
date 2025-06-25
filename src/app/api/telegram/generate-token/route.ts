@@ -1,31 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase/server-auth';
+import { getServerAuth } from '@/lib/supabase/server-auth';
+import { supabaseAdmin } from '@/lib/supabase/client';
 
 export async function POST(request: NextRequest) {
   try {
     // Check if user is admin
-    const supabase = createServerClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const { user, isAdmin } = await getServerAuth();
     
-    if (authError || !user) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check if user is admin
-    const adminEmails = ['marc@cyrator.com', 'marc@minutevideos.com'];
-    const isAdmin = adminEmails.includes(user.email || '');
-
     if (!isAdmin) {
-      const { data: adminUser } = await supabase
-        .from('admin_users')
-        .select('id')
-        .eq('id', user.id)
-        .single();
-      
-      if (!adminUser) {
-        return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
-      }
+      return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
+
+    // Use admin client for data operations
+    const supabase = supabaseAdmin;
 
     const body = await request.json();
     const { investorId } = body;
