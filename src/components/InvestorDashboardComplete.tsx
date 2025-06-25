@@ -412,7 +412,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
           <h3 className="text-xl font-medium mb-8">Recent Developments</h3>
           
           {tweets.length > 0 ? (
-            tweets.slice(0, 9).map((tweet, index) => (
+            tweets.map((tweet, index) => (
               <div key={tweet.id} className="flex gap-6 mb-8">
                 <div className="text-sm text-gray-400 min-w-24 flex-shrink-0">
                   {new Date(tweet.created_at).toLocaleDateString()}

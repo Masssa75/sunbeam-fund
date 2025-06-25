@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     const { data: tweets, error: tweetsError } = await supabase
       .from('tweet_analyses')
       .select('*')
-      .gte('importance_score', 7)  // Only show important tweets
+      .gte('importance_score', 9)  // Only show very important tweets (9+)
       .order('created_at', { ascending: false })
       .limit(10);
     
