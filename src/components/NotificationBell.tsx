@@ -49,7 +49,7 @@ export default function NotificationBell() {
     try {
       // Load recent high-importance alerts
       try {
-        const alertsResponse = await fetch('/api/notifications/recent-alerts')
+        const alertsResponse = await fetch('/api/notifications/recent-alerts/')
         if (alertsResponse.ok) {
           const alertsData = await alertsResponse.json()
           setRecentAlerts(alertsData.alerts || [])
@@ -60,7 +60,7 @@ export default function NotificationBell() {
 
       // Check Telegram connection status
       try {
-        const connectionResponse = await fetch('/api/notifications/connection-status')
+        const connectionResponse = await fetch('/api/notifications/connection-status/')
         if (connectionResponse.ok) {
           const connectionData = await connectionResponse.json()
           setTelegramConnection(connectionData)
@@ -68,7 +68,7 @@ export default function NotificationBell() {
           // If not connected, generate a connection token
           if (!connectionData.is_connected) {
             try {
-              const tokenResponse = await fetch('/api/telegram/generate-token', {
+              const tokenResponse = await fetch('/api/telegram/generate-token/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({})
@@ -197,7 +197,7 @@ export default function NotificationBell() {
                   if (!connectionToken) {
                     // Generate token if not already generated
                     try {
-                      const tokenResponse = await fetch('/api/telegram/generate-token', {
+                      const tokenResponse = await fetch('/api/telegram/generate-token/', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({})
