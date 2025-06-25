@@ -33,6 +33,7 @@ export default function TwitterMonitoringPage() {
   const [tweets, setTweets] = useState<Tweet[]>([]);
   const [projects, setProjects] = useState<MonitoredProject[]>([]);
   const [selectedProject, setSelectedProject] = useState<string>('all');
+  const [expandedTweets, setExpandedTweets] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     loadData();
@@ -72,9 +73,25 @@ export default function TwitterMonitoringPage() {
     }
   };
 
-  const filteredTweets = selectedProject === 'all' 
+  const filteredTweets = (selectedProject === 'all' 
     ? tweets 
-    : tweets.filter(t => t.project_id === selectedProject);
+    : tweets.filter(t => t.project_id === selectedProject))
+    .sort((a, b) => b.importance_score - a.importance_score); // Sort by importance score (highest first)
+
+  const toggleTweetExpansion = (tweetId: string) => {
+    const newExpanded = new Set(expandedTweets);
+    if (newExpanded.has(tweetId)) {
+      newExpanded.delete(tweetId);
+    } else {
+      newExpanded.add(tweetId);
+    }
+    setExpandedTweets(newExpanded);
+  };
+
+  const getProjectName = (projectId: string) => {
+    const project = projects.find(p => p.project_id === projectId);
+    return project ? project.project_name : projectId;
+  };
 
   const getScoreColor = (score: number) => {
     if (score >= 9) return 'text-red-600 font-bold';
@@ -186,38 +203,76 @@ export default function TwitterMonitoringPage() {
                 No tweets collected yet. The system monitors one project per minute.
               </div>
             ) : (
-              filteredTweets.map((tweet) => (
-                <div key={tweet.id} className="p-6 hover:bg-gray-50">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex items-center gap-3">
-                      <span className={`text-2xl font-bold ${getScoreColor(tweet.importance_score)}`}>
-                        {tweet.importance_score}
-                      </span>
-                      <span className={`px-2 py-1 text-xs rounded-full ${getCategoryBadge(tweet.category)}`}>
-                        {tweet.category}
-                      </span>
-                      {tweet.is_ai_analyzed && (
-                        <span className="text-xs text-green-600">✓ AI Analyzed</span>
-                      )}
+              filteredTweets.map((tweet) => {
+                const isExpanded = expandedTweets.has(tweet.id);
+                return (
+                  <div key={tweet.id} className="p-4 hover:bg-gray-50 border-l-4 border-l-transparent hover:border-l-blue-200">
+                    {/* Main tweet info - always visible */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 flex-1">
+                        {/* Importance Score */}
+                        <div className="flex-shrink-0">
+                          <span className={`text-3xl font-bold ${getScoreColor(tweet.importance_score)}`}>
+                            {tweet.importance_score}
+                          </span>
+                        </div>
+                        
+                        {/* Project Name */}
+                        <div className="flex-shrink-0">
+                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                            {getProjectName(tweet.project_id)}
+                          </span>
+                        </div>
+                        
+                        {/* AI Summary (Main content) */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg font-semibold text-gray-900 truncate">
+                            {tweet.summary || 'No summary available'}
+                          </h3>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className={`px-2 py-1 text-xs rounded-full ${getCategoryBadge(tweet.category)}`}>
+                              {tweet.category}
+                            </span>
+                            {tweet.is_ai_analyzed && (
+                              <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
+                                ✓ AI Analyzed
+                              </span>
+                            )}
+                            <span className="text-xs text-gray-500">
+                              {tweet.author || 'Unknown'}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        {/* Expand Button */}
+                        <button
+                          onClick={() => toggleTweetExpansion(tweet.id)}
+                          className="flex-shrink-0 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                        >
+                          {isExpanded ? '↑ Hide' : '↓ Show'}
+                        </button>
+                      </div>
+                      
+                      {/* Timestamp */}
+                      <div className="text-sm text-gray-500 ml-4">
+                        {new Date(tweet.created_at).toLocaleString()}
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-500">
-                      {new Date(tweet.created_at).toLocaleString()}
-                    </div>
+                    
+                    {/* Expanded content - only shown when clicked */}
+                    {isExpanded && (
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        <div className="bg-gray-50 rounded-lg p-4">
+                          <h4 className="text-sm font-medium text-gray-700 mb-2">Full Tweet:</h4>
+                          <p className="text-gray-800 leading-relaxed">
+                            {tweet.tweet_text}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  
-                  <p className="text-gray-800 mb-2">{tweet.tweet_text}</p>
-                  
-                  {tweet.summary && (
-                    <p className="text-sm text-gray-600 italic mb-2">
-                      Summary: {tweet.summary}
-                    </p>
-                  )}
-                  
-                  <p className="text-xs text-gray-500">
-                    Author: {tweet.author || 'Unknown'}
-                  </p>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>

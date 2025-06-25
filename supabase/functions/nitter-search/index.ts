@@ -46,7 +46,8 @@ For EACH tweet, provide a JSON array with objects containing:
   * 3-4: Low importance (retweets, general commentary, minor mentions)
   * 0-2: Noise (spam, unrelated, very minor mentions)
 - category: One of: "partnership", "technical", "listing", "community", "price", "general"
-- summary: A one-sentence summary (max 200 chars)
+- summary: A news-style headline that clearly states what happened (max 60 chars)
+  Examples: "New exchange listing announced", "Mainnet upgrade completed", "Partnership with Microsoft"
 - is_official: Boolean from the input
 - reasoning: Brief explanation of the score (max 100 chars)
 
