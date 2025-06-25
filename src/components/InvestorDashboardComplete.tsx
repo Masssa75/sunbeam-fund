@@ -268,7 +268,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
 
                 <p>
-                  The irony is striking: <span className="font-medium text-black">the United States has become extraordinarily pro-crypto</span>, with everything positioned for the market to take off following Trump's inauguration. Yet this hasn't materialized. The market appears to be waiting for one crucial catalyst—renewed monetary expansion—which will only occur once inflation meaningfully declines.
+                  The irony is striking: <span className="font-medium text-black">the United States has become extraordinarily pro-crypto</span>, with everything positioned for the market to take off following Trump's inauguration.
                 </p>
                 
                 <p>
