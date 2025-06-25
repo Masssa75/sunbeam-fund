@@ -121,7 +121,10 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
     let totalValue = 0
     const allocations: Record<string, number> = {}
     
-    positions.forEach(pos => {
+    // Filter out CURE Protocol from investor view
+    const investorPositions = positions.filter(pos => pos.project_name !== 'CURE Protocol')
+    
+    investorPositions.forEach(pos => {
       totalCost += pos.cost_basis
       
       const price = prices[pos.project_id] || 0
@@ -136,7 +139,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
     })
     
     // Recalculate allocations after we have the total
-    positions.forEach(pos => {
+    investorPositions.forEach(pos => {
       const price = prices[pos.project_id] || 0
       let currentValue = pos.project_id.startsWith('custom-') ? pos.cost_basis : pos.amount * price
       
@@ -162,6 +165,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
   
   // Get top 4 holdings and group others
   const topHoldings = positions
+    .filter(pos => pos.project_name !== 'CURE Protocol') // Exclude CURE from investor view
     .map(pos => {
       const currentPrice = prices[pos.project_id] || 0
       const value = pos.project_id.startsWith('custom-') 
@@ -230,7 +234,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
             You own the future of blockchain.
           </h1>
           <p className="text-lg text-gray-500 leading-relaxed">
-            {positions.length > 0 ? positions.length : '12'} carefully selected technologies. Each solving fundamental problems. Built for the next decade.
+            {positions.filter(p => p.project_name !== 'CURE Protocol').length > 0 ? positions.filter(p => p.project_name !== 'CURE Protocol').length : '12'} carefully selected technologies. Each solving fundamental problems. Built for the next decade.
           </p>
         </div>
 
