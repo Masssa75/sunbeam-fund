@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform the data to match the component's expected format
-    const formattedTweets = (tweets || []).map(tweet => ({
+    const formattedTweets = (tweets || []).map((tweet: any) => ({
       id: tweet.id,
       project_id: tweet.project_id,
       project_name: tweet.monitored_projects?.project_name || 'Unknown Project',
