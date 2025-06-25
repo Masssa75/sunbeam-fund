@@ -86,7 +86,8 @@ export async function POST(request: NextRequest) {
       }
       
       // Return existing unused token if it's not connected yet
-      if (!existingConnection.is_active || !existingConnection.telegram_chat_id || existingConnection.telegram_chat_id === 0) {
+      // Negative chat_id values are placeholders for pending connections
+      if (!existingConnection.is_active || existingConnection.telegram_chat_id <= 0) {
         console.log('[generate-token] Found unused token, returning it');
         return NextResponse.json({ 
           token: existingConnection.connection_token,
@@ -101,12 +102,17 @@ export async function POST(request: NextRequest) {
 
     // Create new connection record
     console.log('[generate-token] Creating new connection record for investor:', investorId);
+    
+    // Generate a unique negative chat_id placeholder to avoid constraint issues
+    // We'll use a timestamp-based negative number to ensure uniqueness
+    const placeholderChatId = -Date.now();
+    
     const { data: newConnection, error: createError } = await supabase
       .from('investor_telegram')
       .insert({
         investor_id: investorId,
         connection_token: tokenData,
-        telegram_chat_id: null, // NULL instead of 0 to avoid unique constraint issues
+        telegram_chat_id: placeholderChatId, // Unique negative number as placeholder
         is_active: false, // Will be activated when they connect
       })
       .select()
