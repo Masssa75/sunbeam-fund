@@ -71,6 +71,7 @@ export default function NotificationBell() {
               const tokenResponse = await fetch('/api/telegram/generate-token', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
               })
               if (tokenResponse.ok) {
                 const tokenData = await tokenResponse.json()
@@ -199,6 +200,7 @@ export default function NotificationBell() {
                       const tokenResponse = await fetch('/api/telegram/generate-token', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({})
                       })
                       if (tokenResponse.ok) {
                         const tokenData = await tokenResponse.json()

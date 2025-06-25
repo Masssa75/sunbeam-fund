@@ -14,8 +14,14 @@ export async function POST(request: NextRequest) {
     // Use admin client for data operations
     const supabase = supabaseAdmin;
 
-    const body = await request.json();
-    let { investorId } = body;
+    let investorId;
+    try {
+      const body = await request.json();
+      investorId = body.investorId;
+    } catch {
+      // No body provided, that's okay
+      investorId = undefined;
+    }
 
     // If no investorId provided and user is not admin, use their own investor ID
     if (!investorId && !isAdmin) {
