@@ -84,7 +84,7 @@ serve(async (req) => {
         // Verify the connection token
         const { data: existingConnection, error: checkError } = await supabase
           .from('investor_telegram')
-          .select('id, investor_id, investors(name, email)')
+          .select('*')
           .eq('connection_token', token)
           .single();
 
@@ -129,15 +129,28 @@ serve(async (req) => {
           return new Response('OK', { status: 200 });
         }
 
+        // Get investor details
+        let investorName = 'Investor';
+        if (existingConnection.investor_id) {
+          const { data: investor } = await supabase
+            .from('investors')
+            .select('name, email')
+            .eq('id', existingConnection.investor_id)
+            .single();
+          
+          if (investor) {
+            investorName = investor.name || investor.email || 'Investor';
+          }
+        }
+
         // Send success message
-        const investorName = existingConnection.investors?.name || 'Investor';
         await sendMessage(TELEGRAM_BOT_TOKEN, chatId, 
           `✅ <b>Successfully connected!</b>\n\n` +
           `Welcome ${investorName}! Your Telegram account is now connected to Sunbeam Fund.\n\n` +
           `You will receive:\n` +
+          `• Important market alerts (score ≥ 7/10)\n` +
           `• Monthly investment reports\n` +
-          `• Important portfolio updates\n` +
-          `• Fund performance alerts\n\n` +
+          `• Portfolio updates\n\n` +
           `Use /help to see available commands.`,
           { parseMode: 'HTML' }
         );

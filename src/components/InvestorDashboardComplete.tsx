@@ -242,7 +242,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
             {/* Commentary Toggle */}
             <button
               onClick={() => setShowCommentary(!showCommentary)}
-              className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 flex items-center gap-2 text-sm text-gray-600 hover:bg-gray-50 transition-all shadow-sm"
+              className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 rounded-full px-5 py-2.5 flex items-center gap-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all shadow-md hover:shadow-lg"
             >
               <span>Market Context</span>
               <svg 
@@ -359,6 +359,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
 
         {/* Portfolio Holdings */}
         <div className="space-y-0">
+          <h3 className="text-sm font-light text-gray-500 uppercase tracking-wider mb-6">Core Holdings</h3>
           {displayHoldings.map((position) => (
             <div key={position.id} className="border-t border-gray-200 py-10 cursor-pointer transition-all hover:pl-5" onClick={() => setExpandedProject(expandedProject === position.project_name ? null : position.project_name)}>
               <div className="flex justify-between items-baseline mb-3">
