@@ -206,8 +206,13 @@ export default function NotificationBell() {
                         const tokenData = await tokenResponse.json()
                         const link = `https://t.me/sunbeam_capital_bot?start=${tokenData.token}`
                         window.open(link, '_blank')
+                      } else {
+                        const errorData = await tokenResponse.json()
+                        console.error('Token generation error:', errorData)
+                        alert(`Failed to generate connection link: ${errorData.error || 'Unknown error'}`)
                       }
                     } catch (error) {
+                      console.error('Token generation exception:', error)
                       alert('Failed to generate connection link. Please try again.')
                     }
                   } else {

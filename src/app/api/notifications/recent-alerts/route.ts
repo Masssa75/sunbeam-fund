@@ -17,7 +17,7 @@ export async function GET() {
     const { data: alerts, error } = await supabase
       .from('tweet_analyses')
       .select('id, project_id, importance_score, summary, created_at')
-      .gte('importance_score', 7)
+      .gte('importance_score', 9)
       .gte('created_at', twentyFourHoursAgo)
       .order('created_at', { ascending: false })
       .limit(5)

@@ -23,8 +23,8 @@ export async function POST(request: NextRequest) {
       investorId = undefined;
     }
 
-    // If no investorId provided and user is not admin, use their own investor ID
-    if (!investorId && !isAdmin) {
+    // If no investorId provided, use their own investor ID
+    if (!investorId) {
       const { data: investor } = await supabase
         .from('investors')
         .select('id')
