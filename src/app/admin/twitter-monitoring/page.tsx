@@ -123,43 +123,43 @@ export default function TwitterMonitoringPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <Link href="/admin" className="text-blue-600 hover:text-blue-800 mb-4 inline-block">
+        <div className="mb-6 sm:mb-8">
+          <Link href="/admin" className="text-blue-600 hover:text-blue-800 mb-4 inline-block text-sm sm:text-base">
             ← Back to Admin
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Twitter Monitoring</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Twitter Monitoring</h1>
+          <p className="text-gray-600 mt-2 text-sm sm:text-base">
             Monitoring portfolio projects on Twitter with AI importance scoring
           </p>
         </div>
 
         {/* Projects Status */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Monitored Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-6">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4">Monitored Projects</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {projects.map((project) => {
               const lastCheck = project.last_monitored ? new Date(project.last_monitored) : null;
               const minutesAgo = lastCheck ? Math.round((Date.now() - lastCheck.getTime()) / 60000) : null;
               
               return (
-                <div key={project.id} className="border rounded-lg p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold">{project.project_name}</h3>
-                      <p className="text-sm text-gray-600">@{project.twitter_handle}</p>
+                <div key={project.id} className="border rounded-lg p-3 sm:p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold text-sm sm:text-base truncate">{project.project_name}</h3>
+                      <p className="text-xs sm:text-sm text-gray-600">@{project.twitter_handle}</p>
                     </div>
-                    <span className={`px-2 py-1 text-xs rounded-full ${
+                    <span className={`px-2 py-1 text-xs rounded-full flex-shrink-0 ml-2 ${
                       project.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                     }`}>
                       {project.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </div>
-                  <div className="mt-2 text-sm">
-                    <p>Alert threshold: ≥{project.alert_threshold}</p>
+                  <div className="text-xs sm:text-sm space-y-1">
+                    <p>Threshold: ≥{project.alert_threshold}</p>
                     <p className="text-gray-500">
-                      Last check: {lastCheck ? `${minutesAgo}m ago` : 'Never'}
+                      {lastCheck ? `${minutesAgo}m ago` : 'Never checked'}
                     </p>
                   </div>
                 </div>
@@ -206,40 +206,23 @@ export default function TwitterMonitoringPage() {
               filteredTweets.map((tweet) => {
                 const isExpanded = expandedTweets.has(tweet.id);
                 return (
-                  <div key={tweet.id} className="p-4 hover:bg-gray-50 border-l-4 border-l-transparent hover:border-l-blue-200">
-                    {/* Main tweet info - always visible */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 flex-1">
-                        {/* Importance Score */}
-                        <div className="flex-shrink-0">
-                          <span className={`text-3xl font-bold ${getScoreColor(tweet.importance_score)}`}>
-                            {tweet.importance_score}
-                          </span>
-                        </div>
-                        
-                        {/* Project Name */}
-                        <div className="flex-shrink-0">
-                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                            {getProjectName(tweet.project_id)}
-                          </span>
-                        </div>
-                        
-                        {/* AI Summary (Main content) */}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-lg font-semibold text-gray-900 truncate">
-                            {tweet.summary || 'No summary available'}
-                          </h3>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className={`px-2 py-1 text-xs rounded-full ${getCategoryBadge(tweet.category)}`}>
-                              {tweet.category}
+                  <div key={tweet.id} className="p-3 sm:p-4 hover:bg-gray-50 border-l-4 border-l-transparent hover:border-l-blue-200">
+                    {/* Mobile-first layout */}
+                    <div className="space-y-3">
+                      {/* Top row: Score + Project + Expand button */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 sm:gap-4">
+                          {/* Importance Score */}
+                          <div className="flex-shrink-0">
+                            <span className={`text-2xl sm:text-3xl font-bold ${getScoreColor(tweet.importance_score)}`}>
+                              {tweet.importance_score}
                             </span>
-                            {tweet.is_ai_analyzed && (
-                              <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
-                                ✓ AI Analyzed
-                              </span>
-                            )}
-                            <span className="text-xs text-gray-500">
-                              {tweet.author || 'Unknown'}
+                          </div>
+                          
+                          {/* Project Name */}
+                          <div className="flex-shrink-0">
+                            <span className="bg-blue-100 text-blue-800 px-2 py-1 sm:px-3 rounded-full text-xs sm:text-sm font-medium">
+                              {getProjectName(tweet.project_id)}
                             </span>
                           </div>
                         </div>
@@ -247,15 +230,35 @@ export default function TwitterMonitoringPage() {
                         {/* Expand Button */}
                         <button
                           onClick={() => toggleTweetExpansion(tweet.id)}
-                          className="flex-shrink-0 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                          className="flex-shrink-0 bg-gray-100 hover:bg-gray-200 px-2 py-1 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors"
                         >
                           {isExpanded ? '↑ Hide' : '↓ Show'}
                         </button>
                       </div>
                       
-                      {/* Timestamp */}
-                      <div className="text-sm text-gray-500 ml-4">
-                        {new Date(tweet.created_at).toLocaleString()}
+                      {/* AI Summary - Full width on mobile */}
+                      <div>
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 leading-tight">
+                          {tweet.summary || 'No summary available'}
+                        </h3>
+                      </div>
+                      
+                      {/* Bottom row: Meta info */}
+                      <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+                        <span className={`px-2 py-1 rounded-full ${getCategoryBadge(tweet.category)}`}>
+                          {tweet.category}
+                        </span>
+                        {tweet.is_ai_analyzed && (
+                          <span className="text-green-600 bg-green-50 px-2 py-1 rounded">
+                            ✓ AI
+                          </span>
+                        )}
+                        <span className="text-gray-500">
+                          {tweet.author || 'Unknown'}
+                        </span>
+                        <span className="text-gray-400 ml-auto">
+                          {new Date(tweet.created_at).toLocaleTimeString()}
+                        </span>
                       </div>
                     </div>
                     
