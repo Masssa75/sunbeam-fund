@@ -225,7 +225,7 @@ export default function PortfolioTableEnhanced({ onPositionsChange }: any) {
         <div>
           <h2 className="text-2xl font-bold">Portfolio Positions</h2>
           <p className="text-sm text-gray-500">
-            {positions.length} positions • Total Value: ${totalValue.toFixed(2)}
+            {positions.length} positions • Total Value: ${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
         </div>
         <div className="flex gap-2">
@@ -272,19 +272,19 @@ export default function PortfolioTableEnhanced({ onPositionsChange }: any) {
                 </td>
                 <td className="px-4 py-2 border-b uppercase">{position.symbol}</td>
                 <td className="px-4 py-2 border-b text-right">{position.amount.toLocaleString()}</td>
-                <td className="px-4 py-2 border-b text-right">${position.cost_basis.toFixed(4)}</td>
+                <td className="px-4 py-2 border-b text-right">${position.cost_basis.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 <td className="px-4 py-2 border-b text-right">
                   {position.project_id.startsWith('custom-') 
                     ? <span className="text-gray-500">N/A</span>
                     : `$${position.current_price?.toFixed(4) || '0.0000'}`}
                 </td>
                 <td className="px-4 py-2 border-b text-right">
-                  ${position.current_value?.toFixed(2) || '0.00'}
+                  ${position.current_value?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '0.00'}
                 </td>
                 <td className={`px-4 py-2 border-b text-right ${
                   (position.profit_loss || 0) >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  ${position.profit_loss?.toFixed(2) || '0.00'}
+                  {(position.profit_loss || 0) < 0 ? '-' : ''}${Math.abs(position.profit_loss || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </td>
                 <td className={`px-4 py-2 border-b text-right ${
                   (position.profit_loss_percent || 0) >= 0 ? 'text-green-600' : 'text-red-600'
@@ -311,9 +311,9 @@ export default function PortfolioTableEnhanced({ onPositionsChange }: any) {
           <tfoot>
             <tr className="font-medium bg-gray-50">
               <td colSpan={5} className="px-4 py-2 border-t">Total</td>
-              <td className="px-4 py-2 border-t text-right">${totalValue.toFixed(2)}</td>
+              <td className="px-4 py-2 border-t text-right">${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               <td className={`px-4 py-2 border-t text-right ${totalPL >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                ${totalPL.toFixed(2)}
+                {totalPL < 0 ? '-' : ''}${Math.abs(totalPL).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </td>
               <td className={`px-4 py-2 border-t text-right ${totalPLPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 {totalPLPercent.toFixed(2)}%
