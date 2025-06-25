@@ -264,15 +264,23 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
               <div className="font-semibold mb-3 text-base">Current Market Perspective</div>
               <div className="space-y-3">
                 <p>
-                  The crypto market has experienced <span className="font-medium text-black">extraordinary headwinds</span> since the November peak, with the broader altcoin market down 90% while Bitcoin has held relatively stable. Global factors including new tariff policies, Middle East tensions, and persistent inflation concerns have created the most challenging environment since 2022.
+                  Since November's peak, the crypto market has faced significant headwinds. While Bitcoin has remained relatively stable, the broader altcoin market has declined 70-80%, with meme coins experiencing even steeper losses.
+                </p>
+
+                <p>
+                  The irony is striking: <span className="font-medium text-black">the United States has become extraordinarily pro-crypto</span>, with everything positioned for the market to take off following Trump's inauguration. Yet this hasn't materialized. The market appears to be waiting for one crucial catalyst—renewed monetary expansion—which will only occur once inflation meaningfully declines.
                 </p>
                 
                 <p>
-                  In this context, our portfolio's performance represents a <span className="font-medium text-black">significant outperformance</span> versus the altcoin market. This resilience stems from our focus on infrastructure projects with real utility rather than speculative assets.
+                  Multiple forces compound this uncertainty. Unprecedented tariff disputes and Middle East conflicts directly impact inflation expectations. Meanwhile, the Trump administration's willingness to pursue radical policies keeps markets off balance. <span className="font-medium text-black">This perfect storm of uncertainty prevents the rally everyone expects</span>.
+                </p>
+
+                <p>
+                  Yet beneath this uncertainty lies <span className="font-medium text-black">enormous opportunity</span>. The world's largest economy has shifted from crypto skepticism to full embrace—a historic transformation whose impact is merely being delayed, not denied. These containing factors are temporary; the structural shift is permanent.
                 </p>
                 
                 <p>
-                  The technology fundamentals remain unchanged. Kaspa continues processing blocks at unprecedented speeds. Bittensor's AI marketplace grows daily. Sui's throughput capabilities position it for the next adoption wave. <span className="font-medium text-black">While we aim to capture bull market peaks, our focus on fundamental infrastructure ensures our projects survive and build through bear markets</span>, unlike speculative assets that disappear entirely.
+                  In this environment, our positioning proves its worth. We've invested in projects built to endure: Kaspa's unmatched transaction speeds, Bittensor's expanding AI marketplace, Sui's enterprise-grade scalability. These aren't speculative bets hoping for the next pump—they're <span className="font-medium text-black">infrastructure investments designed to survive market cycles and capture exponential growth</span> when conditions align.
                 </p>
                 
                 {/* Historical Examples */}
