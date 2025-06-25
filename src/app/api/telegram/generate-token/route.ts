@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
       }
       
       // Return existing unused token if it's not connected yet
-      if (!existingConnection.is_active || existingConnection.telegram_chat_id === 0) {
+      if (!existingConnection.is_active || !existingConnection.telegram_chat_id || existingConnection.telegram_chat_id === 0) {
         console.log('[generate-token] Found unused token, returning it');
         return NextResponse.json({ 
           token: existingConnection.connection_token,
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
       .insert({
         investor_id: investorId,
         connection_token: tokenData,
-        telegram_chat_id: 0, // Placeholder, will be updated when they connect
+        telegram_chat_id: null, // NULL instead of 0 to avoid unique constraint issues
         is_active: false, // Will be activated when they connect
       })
       .select()
