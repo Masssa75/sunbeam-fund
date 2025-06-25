@@ -272,7 +272,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
                 
                 <p>
-                  Multiple forces compound this uncertainty. Unprecedented tariff disputes and Middle East conflicts directly impact inflation expectations. Meanwhile, the Trump administration's willingness to pursue radical policies keeps markets off balance. <span className="font-medium text-black">This perfect storm of uncertainty prevents the rally everyone expects</span>.
+                  Multiple forces compound this uncertainty. Unprecedented tariff wars and Middle East conflicts directly impact inflation expectations. Meanwhile, the Trump administration's willingness to pursue radical policies keeps markets off balance. <span className="font-medium text-black">This perfect storm of uncertainty prevents the rally everyone expects</span>.
                 </p>
 
                 <p>
