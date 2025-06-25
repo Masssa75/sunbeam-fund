@@ -16,7 +16,7 @@ export async function GET() {
     const { data: investor } = await supabase
       .from('investors')
       .select('id')
-      .eq('id', authResult.user.id)
+      .eq('email', authResult.user.email)
       .single()
     
     if (!investor) {
