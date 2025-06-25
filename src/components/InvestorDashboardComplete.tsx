@@ -313,6 +313,18 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 <p>
                   Our approach remains consistent: focus on infrastructure that matters. Kaspa processes transactions faster than any proof-of-work chain. Bittensor connects AI models in ways traditional tech can't. Toncoin leverages Telegram's billion users. <span className="font-medium text-black">We see these as foundational technologies</span>, not momentum trades. They're built to operate through cycles, not just ride them.
                 </p>
+
+                <p>
+                  Let's be clear about where we are: <span className="font-medium text-black">this is one of the worst periods for altcoins in recent memory</span>. Bitcoin holds steady while altcoins bleed—a pattern that signals maximum pessimism. Everyone expected the Trump crypto boom. Instead, we got stubborn inflation, unprecedented tariff wars, Middle East conflicts, and an administration whose unpredictability paralyzes decision-making.
+                </p>
+
+                <p>
+                  But here's what experience teaches us: <span className="font-medium text-black">these periods of maximum pain often precede extraordinary returns</span>. The fundamentals are aligning—institutional investment flowing in, the world's largest economy now pro-crypto, infrastructure maturing rapidly. The altcoin season isn't cancelled; it's delayed. And delays create opportunities for those who understand what they own.
+                </p>
+
+                <p>
+                  When sentiment shifts—and it will—we believe our holdings are uniquely positioned. Kaspa offers the holy grail: true decentralization at blazing speed. Bittensor could become the decentralized answer to OpenAI's dominance. Toncoin sits ready to onboard Telegram's billion users into crypto. <span className="font-medium text-black">These aren't just investments; they're bets on inevitable technological shifts</span>.
+                </p>
                 
                 {/* Historical Examples */}
                 <div className="bg-gray-100 rounded-lg p-5 mt-4">
