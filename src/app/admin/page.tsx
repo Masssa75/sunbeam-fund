@@ -52,7 +52,7 @@ export default function AdminPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Portfolio Management */}
-          <Link href="/" className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
+          <Link href="/admin/portfolio" className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center">
               <div className="bg-blue-100 p-3 rounded-lg">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
