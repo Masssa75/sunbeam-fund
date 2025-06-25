@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerAuth } from '@/lib/supabase/server-auth';
-import { supabaseAdmin } from '@/lib/supabase/client';
+import { supabaseAdmin } from '@/lib/supabase/server-client';
 
 export async function GET(request: NextRequest) {
   try {

@@ -67,20 +67,24 @@ export default function NotificationBell() {
           
           // If not connected, generate a connection token
           if (!connectionData.is_connected) {
+            console.log('[NotificationBell] User not connected, generating token...')
             try {
               const tokenResponse = await fetch('/api/telegram/generate-token/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({})
               })
+              console.log('[NotificationBell] Token generation response status:', tokenResponse.status)
               if (tokenResponse.ok) {
                 const tokenData = await tokenResponse.json()
+                console.log('[NotificationBell] Token generated successfully:', tokenData.token)
                 setConnectionToken(tokenData.token)
               } else {
-                console.error('Failed to generate token:', tokenResponse.status)
+                const errorText = await tokenResponse.text()
+                console.error('[NotificationBell] Failed to generate token:', tokenResponse.status, errorText)
               }
             } catch (e) {
-              console.error('Error generating token:', e)
+              console.error('[NotificationBell] Error generating token:', e)
             }
           }
         }
@@ -194,29 +198,51 @@ export default function NotificationBell() {
               <p className="text-xs text-gray-600 mb-3">Get instant alerts on Telegram</p>
               <button
                 onClick={async () => {
+                  console.log('[NotificationBell] Connect button clicked')
+                  console.log('[NotificationBell] Current connectionToken:', connectionToken)
+                  
                   if (!connectionToken) {
                     // Generate token if not already generated
+                    console.log('[NotificationBell] No token exists, generating new one...')
                     try {
                       const tokenResponse = await fetch('/api/telegram/generate-token/', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({})
                       })
+                      console.log('[NotificationBell] Button click - Token generation response status:', tokenResponse.status)
+                      console.log('[NotificationBell] Response headers:', Array.from(tokenResponse.headers.entries()))
+                      
                       if (tokenResponse.ok) {
                         const tokenData = await tokenResponse.json()
+                        console.log('[NotificationBell] Button click - Token generated successfully:', tokenData)
                         const link = `https://t.me/sunbeam_capital_bot?start=${tokenData.token}`
+                        console.log('[NotificationBell] Opening Telegram link:', link)
                         window.open(link, '_blank')
                       } else {
-                        const errorData = await tokenResponse.json()
-                        console.error('Token generation error:', errorData)
-                        alert(`Failed to generate connection link: ${errorData.error || 'Unknown error'}`)
+                        const errorText = await tokenResponse.text()
+                        console.error('[NotificationBell] Button click - Token generation failed:', tokenResponse.status, errorText)
+                        
+                        // Try to parse as JSON if possible
+                        let errorMessage = 'Unknown error'
+                        try {
+                          const errorData = JSON.parse(errorText)
+                          errorMessage = errorData.error || errorMessage
+                        } catch {
+                          errorMessage = errorText || errorMessage
+                        }
+                        
+                        alert(`Failed to generate connection link: ${errorMessage}`)
                       }
                     } catch (error) {
-                      console.error('Token generation exception:', error)
+                      console.error('[NotificationBell] Button click - Token generation exception:', error)
+                      console.error('[NotificationBell] Error stack:', error.stack)
                       alert('Failed to generate connection link. Please try again.')
                     }
                   } else {
                     // Token already exists, use it
+                    console.log('[NotificationBell] Using existing token:', connectionToken)
+                    console.log('[NotificationBell] Opening Telegram link:', telegramLink)
                     window.open(telegramLink, '_blank')
                   }
                 }}

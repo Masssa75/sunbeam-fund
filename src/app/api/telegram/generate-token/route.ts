@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerAuth } from '@/lib/supabase/server-auth';
-import { supabaseAdmin } from '@/lib/supabase/client';
+import { supabaseAdmin } from '@/lib/supabase/server-client';
 
 export async function POST(request: NextRequest) {
+  console.log('[generate-token] API called');
+  
   try {
     // Check if user is authenticated
     const { user, isAdmin } = await getServerAuth();
+    console.log('[generate-token] User:', user?.email, 'Admin:', isAdmin);
     
     if (!user) {
+      console.log('[generate-token] No user found, returning 401');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -25,13 +29,17 @@ export async function POST(request: NextRequest) {
 
     // If no investorId provided, use their own investor ID
     if (!investorId) {
-      const { data: investor } = await supabase
+      console.log('[generate-token] No investorId provided, looking up user:', user.id);
+      const { data: investor, error: lookupError } = await supabase
         .from('investors')
         .select('id')
         .eq('id', user.id)
         .single();
-        
+      
+      console.log('[generate-token] Investor lookup result:', investor, 'Error:', lookupError);
+      
       if (!investor) {
+        console.log('[generate-token] User is not an investor, returning 403');
         return NextResponse.json({ error: 'Not an investor' }, { status: 403 });
       }
       
@@ -54,21 +62,26 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if connection already exists
-    const { data: existingConnection } = await supabase
+    console.log('[generate-token] Checking for existing connection for investor:', investorId);
+    const { data: existingConnection, error: checkError } = await supabase
       .from('investor_telegram')
       .select('id, connection_token, telegram_chat_id')
       .eq('investor_id', investorId)
       .single();
 
+    console.log('[generate-token] Existing connection:', existingConnection, 'Error:', checkError);
+
     if (existingConnection) {
       // If already connected, return existing token
-      if (existingConnection.telegram_chat_id) {
+      if (existingConnection.telegram_chat_id && existingConnection.telegram_chat_id !== 0) {
+        console.log('[generate-token] Already connected, returning existing token');
         return NextResponse.json({ 
           token: existingConnection.connection_token,
           alreadyConnected: true 
         });
       }
       // Return existing unused token
+      console.log('[generate-token] Found unused token, returning it');
       return NextResponse.json({ 
         token: existingConnection.connection_token,
         alreadyConnected: false 
@@ -77,8 +90,10 @@ export async function POST(request: NextRequest) {
 
     // Generate new connection token
     const tokenData = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    console.log('[generate-token] Generated new token:', tokenData);
 
     // Create new connection record
+    console.log('[generate-token] Creating new connection record for investor:', investorId);
     const { data: newConnection, error: createError } = await supabase
       .from('investor_telegram')
       .insert({
@@ -90,11 +105,20 @@ export async function POST(request: NextRequest) {
       .select()
       .single();
 
+    console.log('[generate-token] Insert result:', newConnection, 'Error:', createError);
+
     if (createError) {
-      console.error('Error creating connection:', createError);
+      console.error('[generate-token] Error creating connection - Full error:', createError);
+      console.error('[generate-token] Error details:', {
+        code: createError.code,
+        message: createError.message,
+        details: createError.details,
+        hint: createError.hint
+      });
       return NextResponse.json({ error: 'Failed to create connection' }, { status: 500 });
     }
 
+    console.log('[generate-token] Successfully created connection, returning token');
     return NextResponse.json({ 
       token: tokenData,
       alreadyConnected: false 
