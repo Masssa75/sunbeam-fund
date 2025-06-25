@@ -490,18 +490,11 @@
             border-bottom-color: #000;
         }
         
-        /* Reports Section */
-        .reports-section {
-            height: 0;
-            overflow: hidden;
-            transition: all 0.4s ease-out;
-            margin-top: 40px;
-        }
-        
-        .reports-section.visible {
-            height: auto;
-            padding-top: 40px;
-            border-top: 1px solid #e5e5e5;
+        /* Reports Section - Option 4: Minimal List */
+        .reports-section-permanent {
+            margin-top: 80px;
+            padding: 40px 0;
+            border-top: 1px solid #f0f0f0;
         }
         
         .reports-title {
@@ -512,42 +505,54 @@
         }
         
         .report-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
             display: flex;
-            align-items: flex-start;
-            gap: 24px;
-            margin-bottom: 32px;
-            padding: 0;
-            border: none;
-            background: none;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
         .report-item:last-child {
-            margin-bottom: 0;
+            border-bottom: none;
         }
         
-        .report-date {
-            font-size: 14px;
-            color: #999;
-            min-width: 100px;
-            line-height: 1.4;
-            flex-shrink: 0;
+        .report-item:hover {
+            background: #fafafa;
+            margin: 0 -20px;
+            padding: 16px 20px;
+            border-radius: 4px;
         }
         
-        .report-content {
-            flex: 1;
+        .report-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
         
         .report-month {
             font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 4px;
+            font-size: 15px;
             color: #000;
         }
         
-        .report-summary {
+        .report-performance {
             font-size: 14px;
             color: #666;
-            line-height: 1.5;
+        }
+        
+        .report-return {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .report-return.positive {
+            color: #22c55e;
+        }
+        
+        .report-return.negative {
+            color: #ef4444;
         }
         
         @media (max-width: 600px) {
@@ -1145,44 +1150,70 @@
             </div>
         </div>
 
+        <!-- Monthly Reports Section -->
+        <div class="reports-section-permanent">
+            <h3 class="reports-title">Monthly Reports</h3>
+            
+            <!-- June 2025 Report -->
+            <div class="report-item">
+                <div class="report-left">
+                    <div class="report-month">June 2025</div>
+                    <div class="report-performance">Portfolio value $38,621</div>
+                </div>
+                <div class="report-return positive">+3.8%</div>
+            </div>
+            
+            <!-- May 2025 Report -->
+            <div class="report-item">
+                <div class="report-left">
+                    <div class="report-month">May 2025</div>
+                    <div class="report-performance">Portfolio value $37,195</div>
+                </div>
+                <div class="report-return negative">-12.4%</div>
+            </div>
+            
+            <!-- April 2025 Report -->
+            <div class="report-item">
+                <div class="report-left">
+                    <div class="report-month">April 2025</div>
+                    <div class="report-performance">Portfolio value $42,472</div>
+                </div>
+                <div class="report-return negative">-8.1%</div>
+            </div>
+            
+            <!-- March 2025 Report -->
+            <div class="report-item">
+                <div class="report-left">
+                    <div class="report-month">March 2025</div>
+                    <div class="report-performance">Portfolio value $46,285</div>
+                </div>
+                <div class="report-return negative">-5.2%</div>
+            </div>
+            
+            <!-- February 2025 Report -->
+            <div class="report-item">
+                <div class="report-left">
+                    <div class="report-month">February 2025</div>
+                    <div class="report-performance">Portfolio value $48,794</div>
+                </div>
+                <div class="report-return positive">+2.1%</div>
+            </div>
+            
+            <!-- January 2025 Report -->
+            <div class="report-item">
+                <div class="report-left">
+                    <div class="report-month">January 2025</div>
+                    <div class="report-performance">Portfolio value $47,789</div>
+                </div>
+                <div class="report-return negative">-14.8%</div>
+            </div>
+        </div>
+
         <div class="summary">
             <p>Initial investment $74,000 · 47.28% ownership · 3-5 year horizon</p>
             <div class="summary-links">
-                <a onclick="toggleReports()">View Reports</a>
                 <a href="#">Investment Philosophy</a>
                 <a href="#">Contact Team</a>
-            </div>
-            
-            <!-- Expandable Reports Section -->
-            <div class="reports-section" id="reportsSection">
-                <h3 class="reports-title">Monthly Reports</h3>
-                
-                <!-- June 2025 Report -->
-                <div class="report-item">
-                    <div class="report-date">Jun 2025</div>
-                    <div class="report-content">
-                        <div class="report-month">Monthly Report</div>
-                        <div class="report-summary">+3.8% month, -40.2% YTD. Portfolio value $38,621. Outperformed market by 50% during correction.</div>
-                    </div>
-                </div>
-                
-                <!-- May 2025 Report -->
-                <div class="report-item">
-                    <div class="report-date">May 2025</div>
-                    <div class="report-content">
-                        <div class="report-month">Monthly Report</div>
-                        <div class="report-summary">-12.4% month, -42.8% YTD. Portfolio value $37,195. Fund maintained superior risk-adjusted returns.</div>
-                    </div>
-                </div>
-                
-                <!-- April 2025 Report -->
-                <div class="report-item">
-                    <div class="report-date">Apr 2025</div>
-                    <div class="report-content">
-                        <div class="report-month">Monthly Report</div>
-                        <div class="report-summary">-8.1% month, -35.2% YTD. Portfolio value $42,472. Positioning favored infrastructure over DeFi.</div>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
@@ -1224,11 +1255,6 @@
                     }
                 });
             }
-        }
-        
-        function toggleReports() {
-            const reportsSection = document.getElementById('reportsSection');
-            reportsSection.classList.toggle('visible');
         }
     </script>
 </body>
