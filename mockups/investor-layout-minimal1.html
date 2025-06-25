@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Dashboard - Minimal 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fff;
+            color: #000;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .positions {
+            margin-bottom: 80px;
+        }
+        
+        .position {
+            border-bottom: 1px solid #eee;
+            padding: 30px 0;
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            gap: 20px;
+            align-items: start;
+        }
+        
+        .position:last-child {
+            border-bottom: none;
+        }
+        
+        .percent {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .info h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .thesis {
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .metric {
+            text-align: right;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .metric strong {
+            display: block;
+            font-size: 16px;
+            color: #000;
+            margin-bottom: 4px;
+        }
+        
+        .others {
+            padding: 40px 0;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        
+        footer {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 40px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        a {
+            color: #000;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        a:hover {
+            border-bottom-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tom — Portfolio</h1>
+            <p class="subtitle">12 positions · 3-5 year horizon</p>
+        </header>
+
+        <div class="positions">
+            <div class="position">
+                <div class="percent">18.2%</div>
+                <div class="info">
+                    <h3>Kaspa</h3>
+                    <p class="thesis">Fastest blockchain. 1 block per second using revolutionary blockDAG.</p>
+                </div>
+                <div class="metric">
+                    <strong>1 BPS</strong>
+                    block/second
+                </div>
+            </div>
+
+            <div class="position">
+                <div class="percent">15.7%</div>
+                <div class="info">
+                    <h3>Bittensor</h3>
+                    <p class="thesis">Decentralized AI network. Open marketplace for machine intelligence.</p>
+                </div>
+                <div class="metric">
+                    <strong>AI Net</strong>
+                    neural mining
+                </div>
+            </div>
+
+            <div class="position">
+                <div class="percent">14.3%</div>
+                <div class="info">
+                    <h3>Sui</h3>
+                    <p class="thesis">Next-gen Layer 1. Built to scale to billions of users.</p>
+                </div>
+                <div class="metric">
+                    <strong>120k</strong>
+                    TPS capacity
+                </div>
+            </div>
+
+            <div class="position">
+                <div class="percent">12.8%</div>
+                <div class="info">
+                    <h3>Toncoin</h3>
+                    <p class="thesis">Telegram's blockchain. Direct access to 900M+ users.</p>
+                </div>
+                <div class="metric">
+                    <strong>900M</strong>
+                    user reach
+                </div>
+            </div>
+        </div>
+
+        <div class="others">
+            39% across 8 additional positions<br>
+            <span style="font-size: 13px;">Celestia, Render, Arbitrum, Ethereum, and 4 others</span>
+        </div>
+
+        <footer>
+            <span>Initial: $74,000</span>
+            <span>Share: 47.28%</span>
+            <a href="#">Reports</a>
+        </footer>
+    </div>
+</body>
+</html>

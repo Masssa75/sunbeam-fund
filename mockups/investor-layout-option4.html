@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Dashboard - Option 4: Technology First</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fafbfc;
+            color: #1a1a1a;
+        }
+        
+        /* Hero Section - Minimal */
+        .hero {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 2rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        /* Investment Focus Pills */
+        .focus-pills {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .focus-pill {
+            background: #f3f4f6;
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .focus-icon {
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: white;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        /* Portfolio Showcase */
+        .portfolio-showcase {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .showcase-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .showcase-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .showcase-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+        
+        /* Technology Cards */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tech-card {
+            background: #fafbfc;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-color: #3b82f6;
+        }
+        
+        .tech-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+        
+        .tech-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .tech-ticker {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .tech-allocation {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .tech-breakthrough {
+            background: #f3f4f6;
+            border-left: 3px solid #3b82f6;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .breakthrough-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+        
+        .breakthrough-value {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .tech-description {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #4b5563;
+        }
+        
+        /* Progress Indicators */
+        .progress-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .progress-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .progress-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            background: #eff6ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .progress-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        /* Milestones Timeline */
+        .milestones-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .milestone-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .milestone-item:last-child {
+            border-bottom: none;
+        }
+        
+        .milestone-date {
+            background: #f3f4f6;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+        
+        .milestone-content {
+            flex: 1;
+        }
+        
+        .milestone-project {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .milestone-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        /* Other Holdings */
+        .other-holdings {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .other-holdings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .other-holding {
+            text-align: center;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .other-holding-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .other-holding-focus {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        /* Minimal Performance Footer */
+        .performance-footer {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        
+        .footer-stat {
+            flex: 1;
+        }
+        
+        .footer-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .focus-pills {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section - Minimal -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Welcome back, Tom</h1>
+            <p class="hero-subtitle">You're invested in 12 breakthrough technologies</p>
+            
+            <div class="focus-pills">
+                <div class="focus-pill">
+                    <div class="focus-icon">⚡</div>
+                    <span>Speed Revolution</span>
+                </div>
+                <div class="focus-pill">
+                    <div class="focus-icon">🧠</div>
+                    <span>AI Infrastructure</span>
+                </div>
+                <div class="focus-pill">
+                    <div class="focus-icon">🌐</div>
+                    <span>Mass Adoption</span>
+                </div>
+                <div class="focus-pill">
+                    <div class="focus-icon">🔗</div>
+                    <span>Next-Gen Blockchain</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Portfolio Technology Showcase -->
+        <div class="portfolio-showcase">
+            <div class="showcase-header">
+                <h2 class="showcase-title">Core Technology Positions</h2>
+                <p class="showcase-subtitle">Each investment targets a specific technological breakthrough</p>
+            </div>
+            
+            <div class="tech-grid">
+                <!-- Kaspa -->
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div>
+                            <h3 class="tech-name">Kaspa</h3>
+                            <span class="tech-ticker">KAS</span>
+                        </div>
+                        <span class="tech-allocation">18.2%</span>
+                    </div>
+                    
+                    <div class="tech-breakthrough">
+                        <div class="breakthrough-label">Key Innovation</div>
+                        <div class="breakthrough-value">1 Block Per Second</div>
+                    </div>
+                    
+                    <p class="tech-description">
+                        Revolutionary blockDAG technology enabling parallel block processing. 
+                        The fastest Layer 1 ever created.
+                    </p>
+                </div>
+
+                <!-- Bittensor -->
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div>
+                            <h3 class="tech-name">Bittensor</h3>
+                            <span class="tech-ticker">TAO</span>
+                        </div>
+                        <span class="tech-allocation">15.7%</span>
+                    </div>
+                    
+                    <div class="tech-breakthrough">
+                        <div class="breakthrough-label">Key Innovation</div>
+                        <div class="breakthrough-value">Decentralized AI</div>
+                    </div>
+                    
+                    <p class="tech-description">
+                        Open-source AI network where models collaborate. The foundation for 
+                        censorship-resistant artificial intelligence.
+                    </p>
+                </div>
+
+                <!-- Sui -->
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div>
+                            <h3 class="tech-name">Sui</h3>
+                            <span class="tech-ticker">SUI</span>
+                        </div>
+                        <span class="tech-allocation">14.3%</span>
+                    </div>
+                    
+                    <div class="tech-breakthrough">
+                        <div class="breakthrough-label">Key Innovation</div>
+                        <div class="breakthrough-value">120,000 TPS</div>
+                    </div>
+                    
+                    <p class="tech-description">
+                        Parallel transaction processing with object-centric architecture. 
+                        Built to scale to billions of users.
+                    </p>
+                </div>
+
+                <!-- Toncoin -->
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div>
+                            <h3 class="tech-name">Toncoin</h3>
+                            <span class="tech-ticker">TON</span>
+                        </div>
+                        <span class="tech-allocation">12.8%</span>
+                    </div>
+                    
+                    <div class="tech-breakthrough">
+                        <div class="breakthrough-label">Key Innovation</div>
+                        <div class="breakthrough-value">900M+ Users</div>
+                    </div>
+                    
+                    <p class="tech-description">
+                        Native Telegram integration bringing crypto payments to the world's 
+                        most popular messaging platform.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Other Holdings -->
+            <div class="other-holdings">
+                <h4 style="margin: 0 0 1rem 0;">Additional Strategic Positions (39%)</h4>
+                <div class="other-holdings-grid">
+                    <div class="other-holding">
+                        <div class="other-holding-name">Celestia</div>
+                        <div class="other-holding-focus">Modular data</div>
+                    </div>
+                    <div class="other-holding">
+                        <div class="other-holding-name">Render</div>
+                        <div class="other-holding-focus">GPU network</div>
+                    </div>
+                    <div class="other-holding">
+                        <div class="other-holding-name">Arbitrum</div>
+                        <div class="other-holding-focus">L2 scaling</div>
+                    </div>
+                    <div class="other-holding">
+                        <div class="other-holding-name">Ethereum</div>
+                        <div class="other-holding-focus">Foundation</div>
+                    </div>
+                    <div class="other-holding">
+                        <div class="other-holding-name">+4 more</div>
+                        <div class="other-holding-focus">View all</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Indicators -->
+        <div class="progress-section">
+            <div class="progress-card">
+                <div class="progress-icon">🚀</div>
+                <div class="progress-title">Technologies Invested</div>
+                <div class="progress-value">12</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-icon">📅</div>
+                <div class="progress-title">Investment Horizon</div>
+                <div class="progress-value">3-5 Years</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-icon">🎯</div>
+                <div class="progress-title">Focus Areas</div>
+                <div class="progress-value">4</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-icon">📊</div>
+                <div class="progress-title">Your Share</div>
+                <div class="progress-value">47.28%</div>
+            </div>
+        </div>
+
+        <!-- Recent Milestones -->
+        <div class="milestones-section">
+            <h3 style="margin: 0 0 1.5rem 0;">Recent Technology Milestones</h3>
+            
+            <div class="milestone-item">
+                <div class="milestone-date">Today</div>
+                <div class="milestone-content">
+                    <div class="milestone-project">Kaspa</div>
+                    <div class="milestone-description">[PLACEHOLDER] Major protocol upgrade enhancing throughput</div>
+                </div>
+            </div>
+            
+            <div class="milestone-item">
+                <div class="milestone-date">2 days ago</div>
+                <div class="milestone-content">
+                    <div class="milestone-project">Bittensor</div>
+                    <div class="milestone-description">[PLACEHOLDER] New AI subnet launched for language models</div>
+                </div>
+            </div>
+            
+            <div class="milestone-item">
+                <div class="milestone-date">1 week ago</div>
+                <div class="milestone-content">
+                    <div class="milestone-project">Sui</div>
+                    <div class="milestone-description">[PLACEHOLDER] Major gaming studio announced exclusive partnership</div>
+                </div>
+            </div>
+            
+            <div class="milestone-item">
+                <div class="milestone-date">2 weeks ago</div>
+                <div class="milestone-content">
+                    <div class="milestone-project">Toncoin</div>
+                    <div class="milestone-description">[PLACEHOLDER] Telegram mini-apps surpass 100M monthly users</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Minimal Performance Footer -->
+        <div class="performance-footer">
+            <div class="footer-stat">
+                <div class="footer-label">Initial Investment</div>
+                <div class="footer-value">$74,000</div>
+            </div>
+            <div class="footer-stat">
+                <div class="footer-label">Account Number</div>
+                <div class="footer-value">02</div>
+            </div>
+            <div class="footer-stat">
+                <div class="footer-label">Member Since</div>
+                <div class="footer-value">Dec 2023</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

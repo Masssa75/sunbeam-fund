@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Dashboard - Option 3: Future-Focused Vision</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #0f0f0f;
+            color: #e0e0e0;
+        }
+        
+        /* Header */
+        .header {
+            background: #1a1a1a;
+            border-bottom: 1px solid #2a2a2a;
+            padding: 1.5rem 2rem;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #fff;
+        }
+        
+        .account-badge {
+            background: #2a2a2a;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin: 0 0 1rem 0;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #888;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+        
+        /* Investment Thesis Box */
+        .thesis-box {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .thesis-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 50%, #34d399 100%);
+        }
+        
+        .thesis-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        /* Portfolio Section */
+        .portfolio-section {
+            margin-bottom: 4rem;
+        }
+        
+        .portfolio-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .portfolio-title {
+            font-size: 2rem;
+            font-weight: 300;
+            margin: 0 0 0.5rem 0;
+            color: #fff;
+        }
+        
+        .portfolio-subtitle {
+            color: #888;
+            font-size: 1.125rem;
+        }
+        
+        /* Holdings Grid */
+        .holdings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .holding-card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .holding-card:hover {
+            border-color: #60a5fa;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(96, 165, 250, 0.1);
+        }
+        
+        .holding-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-color);
+        }
+        
+        .holding-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .holding-info h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .holding-ticker {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .holding-allocation {
+            background: #2a2a2a;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .holding-thesis {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .holding-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        
+        .highlight-pill {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            color: #60a5fa;
+        }
+        
+        /* Diversified Holdings */
+        .diversified-card {
+            grid-column: 1 / -1;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .diversified-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .diversified-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .small-holding {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .small-holding-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .small-holding-focus {
+            font-size: 0.875rem;
+            color: #888;
+        }
+        
+        /* Metrics Section */
+        .metrics-section {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        /* Updates Section */
+        .updates-section {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .update-item {
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .update-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .update-project {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #fff;
+        }
+        
+        .update-badge {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: #34d399;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* Reports Link */
+        .reports-link {
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .reports-button {
+            display: inline-block;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .reports-button:hover {
+            background: #3a3a3a;
+            border-color: #60a5fa;
+        }
+        
+        @media (max-width: 768px) {
+            .holdings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Sunbeam Capital</h1>
+            <div class="account-badge">Account 02 • Active</div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h2>Building Tomorrow's Financial Infrastructure</h2>
+        <p class="hero-subtitle">
+            You're invested in the fundamental technologies that will power the next generation of digital finance. 
+            While markets fluctuate, innovation never stops.
+        </p>
+        
+        <div class="thesis-box">
+            <div class="thesis-content">
+                <strong style="color: #60a5fa;">Our Investment Philosophy:</strong> We invest in revolutionary blockchain technologies with 3-5 year horizons. 
+                Short-term price movements are noise. What matters is the transformative potential of the projects we've carefully selected. 
+                Each position represents a bet on a specific technological breakthrough that we believe will reshape finance, computing, or human coordination.
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Strategic Positions -->
+        <section class="portfolio-section">
+            <div class="portfolio-header">
+                <h2 class="portfolio-title">Your Strategic Positions</h2>
+                <p class="portfolio-subtitle">12 carefully selected projects building the future</p>
+            </div>
+            
+            <div class="holdings-grid">
+                <!-- Kaspa -->
+                <div class="holding-card" style="--accent-color: #3b82f6;">
+                    <div class="holding-header">
+                        <div class="holding-info">
+                            <h3>Kaspa</h3>
+                            <span class="holding-ticker">KAS</span>
+                        </div>
+                        <div class="holding-allocation">18.2%</div>
+                    </div>
+                    <p class="holding-thesis">
+                        The fastest Layer 1 blockchain ever created. Kaspa's revolutionary blockDAG technology 
+                        processes blocks in parallel, achieving speeds impossible with traditional blockchains.
+                    </p>
+                    <div class="holding-highlights">
+                        <span class="highlight-pill">1 block/second</span>
+                        <span class="highlight-pill">Instant finality</span>
+                        <span class="highlight-pill">True decentralization</span>
+                    </div>
+                </div>
+
+                <!-- Bittensor -->
+                <div class="holding-card" style="--accent-color: #8b5cf6;">
+                    <div class="holding-header">
+                        <div class="holding-info">
+                            <h3>Bittensor</h3>
+                            <span class="holding-ticker">TAO</span>
+                        </div>
+                        <div class="holding-allocation">15.7%</div>
+                    </div>
+                    <p class="holding-thesis">
+                        Creating a decentralized AI network where machine learning models collaborate and compete. 
+                        The foundation for open-source artificial intelligence that can't be controlled by any single entity.
+                    </p>
+                    <div class="holding-highlights">
+                        <span class="highlight-pill">AI marketplace</span>
+                        <span class="highlight-pill">Neural mining</span>
+                        <span class="highlight-pill">Censorship resistant</span>
+                    </div>
+                </div>
+
+                <!-- Sui -->
+                <div class="holding-card" style="--accent-color: #10b981;">
+                    <div class="holding-header">
+                        <div class="holding-info">
+                            <h3>Sui</h3>
+                            <span class="holding-ticker">SUI</span>
+                        </div>
+                        <div class="holding-allocation">14.3%</div>
+                    </div>
+                    <p class="holding-thesis">
+                        Next-generation Layer 1 with parallel transaction processing and the best developer experience 
+                        in crypto. Built by ex-Meta engineers to scale to billions of users.
+                    </p>
+                    <div class="holding-highlights">
+                        <span class="highlight-pill">120k TPS</span>
+                        <span class="highlight-pill">Object-centric model</span>
+                        <span class="highlight-pill">Move language</span>
+                    </div>
+                </div>
+
+                <!-- Toncoin -->
+                <div class="holding-card" style="--accent-color: #f59e0b;">
+                    <div class="holding-header">
+                        <div class="holding-info">
+                            <h3>Toncoin</h3>
+                            <span class="holding-ticker">TON</span>
+                        </div>
+                        <div class="holding-allocation">12.8%</div>
+                    </div>
+                    <p class="holding-thesis">
+                        Telegram's blockchain bringing crypto to 900M+ users. The most direct path to mass adoption 
+                        with seamless integration into the world's most popular messaging app.
+                    </p>
+                    <div class="holding-highlights">
+                        <span class="highlight-pill">900M users</span>
+                        <span class="highlight-pill">Native integration</span>
+                        <span class="highlight-pill">Instant payments</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diversified Holdings -->
+            <div class="diversified-card">
+                <div class="diversified-header">
+                    <div>
+                        <h3 style="margin: 0; color: #fff;">Diversified Strategic Holdings</h3>
+                        <p style="margin: 0.5rem 0 0 0; color: #888;">39% across 8 high-conviction projects</p>
+                    </div>
+                </div>
+                <div class="diversified-grid">
+                    <div class="small-holding">
+                        <div class="small-holding-name">Celestia</div>
+                        <div class="small-holding-focus">Modular blockchain</div>
+                    </div>
+                    <div class="small-holding">
+                        <div class="small-holding-name">Render</div>
+                        <div class="small-holding-focus">Distributed GPU</div>
+                    </div>
+                    <div class="small-holding">
+                        <div class="small-holding-name">Arbitrum</div>
+                        <div class="small-holding-focus">Ethereum scaling</div>
+                    </div>
+                    <div class="small-holding">
+                        <div class="small-holding-name">Ethereum</div>
+                        <div class="small-holding-focus">Smart contracts</div>
+                    </div>
+                    <div class="small-holding">
+                        <div class="small-holding-name">Solana</div>
+                        <div class="small-holding-focus">High performance</div>
+                    </div>
+                    <div class="small-holding">
+                        <div class="small-holding-name">Coinweb</div>
+                        <div class="small-holding-focus">Cross-chain</div>
+                    </div>
+                    <div class="small-holding">
+                        <div class="small-holding-name">AUKI</div>
+                        <div class="small-holding-focus">Spatial computing</div>
+                    </div>
+                    <div class="small-holding">
+                        <div class="small-holding-name">CURE</div>
+                        <div class="small-holding-focus">Healthcare data</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Information -->
+        <div class="metrics-section">
+            <div class="metrics-grid">
+                <div class="metric">
+                    <div class="metric-label">Your Investment</div>
+                    <div class="metric-value">$74,000</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Your Share</div>
+                    <div class="metric-value">47.28%</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Fund Inception</div>
+                    <div class="metric-value">Dec 2023</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Time Horizon</div>
+                    <div class="metric-value">3-5 Years</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Momentum -->
+        <div class="updates-section">
+            <h3 style="margin: 0 0 1.5rem 0; color: #fff;">Project Momentum</h3>
+            
+            <div class="update-item">
+                <div class="update-header">
+                    <span class="update-project">Kaspa</span>
+                    <span class="update-badge">Development Update</span>
+                </div>
+                <p style="color: #e0e0e0; margin: 0;">[PLACEHOLDER] Major protocol upgrade announcement</p>
+            </div>
+            
+            <div class="update-item">
+                <div class="update-header">
+                    <span class="update-project">Bittensor</span>
+                    <span class="update-badge">Partnership</span>
+                </div>
+                <p style="color: #e0e0e0; margin: 0;">[PLACEHOLDER] Strategic AI collaboration revealed</p>
+            </div>
+            
+            <div class="update-item">
+                <div class="update-header">
+                    <span class="update-project">Sui</span>
+                    <span class="update-badge">Adoption Milestone</span>
+                </div>
+                <p style="color: #e0e0e0; margin: 0;">[PLACEHOLDER] Major dApp deployment on network</p>
+            </div>
+        </div>
+
+        <!-- Reports Link -->
+        <div class="reports-link">
+            <a href="#" class="reports-button">View Historical Reports →</a>
+        </div>
+    </div>
+</body>
+</html>

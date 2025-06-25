@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Dashboard - Option 6: Innovation Focus</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            color: #1a1a1a;
+        }
+        
+        /* Simple Header */
+        .header {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+        
+        .user-greeting {
+            color: #6b7280;
+        }
+        
+        /* Innovation Banner */
+        .innovation-banner {
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #10b981 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .banner-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .banner-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin: 0 0 1rem 0;
+            letter-spacing: -0.02em;
+        }
+        
+        .banner-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 2rem;
+        }
+        
+        .banner-stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-text {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+        
+        /* Portfolio Vision */
+        .portfolio-vision {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .vision-content h2 {
+            font-size: 1.75rem;
+            margin: 0 0 1rem 0;
+        }
+        
+        .vision-content p {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: #4b5563;
+            margin-bottom: 2rem;
+        }
+        
+        .focus-areas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .focus-badge {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem 1.25rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        /* Investment Cards - Simplified */
+        .investments-title {
+            text-align: center;
+            font-size: 1.75rem;
+            margin: 3rem 0 2rem 0;
+            font-weight: 600;
+        }
+        
+        .investments-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .investment-card {
+            background: white;
+            border: 2px solid #f3f4f6;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .investment-card:hover {
+            border-color: #3b82f6;
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .inv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .inv-logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .inv-percent {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .inv-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .inv-highlight {
+            background: #eff6ff;
+            color: #1e40af;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .inv-description {
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: #4b5563;
+        }
+        
+        /* Diversified Section */
+        .diversified-section {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .div-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .div-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .div-percent {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #6b7280;
+        }
+        
+        .div-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .div-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .div-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .div-focus {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        /* Recent Developments */
+        .developments {
+            margin: 3rem 0;
+        }
+        
+        .dev-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dev-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .dev-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .dev-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-4px);
+        }
+        
+        .dev-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .dev-project {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dev-update {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        /* Footer Info */
+        .footer-info {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-item {
+            flex: 1;
+        }
+        
+        .footer-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        /* Links */
+        .quick-links {
+            text-align: center;
+            margin-top: 3rem;
+            padding-bottom: 3rem;
+        }
+        
+        .link-button {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1a1a1a;
+            margin: 0 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .link-button:hover {
+            background: #f9fafb;
+            border-color: #3b82f6;
+        }
+        
+        @media (max-width: 768px) {
+            .banner-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .vision-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .investments-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dev-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .div-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Simple Header -->
+    <div class="header">
+        <div class="logo">Sunbeam Capital</div>
+        <div class="user-greeting">Welcome back, Tom</div>
+    </div>
+
+    <!-- Innovation Banner -->
+    <div class="innovation-banner">
+        <div class="banner-content">
+            <h1 class="banner-title">Investing in Tomorrow's Technology</h1>
+            <div class="banner-stats">
+                <div class="banner-stat">
+                    <span class="stat-number">12</span>
+                    <span class="stat-text">Breakthrough Technologies</span>
+                </div>
+                <div class="banner-stat">
+                    <span class="stat-number">47.28%</span>
+                    <span class="stat-text">Your Ownership</span>
+                </div>
+                <div class="banner-stat">
+                    <span class="stat-number">3-5yr</span>
+                    <span class="stat-text">Investment Horizon</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Portfolio Vision -->
+        <div class="portfolio-vision">
+            <div class="vision-grid">
+                <div class="chart-container">
+                    <canvas id="visionChart"></canvas>
+                </div>
+                <div class="vision-content">
+                    <h2>Your Innovation Portfolio</h2>
+                    <p>
+                        You own a stake in the fundamental technologies reshaping global finance. 
+                        Each investment targets a specific breakthrough that we believe will define 
+                        the next decade of digital infrastructure.
+                    </p>
+                    <div class="focus-areas">
+                        <div class="focus-badge">⚡ Speed Revolution</div>
+                        <div class="focus-badge">🧠 AI Networks</div>
+                        <div class="focus-badge">🚀 Massive Scale</div>
+                        <div class="focus-badge">🌍 Global Adoption</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Investments -->
+        <h2 class="investments-title">Core Technology Positions</h2>
+        
+        <div class="investments-grid">
+            <!-- Kaspa -->
+            <div class="investment-card">
+                <div class="inv-header">
+                    <div class="inv-logo">⚡</div>
+                    <div class="inv-percent">18.2%</div>
+                </div>
+                <h3 class="inv-name">Kaspa</h3>
+                <div class="inv-highlight">1 Block Per Second</div>
+                <p class="inv-description">
+                    The fastest blockchain ever created. Revolutionary blockDAG technology 
+                    enables instant transactions while maintaining complete decentralization.
+                </p>
+            </div>
+
+            <!-- Bittensor -->
+            <div class="investment-card">
+                <div class="inv-header">
+                    <div class="inv-logo">🧠</div>
+                    <div class="inv-percent">15.7%</div>
+                </div>
+                <h3 class="inv-name">Bittensor</h3>
+                <div class="inv-highlight">Decentralized AI</div>
+                <p class="inv-description">
+                    Building the world's first neural internet. AI models collaborate and compete 
+                    in an open marketplace for machine intelligence.
+                </p>
+            </div>
+
+            <!-- Sui -->
+            <div class="investment-card">
+                <div class="inv-header">
+                    <div class="inv-logo">🚀</div>
+                    <div class="inv-percent">14.3%</div>
+                </div>
+                <h3 class="inv-name">Sui</h3>
+                <div class="inv-highlight">120,000 TPS</div>
+                <p class="inv-description">
+                    Next-generation blockchain with parallel processing. Built by ex-Meta 
+                    engineers to scale to billions of users globally.
+                </p>
+            </div>
+
+            <!-- Toncoin -->
+            <div class="investment-card">
+                <div class="inv-header">
+                    <div class="inv-logo">💬</div>
+                    <div class="inv-percent">12.8%</div>
+                </div>
+                <h3 class="inv-name">Toncoin</h3>
+                <div class="inv-highlight">900M+ Users</div>
+                <p class="inv-description">
+                    Telegram's native blockchain. The most direct path to mass crypto adoption 
+                    through seamless integration with messaging.
+                </p>
+            </div>
+        </div>
+
+        <!-- Diversified Holdings -->
+        <div class="diversified-section">
+            <div class="div-header">
+                <h3 class="div-title">Diversified Technology Holdings</h3>
+                <span class="div-percent">39%</span>
+            </div>
+            <div class="div-grid">
+                <div class="div-item">
+                    <div class="div-name">Celestia</div>
+                    <div class="div-focus">Modular blockchain</div>
+                </div>
+                <div class="div-item">
+                    <div class="div-name">Render</div>
+                    <div class="div-focus">GPU computing</div>
+                </div>
+                <div class="div-item">
+                    <div class="div-name">Arbitrum</div>
+                    <div class="div-focus">Ethereum scaling</div>
+                </div>
+                <div class="div-item">
+                    <div class="div-name">Ethereum</div>
+                    <div class="div-focus">Smart contracts</div>
+                </div>
+                <div class="div-item">
+                    <div class="div-name">Solana</div>
+                    <div class="div-focus">High performance</div>
+                </div>
+                <div class="div-item">
+                    <div class="div-name">Coinweb</div>
+                    <div class="div-focus">Cross-chain</div>
+                </div>
+                <div class="div-item">
+                    <div class="div-name">AUKI</div>
+                    <div class="div-focus">Spatial computing</div>
+                </div>
+                <div class="div-item">
+                    <div class="div-name">CURE</div>
+                    <div class="div-focus">Healthcare data</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Developments -->
+        <div class="developments">
+            <h2 class="dev-title">Recent Technology Milestones</h2>
+            <div class="dev-grid">
+                <div class="dev-card">
+                    <div class="dev-icon">🔧</div>
+                    <div class="dev-project">Protocol Upgrades</div>
+                    <div class="dev-update">[PLACEHOLDER] Major network improvements across portfolio</div>
+                </div>
+                <div class="dev-card">
+                    <div class="dev-icon">🤝</div>
+                    <div class="dev-project">Strategic Partnerships</div>
+                    <div class="dev-update">[PLACEHOLDER] New enterprise collaborations announced</div>
+                </div>
+                <div class="dev-card">
+                    <div class="dev-icon">📈</div>
+                    <div class="dev-project">Adoption Growth</div>
+                    <div class="dev-update">[PLACEHOLDER] User milestones achieved</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="footer-info">
+            <div class="footer-item">
+                <div class="footer-label">Initial Investment</div>
+                <div class="footer-value">$74,000</div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">Account Number</div>
+                <div class="footer-value">02</div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">Member Since</div>
+                <div class="footer-value">Dec 2023</div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="quick-links">
+            <a href="#" class="link-button">Monthly Reports</a>
+            <a href="#" class="link-button">Contact Team</a>
+        </div>
+    </div>
+
+    <script>
+        // Vision Chart
+        const ctx = document.getElementById('visionChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Core Positions (61%)', 'Diversified Holdings (39%)'],
+                datasets: [{
+                    data: [61, 39],
+                    backgroundColor: ['#3b82f6', '#e5e7eb'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
+                }
+            }
+        });
+        
+        // Add center text
+        const centerText = {
+            id: 'centerText',
+            beforeDraw: function(chart) {
+                const ctx = chart.ctx;
+                ctx.restore();
+                const fontSize = (chart.height / 114).toFixed(2);
+                ctx.font = fontSize + "em sans-serif";
+                ctx.textBaseline = "middle";
+                ctx.textAlign = "center";
+                ctx.fillStyle = "#1a1a1a";
+                const text = "4 Core";
+                const text2 = "Technologies";
+                const textX = Math.round(chart.width / 2);
+                const textY = Math.round(chart.height / 2);
+                ctx.fillText(text, textX, textY - 10);
+                ctx.fillText(text2, textX, textY + 10);
+                ctx.save();
+            }
+        };
+        
+        Chart.register(centerText);
+    </script>
+</body>
+</html>

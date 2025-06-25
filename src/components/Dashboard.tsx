@@ -104,6 +104,12 @@ export default function Dashboard() {
               >
                 Telegram Notifications
               </Link>
+              <Link
+                href="/admin/twitter-monitoring"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                Twitter Monitoring
+              </Link>
             </div>
           </div>
         </div>
