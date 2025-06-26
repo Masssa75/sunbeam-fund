@@ -129,11 +129,6 @@ export default function LoginPage() {
       
       if (err.message?.includes('Invalid login credentials')) {
         errorMessage = 'Invalid email or password. Please check your credentials.'
-        
-        // Provide hint for known accounts
-        if (email === 'marc@cyrator.com') {
-          errorMessage += '\n\nNote: This account exists but may have a different password. Try using the password reset option.'
-        }
       } else if (err.message?.includes('Email not confirmed')) {
         errorMessage = 'Please check your email and confirm your account before signing in.'
       } else if (err.code === 'auth/network-request-failed') {
