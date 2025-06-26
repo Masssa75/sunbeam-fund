@@ -706,7 +706,7 @@ function getRelativeTime(dateString: string): string {
 function getProjectDescription(projectName: string): string {
   const descriptions: Record<string, string> = {
     'Kaspa': 'The next evolution of blockchain. The fastest and most decentralized parallel processing network.',
-    'Bittensor': 'Open marketplace for artificial intelligence. Decentralized neural networks.',
+    'Bittensor': 'The decentralized alternative to OpenAI. AI that anyone can access and build on.',
     'Sui': '120,000 transactions per second. Built to onboard billions.',
     'Toncoin': "Telegram's native blockchain. 900 million users at your fingertips.",
     'Arbitrum': 'Ethereum scaling solution with lower fees and faster transactions.',
