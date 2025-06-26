@@ -311,7 +311,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
                 
                 <p>
-                  When markets turn, we believe our holdings will capture exponential growth—because they solve real problems. Kaspa is the first project since Bitcoin to fundamentally change how blockchains work—replacing sequential chains with parallel processing. This solves crypto's biggest limitation: scale. Bittensor creates decentralized AI that no company controls—potentially the most consequential use of blockchain technology. Toncoin tackles crypto's adoption problem, able to onboard a billion users overnight. <span className="font-medium text-black">Most projects are iterations. These are breakthroughs</span>. Of 20,000 cryptocurrencies, perhaps a dozen matter. We own three.
+                  When markets turn, we believe our holdings will capture exponential growth—because they solve real problems. Kaspa is the first project since Bitcoin to fundamentally change how blockchains work—replacing sequential chains with parallel processing. This solves crypto's biggest limitation: scale. Bittensor creates decentralized AI that no company controls—potentially the most consequential use of blockchain technology. Toncoin tackles crypto's adoption problem, able to onboard a billion users overnight. <span className="font-medium text-black">Most projects are iterations. These are breakthroughs that could change crypto forever</span>.
                 </p>
 
                 <p>
