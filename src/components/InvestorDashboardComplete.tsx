@@ -495,7 +495,19 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
 
         {/* Recent Developments */}
         <div className="mb-20">
-          <h3 className="text-xl font-medium mb-8">Recent Developments</h3>
+          <div className="flex items-center gap-3 mb-8">
+            <h3 className="text-xl font-medium">Recent Developments</h3>
+            <div className="group relative">
+              <div className="w-4 h-4 rounded-full bg-gray-300 text-white text-xs flex items-center justify-center cursor-help hover:bg-gray-400 transition-colors">
+                i
+              </div>
+              <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none w-64 z-10">
+                <div className="text-center mb-1 font-medium">AI-Powered Monitoring</div>
+                <div>We continuously monitor Twitter, GitHub, and official channels for each portfolio project. Our AI system scores updates 1-10 for importance—only the most significant developments (9+) appear here.</div>
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
+              </div>
+            </div>
+          </div>
           
           {tweets.length > 0 ? (
             tweets.map((tweet, index) => (
