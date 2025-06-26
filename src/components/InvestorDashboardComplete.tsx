@@ -319,7 +319,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
 
                 <p>
-                  But the capital rotation is beginning. Yesterday, a major corporation announced <span className="font-medium text-black">$100 million for Bittensor</span> in their strategic reserve. The U.S. government has discussed including select altcoins alongside Bitcoin. As geopolitical tensions ease and inflation stabilizes, we expect institutional discovery of our altcoins to accelerate. <span className="font-medium text-black">When it happens, the moves will be explosive</span>.
+                  But the capital rotation is beginning. The U.S. government is actively exploring various altcoins—including Ethereum, Solana, and others—as part of their strategic crypto reserve. A movement similar to MicroStrategy's Bitcoin accumulation is emerging around Ethereum, with multiple corporations now exploring altcoins for their treasuries. This June, Synaptogenix announced plans to allocate up to <span className="font-medium text-black">$100 million for Bittensor</span> in their strategic reserve. As geopolitical tensions ease and inflation stabilizes, we expect institutional discovery of our altcoins to accelerate. <span className="font-medium text-black">When it happens, the moves will be explosive</span>.
                 </p>
 
                 {/* Altcoin Season Indicator */}
@@ -392,11 +392,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </div>
 
                 <p>
-                  But here's what experience teaches us: <span className="font-medium text-black">these periods of maximum pain often precede extraordinary returns</span>. The fundamentals are aligning—institutional investment flowing in, the world's largest economy now pro-crypto, infrastructure maturing rapidly. The altcoin season isn't cancelled; it's delayed. And delays create opportunities for those who understand what they own.
-                </p>
-
-                <p>
-                  When sentiment shifts—and it will—we believe our holdings are uniquely positioned. Kaspa offers the holy grail: true decentralization at blazing speed. Bittensor could become the decentralized answer to OpenAI's dominance. Toncoin sits ready to onboard Telegram's billion users into crypto. <span className="font-medium text-black">These aren't just investments; they're bets on inevitable technological shifts</span>.
+                  But here's what experience teaches us: <span className="font-medium text-black">these drops are normal in crypto cycles</span>. Every major bull run has been preceded by periods just like this—when sentiment reaches maximum pessimism and only the strongest conviction survives.
                 </p>
                 
                 {/* Historical Examples */}
@@ -476,7 +472,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </div>
                 
                 <p>
-                  These projects endured 90%+ drawdowns before delivering extraordinary returns. Today's market conditions, while challenging, may present similar opportunities for patient investors.
+                  We've carefully selected holdings we believe possess extraordinary value—projects solving fundamental problems that could define crypto's next decade. History shows that <span className="font-medium text-black">the greatest returns come to those who can hold through the darkest periods</span>. When this market finally turns, and institutional capital floods into quality altcoins, we expect the moves to be violent to the upside. The question isn't if, but when.
                 </p>
               </div>
             </div>

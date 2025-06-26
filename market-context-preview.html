@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Context Preview - Sunbeam Fund</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .prose p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+            color: rgb(55, 65, 81);
+        }
+        .prose p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <h1 class="text-2xl font-bold mb-6">Market Context Preview</h1>
+        
+        <div class="prose prose-gray max-w-none">
+            <p>
+                Since November's peak, the crypto market has faced <span class="font-medium text-black">strong headwinds</span>. While Bitcoin has remained relatively stable, the broader altcoin market has declined 70-80%, with meme coins experiencing even steeper losses.
+            </p>
+
+            <p>
+                The irony is striking: <span class="font-medium text-black">the United States has become extraordinarily pro-crypto</span>, with everything positioned for the market to take off following Trump's inauguration. Yet the rally hasn't materialized.
+            </p>
+            
+            <p>
+                Why? Multiple forces are creating unprecedented uncertainty. Tariff wars, Middle East conflicts, and the Trump administration's willingness to pursue radical policies—<span class="font-medium text-black">all of these keep markets constantly guessing</span>. Together, they've created a holding pattern where everyone's waiting for clarity that hasn't arrived.
+            </p>
+
+            <p>
+                We believe this uncertainty masks <span class="font-medium text-black">significant opportunity</span>. The world's largest economy has pivoted from crypto skepticism to embrace—a shift we view as fundamentally important. While current headwinds may delay market response, we think the underlying change in stance matters more than short-term volatility.
+            </p>
+            
+            <p>
+                When markets turn, we believe our holdings will capture exponential growth—because they solve crypto's biggest problems and capitalize on its greatest opportunities. Kaspa is the first project since Bitcoin to fundamentally change how blockchains work—replacing sequential chains with parallel processing. This solves crypto's biggest limitation: scale. Bittensor creates decentralized AI that no company controls—potentially the most consequential use of blockchain technology. Toncoin tackles crypto's adoption problem, able to onboard a billion users overnight. <span class="font-medium text-black">Most projects are iterations. These are breakthroughs that could change crypto forever</span>.
+            </p>
+
+            <p>
+                Let's be clear about where we are: <span class="font-medium text-black">Bitcoin dominance has reached extreme levels</span>. In past cycles, individual investors drove Bitcoin higher, then rotated profits into altcoins. This time is different—institutions, corporations, and governments are accumulating Bitcoin as a treasury asset. MicroStrategy, Tesla, entire nations building strategic reserves.
+            </p>
+
+            <p>
+                But the capital rotation is beginning. The U.S. government is actively exploring various altcoins—including Ethereum, Solana, and others—as part of their strategic crypto reserve. A movement similar to MicroStrategy's Bitcoin accumulation is emerging around Ethereum, with multiple corporations now exploring altcoins for their treasuries. This June, Synaptogenix announced plans to allocate up to <span class="font-medium text-black">$100 million for Bittensor</span> in their strategic reserve. As geopolitical tensions ease and inflation stabilizes, we expect institutional discovery of our altcoins to accelerate. <span class="font-medium text-black">When it happens, the moves will be explosive</span>.
+            </p>
+
+            <!-- Altcoin Season Indicator -->
+            <div class="bg-red-50 rounded-lg p-5 my-6">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div>
+                            <div class="text-3xl font-bold text-red-600">14</div>
+                            <div class="text-xs text-red-600 font-medium">Deep Bitcoin Season</div>
+                        </div>
+                        <div class="h-14 w-px bg-red-200"></div>
+                        <div class="text-sm text-gray-600">
+                            <div class="font-medium">Altcoin Season Index</div>
+                            <div class="text-xs">Only 14% of top altcoins outperforming Bitcoin</div>
+                            <div class="text-xs mt-1 text-gray-500">Similar to Dec 2022 lows (score: 10)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced chart visualization -->
+                <div class="mb-3">
+                    <svg viewBox="0 0 400 80" class="w-full h-16">
+                        <defs>
+                            <linearGradient id="seasonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#ef4444; stop-opacity:0.15" />
+                                <stop offset="25%" style="stop-color:#f59e0b; stop-opacity:0.15" />
+                                <stop offset="50%" style="stop-color:#10b981; stop-opacity:0.15" />
+                                <stop offset="75%" style="stop-color:#3b82f6; stop-opacity:0.15" />
+                                <stop offset="100%" style="stop-color:#ef4444; stop-opacity:0.15" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="400" height="80" fill="url(#seasonGradient)" />
+                        
+                        <!-- Grid lines -->
+                        <line x1="100" y1="0" x2="100" y2="80" stroke="#e5e7eb" stroke-width="1" />
+                        <line x1="200" y1="0" x2="200" y2="80" stroke="#e5e7eb" stroke-width="1" />
+                        <line x1="300" y1="0" x2="300" y2="80" stroke="#e5e7eb" stroke-width="1" />
+                        
+                        <!-- Historical line showing we're at the bottom -->
+                        <polyline points="10,70 50,65 100,50 150,35 200,20 250,25 300,45 350,68 390,72" 
+                                  fill="none" stroke="#6b7280" stroke-width="2.5" opacity="0.7" />
+                        
+                        <!-- Highlight the extreme bottom -->
+                        <circle cx="390" cy="72" r="5" fill="#dc2626" />
+                        <circle cx="390" cy="72" r="8" fill="#dc2626" opacity="0.3" />
+                        <circle cx="390" cy="72" r="11" fill="#dc2626" opacity="0.1" />
+                        <line x1="390" y1="0" x2="390" y2="80" stroke="#dc2626" stroke-width="2" opacity="0.4" />
+                        
+                        <!-- Label current position -->
+                        <text x="385" y="12" fill="#dc2626" font-size="10" font-weight="bold" text-anchor="middle">NOW</text>
+                    </svg>
+                </div>
+                
+                <div class="flex justify-between text-[10px] text-gray-500 mb-2">
+                    <span>Bitcoin Season</span>
+                    <span>25</span>
+                    <span>50</span>
+                    <span>75</span>
+                    <span>Altcoin Season</span>
+                </div>
+                
+                <a 
+                    href="https://www.blockchaincenter.net/en/altcoin-season-index/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="text-xs text-blue-600 hover:text-blue-800 underline block text-center"
+                >
+                    View full interactive chart →
+                </a>
+            </div>
+
+            <p>
+                But here's what experience teaches us: <span class="font-medium text-black">these drops are normal in crypto cycles</span>. Every major bull run has been preceded by periods just like this—when sentiment reaches maximum pessimism and only the strongest conviction survives.
+            </p>
+            
+            <!-- Historical Examples -->
+            <div class="bg-gray-100 rounded-lg p-5 mt-4">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="font-semibold text-sm">Historical Perspective: Bear Market Survivors</div>
+                </div>
+                
+                <div class="text-xs text-gray-400 flex justify-between mb-3 px-1">
+                    <span>Project</span>
+                    <span>2018-19 Bear → 2021 Bull</span>
+                </div>
+                
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="font-medium">Chainlink</span>
+                        <div class="flex items-center gap-2">
+                            <span>$0.30 → $52</span>
+                            <span class="text-green-500 font-semibold">(173x)</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="font-medium">Polygon</span>
+                        <div class="flex items-center gap-2">
+                            <span>$0.003 → $2.92</span>
+                            <span class="text-green-500 font-semibold">(973x)</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="font-medium">Ethereum</span>
+                        <div class="flex items-center gap-2">
+                            <span>$80 → $4,800</span>
+                            <span class="text-green-500 font-semibold">(60x)</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="font-medium">Solana</span>
+                        <div class="flex items-center gap-2">
+                            <span>$0.50 → $260</span>
+                            <span class="text-green-500 font-semibold">(520x)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p>
+                We've carefully selected holdings we believe possess extraordinary value—projects solving fundamental problems that could define crypto's next decade. History shows that <span class="font-medium text-black">the greatest returns come to those who can hold through the darkest periods</span>. When this market finally turns, and institutional capital floods into quality altcoins, we expect the moves to be violent to the upside. The question isn't if, but when.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
