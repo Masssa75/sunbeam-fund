@@ -3,6 +3,9 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { supabaseAdmin } from '@/lib/supabase/server-client'
 
+// Force dynamic rendering to access cookies
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     // Use the same approach as the session API
