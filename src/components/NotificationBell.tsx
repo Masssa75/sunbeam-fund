@@ -221,16 +221,23 @@ export default function NotificationBell() {
       
       {/* Dropdown */}
       {dropdownOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg border border-gray-200 shadow-lg z-50">
-          <div className="px-4 py-3">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-gray-900 text-base">Notifications</h3>
-              {telegramConnection.is_connected && (
-                <span className="bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">
-                  Connected
+        <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg border border-gray-200 shadow-lg z-50">
+          <div className="px-4 py-3 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-gray-900">Notifications</h3>
+              {recentAlerts.length > 0 && (
+                <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">
+                  {recentAlerts.length} new
                 </span>
               )}
             </div>
+            {telegramConnection.is_connected && (
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm text-green-600">Connected to Telegram</span>
+              </div>
+            )}
+          </div>
           
           {/* Recent Alerts */}
           {recentAlerts.length > 0 ? (
@@ -418,18 +425,23 @@ export default function NotificationBell() {
             </div>
           )}
           
-          {/* Footer */}
+          {/* Connected State Options */}
           {telegramConnection.is_connected && (
-            <div className="px-4 py-3 border-t border-gray-100">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">
-                  {telegramConnection.telegram_username ? `@${telegramConnection.telegram_username}` : 'Connected'}
-                </span>
+            <div className="p-4 bg-gray-50 border-t border-gray-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                  </svg>
+                  <span className="text-sm text-gray-700">
+                    {telegramConnection.telegram_username ? `@${telegramConnection.telegram_username}` : 'Connected'}
+                  </span>
+                </div>
                 <Link 
                   href="/admin/twitter-monitoring"
-                  className="text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-xs text-blue-600 hover:text-blue-700"
                 >
-                  Settings
+                  View all alerts →
                 </Link>
               </div>
             </div>
