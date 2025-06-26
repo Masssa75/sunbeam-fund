@@ -3,18 +3,84 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 25, 2025 - 9:40 PM)
+## 🚀 CURRENT STATUS (June 25, 2025 - 10:00 PM)
 
-### 🔔 SESSION COMPLETED - NOTIFICATION SYSTEM ENHANCEMENTS
-**Status**: Implemented full notification tracking system with dismiss functionality
+### ✅ SESSION COMPLETED - TELEGRAM CONNECTION FIXED!
+**Status**: Successfully debugged and fixed the Telegram connection issue
 
-**Major Accomplishments This Session**:
+**The Journey to Fix Telegram Connection**:
 
-1. **Twitter Monitoring Refinements** ✅
-   - Reduced monitored projects to 6 core holdings (removed ETH, SOL, Virtuals, AUKI)
-   - Updated all alert thresholds to 9+ (only truly critical updates)
-   - Projects monitored: Kaspa, Bittensor, Sui, Toncoin, Brickken, Coinweb
-   - Each project checked every ~6 minutes
+1. **Initial Error**: "Failed to generate connection link: A connection attempt is already in progress"
+   - User marc@cyrator.com couldn't connect while marc@minutevideos.com worked fine
+
+2. **First Attempt - Array Query Fix** ❌
+   - Changed from `.single()` to array query with `.limit(1)`
+   - Fixed the query error but didn't solve the root issue
+   - Problem: Database has unique constraint on `telegram_chat_id`
+
+3. **Second Attempt - Use NULL** ❌
+   - Tried using NULL instead of 0 for `telegram_chat_id`
+   - Failed: Database has NOT NULL constraint on this column
+   - Error: "null value in column telegram_chat_id violates not-null constraint"
+
+4. **CRITICAL MISTAKE - Accidental File Deletion** 💥
+   - Used `git add -A` carelessly and deleted critical config files
+   - Deleted: `tailwind.config.js`, `postcss.config.js`, `next.config.js`
+   - Result: Website CSS completely broken, showing raw HTML
+   - Fixed: Reverted commit immediately with `git revert HEAD`
+
+5. **Third Attempt - Unique Negative Timestamps** ✅
+   - Solution: Use negative timestamps as placeholders (-Date.now())
+   - Each pending connection gets unique negative value
+   - Avoids both NULL and duplicate constraints
+   - Successfully allows multiple investors to have pending connections
+
+6. **Final Fix - Connection Status API** ✅
+   - Telegram connected successfully but website didn't show it
+   - Found bug: API was looking up investor by user ID instead of email
+   - Fixed: Changed `eq('id', authResult.user.id)` to `eq('email', authResult.user.email)`
+   - Now properly shows connected status with settings icon
+
+**What's Working Now**:
+- ✅ Telegram bot properly welcomes users
+- ✅ Connection tokens generated without errors
+- ✅ Multiple investors can have pending connections
+- ✅ Bot updates connection status in database
+- ✅ Website shows connected status after refresh
+- ✅ Auto-refresh every 10 seconds to catch new connections
+
+**Key Technical Details**:
+- Marc@cyrator.com Telegram Chat ID: 5089502326
+- Marc@cyrator.com username: @cyrator007
+- Placeholder chat_id strategy: Use -Date.now() for uniqueness
+- investor_telegram table has UNIQUE constraint on telegram_chat_id
+- investor_telegram table has NOT NULL constraint on telegram_chat_id
+
+**Files Modified**:
+- `/src/app/api/telegram/generate-token/route.ts` - Fixed token generation
+- `/src/app/api/notifications/connection-status/route.ts` - Fixed investor lookup
+- `/src/components/NotificationBell.tsx` - Added auto-refresh
+
+**Test Scripts Created**:
+- `/scripts/test-telegram-connection.js` - Basic connection test
+- `/scripts/test-telegram-connection-debug.js` - Enhanced debugging
+- `/scripts/test-telegram-alert-dialog.js` - Alert detection
+- `/scripts/test-telegram-error-scenario.js` - Error simulation
+- `/scripts/test-telegram-connection-fix.js` - Final working test
+
+**NEXT SESSION TODO**:
+1. **Verify Telegram connection is fully working** for all investors
+2. **Test notification flow end-to-end** - Twitter → AI scoring → Telegram alert
+3. **Fix notification dismissal persistence** (dismissed notifications reappear on refresh)
+4. **Add more investor accounts** if needed
+5. **Consider adding "Mark all as read" functionality**
+6. **Monitor for any edge cases** with the negative timestamp approach
+
+**Previous Session Notes** (from earlier in the day):
+- Reduced monitored projects to 6 core holdings (Kaspa, Bittensor, Sui, Toncoin, Brickken, Coinweb)
+- Updated all alert thresholds to 9+ (only truly critical updates)
+- Each project checked every ~6 minutes by cron job
+- 2 active Bittensor alerts currently showing (score 9/10)
 
 2. **Notification Bell Improvements** ✅
    - Fixed API endpoint trailing slash issue (was causing "No recent alerts")
