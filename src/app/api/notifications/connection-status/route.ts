@@ -53,7 +53,7 @@ export async function GET() {
     console.log('[connection-status] Found investor:', investor.id)
     
     // Check Telegram connection
-    const { data: telegramConnection, error: telegramError } = await supabase
+    const { data: telegramConnection, error: telegramError } = await supabaseAdmin
       .from('investor_telegram')
       .select('telegram_username, is_active')
       .eq('investor_id', investor.id)
