@@ -295,7 +295,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
               <div className="font-semibold mb-3 text-base">Current Market Perspective</div>
               <div className="space-y-3">
                 <p>
-                  Since November's peak, the crypto market has faced strong headwinds. While Bitcoin has remained relatively stable, the broader altcoin market has declined 70-80%, with meme coins experiencing even steeper losses.
+                  Since November's peak, the crypto market has faced <span className="font-medium text-black">strong headwinds</span>. While Bitcoin has remained relatively stable, the broader altcoin market has declined 70-80%, with meme coins experiencing even steeper losses.
                 </p>
 
                 <p>
@@ -311,11 +311,15 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
                 
                 <p>
-                  When markets turn, we believe our holdings will capture exponential growth—because they solve real problems. Kaspa is the first project since Bitcoin to fundamentally change how blockchains work—replacing sequential chains with parallel processing. This solves crypto's biggest limitation: scale. Bittensor creates decentralized AI that no company controls—potentially the most consequential use of blockchain technology. Toncoin tackles crypto's adoption problem, able to onboard a billion users overnight. <span className="font-medium text-black">Most projects are iterations. These are breakthroughs that could change crypto forever</span>.
+                  When markets turn, we believe our holdings will capture exponential growth—because they solve crypto's biggest problems and capitalize on its greatest opportunities. Kaspa is the first project since Bitcoin to fundamentally change how blockchains work—replacing sequential chains with parallel processing. This solves crypto's biggest limitation: scale. Bittensor creates decentralized AI that no company controls—potentially the most consequential use of blockchain technology. Toncoin tackles crypto's adoption problem, able to onboard a billion users overnight. <span className="font-medium text-black">Most projects are iterations. These are breakthroughs that could change crypto forever</span>.
                 </p>
 
                 <p>
-                  Let's be clear about where we are: <span className="font-medium text-black">this is one of the worst periods for altcoins in recent memory</span>. Bitcoin holds steady while altcoins bleed—a pattern that signals maximum pessimism. Everyone expected the Trump crypto boom. Instead, we got stubborn inflation, unprecedented tariff wars, Middle East conflicts, and an administration whose unpredictability paralyzes decision-making.
+                  Let's be clear about where we are: <span className="font-medium text-black">Bitcoin dominance has reached extreme levels</span>. In past cycles, individual investors drove Bitcoin higher, then rotated profits into altcoins. This time is different—institutions, corporations, and governments are accumulating Bitcoin as a treasury asset. MicroStrategy, Tesla, entire nations building strategic reserves.
+                </p>
+
+                <p>
+                  But the capital rotation is beginning. Yesterday, a major corporation announced <span className="font-medium text-black">$100 million for Bittensor</span> in their strategic reserve. The U.S. government has discussed including select altcoins alongside Bitcoin. As geopolitical tensions ease and inflation stabilizes, we expect institutional discovery of our altcoins to accelerate. <span className="font-medium text-black">When it happens, the moves will be explosive</span>.
                 </p>
 
                 {/* Altcoin Season Indicator */}
@@ -335,27 +339,37 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                     </div>
                   </div>
                   
-                  {/* Mini chart visualization */}
+                  {/* Enhanced chart visualization */}
                   <div className="mb-3">
-                    <svg viewBox="0 0 400 60" className="w-full h-12">
+                    <svg viewBox="0 0 400 80" className="w-full h-16">
                       <defs>
                         <linearGradient id="seasonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" style={{stopColor:'#ef4444', stopOpacity:0.2}} />
-                          <stop offset="25%" style={{stopColor:'#f59e0b', stopOpacity:0.2}} />
-                          <stop offset="50%" style={{stopColor:'#10b981', stopOpacity:0.2}} />
-                          <stop offset="75%" style={{stopColor:'#3b82f6', stopOpacity:0.2}} />
-                          <stop offset="100%" style={{stopColor:'#ef4444', stopOpacity:0.2}} />
+                          <stop offset="0%" style={{stopColor:'#ef4444', stopOpacity:0.15}} />
+                          <stop offset="25%" style={{stopColor:'#f59e0b', stopOpacity:0.15}} />
+                          <stop offset="50%" style={{stopColor:'#10b981', stopOpacity:0.15}} />
+                          <stop offset="75%" style={{stopColor:'#3b82f6', stopOpacity:0.15}} />
+                          <stop offset="100%" style={{stopColor:'#ef4444', stopOpacity:0.15}} />
                         </linearGradient>
                       </defs>
-                      <rect width="400" height="60" fill="url(#seasonGradient)" />
+                      <rect width="400" height="80" fill="url(#seasonGradient)" />
                       
-                      {/* Simplified historical line */}
-                      <polyline points="10,50 50,45 100,30 150,25 200,15 250,20 300,40 350,50 390,52" 
-                                fill="none" stroke="#374151" strokeWidth="2" opacity="0.5" />
+                      {/* Grid lines */}
+                      <line x1="100" y1="0" x2="100" y2="80" stroke="#e5e7eb" strokeWidth="1" />
+                      <line x1="200" y1="0" x2="200" y2="80" stroke="#e5e7eb" strokeWidth="1" />
+                      <line x1="300" y1="0" x2="300" y2="80" stroke="#e5e7eb" strokeWidth="1" />
                       
-                      {/* Current position */}
-                      <circle cx="390" cy="52" r="3" fill="#dc2626" />
-                      <line x1="390" y1="0" x2="390" y2="60" stroke="#dc2626" strokeWidth="1" opacity="0.3" />
+                      {/* Historical line showing we're at the bottom */}
+                      <polyline points="10,70 50,65 100,50 150,35 200,20 250,25 300,45 350,68 390,72" 
+                                fill="none" stroke="#6b7280" strokeWidth="2.5" opacity="0.7" />
+                      
+                      {/* Highlight the extreme bottom */}
+                      <circle cx="390" cy="72" r="5" fill="#dc2626" />
+                      <circle cx="390" cy="72" r="8" fill="#dc2626" opacity="0.3" />
+                      <circle cx="390" cy="72" r="11" fill="#dc2626" opacity="0.1" />
+                      <line x1="390" y1="0" x2="390" y2="80" stroke="#dc2626" strokeWidth="2" opacity="0.4" />
+                      
+                      {/* Label current position */}
+                      <text x="385" y="12" fill="#dc2626" fontSize="10" fontWeight="bold" textAnchor="middle">NOW</text>
                     </svg>
                   </div>
                   
