@@ -890,8 +890,11 @@ function ToncoinDeepDive() {
       
       <div className="border-t border-gray-200 pt-6">
         <h4 className="font-semibold mb-4">Telegram: The Operating System of the Future</h4>
-        <p className="text-sm text-gray-600 leading-relaxed">
+        <p className="text-sm text-gray-600 leading-relaxed mb-4">
           Telegram isn't just a messaging app—it's evolving into a complete digital operating system. With mini-apps, bots, channels, and seamless integrations, it's becoming the platform where people live their digital lives. And TON is the native currency of this ecosystem.
+        </p>
+        <p className="text-sm text-gray-600 leading-relaxed">
+          <span className="font-medium text-black">Of all cryptocurrencies, TON is the one with the real potential to bring crypto to the masses</span>. While others struggle with complex onboarding and technical barriers, TON benefits from Telegram's massive, engaged user base that's already comfortable with digital interactions. This makes it uniquely positioned to achieve true mainstream crypto adoption.
         </p>
       </div>
     </div>
