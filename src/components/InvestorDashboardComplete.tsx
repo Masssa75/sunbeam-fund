@@ -705,7 +705,7 @@ function getRelativeTime(dateString: string): string {
 // Helper functions for project data
 function getProjectDescription(projectName: string): string {
   const descriptions: Record<string, string> = {
-    'Kaspa': 'The fastest blockchain ever built. Processes blocks in parallel at 1 per second.',
+    'Kaspa': 'The next evolution of blockchain. The fastest and most decentralized parallel processing network.',
     'Bittensor': 'Open marketplace for artificial intelligence. Decentralized neural networks.',
     'Sui': '120,000 transactions per second. Built to onboard billions.',
     'Toncoin': "Telegram's native blockchain. 900 million users at your fingertips.",
@@ -812,7 +812,7 @@ function KaspaDeepDive() {
         
         <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded">
           <p className="font-semibold text-sm mb-1">The Breakthrough: Parallel Blocks</p>
-          <p className="text-sm">While every other blockchain processes blocks one after another, Kaspa processes multiple blocks simultaneously using GHOSTDAG. This is like upgrading from a single-lane road to a multi-lane highway.</p>
+          <p className="text-sm">While every other blockchain processes blocks one after another, Kaspa processes multiple blocks simultaneously using GHOSTDAG. This is like upgrading from a single-lane road to a multi-lane highway. This breakthrough will finally make possible the solutions we could only dream about on old blockchains—instant payments, micropayments, and true global scale without sacrificing security or decentralization.</p>
         </div>
       </div>
     </div>
