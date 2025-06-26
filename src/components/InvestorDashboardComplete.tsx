@@ -763,22 +763,118 @@ function KaspaDeepDive() {
         </p>
       </div>
       
-      <div className="grid grid-cols-3 gap-3 text-xs">
-        <div className="font-semibold text-gray-600">Technology</div>
-        <div className="font-semibold text-gray-600">Kaspa</div>
-        <div className="font-semibold text-gray-600">Bitcoin</div>
-        
-        <div className="text-gray-500">Architecture</div>
-        <div className="bg-green-100 text-green-800 px-2 py-1 rounded font-semibold">BlockDAG</div>
-        <div>Chain</div>
-        
-        <div className="text-gray-500">Block Time</div>
-        <div className="text-green-600 font-semibold">1 sec</div>
-        <div>600 sec</div>
-        
-        <div className="text-gray-500">Decentralization</div>
-        <div className="text-green-600 font-semibold">High</div>
-        <div className="text-green-600 font-semibold">Very High</div>
+      {/* Core Architecture Comparison */}
+      <div className="space-y-4">
+        <h4 className="font-semibold text-sm">Core Technology Comparison</h4>
+        <div className="grid grid-cols-5 gap-2 text-xs">
+          <div className="font-semibold text-gray-600">Feature</div>
+          <div className="font-semibold text-gray-600">Kaspa</div>
+          <div className="font-semibold text-gray-600">Bitcoin</div>
+          <div className="font-semibold text-gray-600">Ethereum</div>
+          <div className="font-semibold text-gray-600">Solana</div>
+          
+          <div className="text-gray-500">Block Structure</div>
+          <div className="bg-green-100 text-green-800 px-2 py-1 rounded font-semibold">BlockDAG</div>
+          <div>Chain</div>
+          <div>Chain</div>
+          <div>Chain</div>
+          
+          <div className="text-gray-500">Parallel Blocks</div>
+          <div className="bg-green-100 text-green-800 px-2 py-1 rounded font-semibold">Yes ✓</div>
+          <div>No</div>
+          <div>No</div>
+          <div>No</div>
+          
+          <div className="text-gray-500">Block Time</div>
+          <div className="text-green-600 font-semibold">1 second</div>
+          <div>10 minutes</div>
+          <div>12 seconds</div>
+          <div>0.4 seconds*</div>
+          
+          <div className="text-gray-500">Orphan Blocks</div>
+          <div className="bg-green-100 text-green-800 px-2 py-1 rounded font-semibold">Never (0%)</div>
+          <div>~1-2%</div>
+          <div>~1%</div>
+          <div>~5%</div>
+          
+          <div className="text-gray-500">Security Model</div>
+          <div className="text-green-600 font-semibold">Pure PoW</div>
+          <div className="text-green-600 font-semibold">Pure PoW</div>
+          <div>PoS</div>
+          <div>PoS/PoH</div>
+        </div>
+      </div>
+
+      {/* Network Properties Comparison */}
+      <div className="space-y-4">
+        <h4 className="font-semibold text-sm">Network Properties Comparison</h4>
+        <div className="grid grid-cols-5 gap-2 text-xs">
+          <div className="font-semibold text-gray-600">Property</div>
+          <div className="font-semibold text-gray-600">Kaspa</div>
+          <div className="font-semibold text-gray-600">Bitcoin</div>
+          <div className="font-semibold text-gray-600">Ethereum</div>
+          <div className="font-semibold text-gray-600">Solana</div>
+          
+          <div className="text-gray-500">Decentralization</div>
+          <div className="text-green-600 font-semibold">High</div>
+          <div className="text-green-600 font-semibold">Very High</div>
+          <div>Medium</div>
+          <div>Low</div>
+          
+          <div className="text-gray-500">Security</div>
+          <div className="text-green-600 font-semibold">High</div>
+          <div className="text-green-600 font-semibold">Very High</div>
+          <div>High</div>
+          <div>Medium</div>
+          
+          <div className="text-gray-500">Scalability</div>
+          <div className="text-green-600 font-semibold">High</div>
+          <div>Low</div>
+          <div>Low</div>
+          <div className="text-green-600 font-semibold">Very High</div>
+          
+          <div className="text-gray-500">Validator Req.</div>
+          <div className="text-green-600 font-semibold">Home PC</div>
+          <div className="text-green-600 font-semibold">Home PC</div>
+          <div>32 ETH</div>
+          <div>$100K+ HW</div>
+          
+          <div className="text-gray-500">Network Uptime</div>
+          <div className="text-green-600 font-semibold">100%</div>
+          <div className="text-green-600 font-semibold">99.98%</div>
+          <div className="text-green-600 font-semibold">99.9%</div>
+          <div>~95%</div>
+        </div>
+      </div>
+
+      {/* Security & Finality Comparison */}
+      <div className="space-y-4">
+        <h4 className="font-semibold text-sm">Security & Finality Comparison</h4>
+        <div className="grid grid-cols-5 gap-2 text-xs">
+          <div className="font-semibold text-gray-600">Metric</div>
+          <div className="font-semibold text-gray-600">Kaspa</div>
+          <div className="font-semibold text-gray-600">Bitcoin</div>
+          <div className="font-semibold text-gray-600">Ethereum</div>
+          <div className="font-semibold text-gray-600">Avalanche</div>
+          
+          <div className="text-gray-500">Confirmation Time</div>
+          <div className="text-green-600 font-semibold">10 seconds</div>
+          <div>60 minutes</div>
+          <div>15 minutes</div>
+          <div>2 seconds*</div>
+          
+          <div className="text-gray-500">Reorg Possible?</div>
+          <div className="bg-green-100 text-green-800 px-2 py-1 rounded font-semibold">No (DAG)</div>
+          <div>Yes</div>
+          <div>Yes</div>
+          <div>Yes</div>
+          
+          <div className="text-gray-500">51% Attack Cost</div>
+          <div className="text-green-600 font-semibold">Very High</div>
+          <div className="text-green-600 font-semibold">Extreme</div>
+          <div>High</div>
+          <div>Medium</div>
+        </div>
       </div>
       
       <div className="border-t border-gray-200 pt-6">
