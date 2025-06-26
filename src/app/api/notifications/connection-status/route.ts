@@ -1,22 +1,42 @@
 import { NextResponse } from 'next/server'
-import { getServerAuth } from '@/lib/supabase/server-auth'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 import { supabaseAdmin } from '@/lib/supabase/server-client'
 
 export async function GET() {
   try {
-    const authResult = await getServerAuth()
+    // Use the same approach as the session API
+    const cookieStore = await cookies()
     
-    if (!authResult.user) {
-      console.log('[connection-status] No authenticated user')
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM',
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+          set(name: string, value: string, options: any) {
+            cookieStore.set({ name, value, ...options })
+          },
+          remove(name: string, options: any) {
+            cookieStore.set({ name, value: '', ...options, maxAge: 0 })
+          },
+        },
+      }
+    )
+
+    const { data: { session }, error } = await supabase.auth.getSession()
+    
+    if (error || !session) {
+      console.log('[connection-status] No session found')
       return NextResponse.json({ is_connected: false })
     }
     
-    console.log('[connection-status] Checking for user:', authResult.user.email)
+    console.log('[connection-status] Checking for user:', session.user.email)
     
-    const supabase = supabaseAdmin
-    
-    // Check if user has an investor record
-    const { data: investor, error: investorError } = await supabase
+    // Check if user has an investor record using admin client
+    const { data: investor, error: investorError } = await supabaseAdmin
       .from('investors')
       .select('id')
       .eq('email', authResult.user.email)

@@ -3,7 +3,45 @@
 ## 🚨 CRITICAL: WORKING PROCESS GUIDE
 **EVERY NEW INSTANCE MUST READ THIS FIRST**: See `/WORKING-PROCESS-GUIDE.md` for the proven systematic debugging approach. This process has been highly effective and should be followed exactly.
 
-## 🚀 CURRENT STATUS (June 25, 2025 - 10:00 PM)
+## 🚀 CURRENT STATUS (June 25, 2025 - 10:30 PM)
+
+### ✅ SESSION COMPLETED - MARKET COMMENTARY REFINEMENT
+**Status**: Significantly improved investor dashboard market perspective
+
+**Major Accomplishments This Session**:
+
+1. **Market Commentary Rewrite** ✅
+   - Changed "significant" to "strong" headwinds for better impact
+   - Fixed jarring transition with "Yet the rally hasn't materialized"
+   - Refocused paragraph on uncertainty as central theme
+   - Removed inflation-specific language, made it about general market uncertainty
+
+2. **Infrastructure Paragraph Overhaul** ✅
+   - Removed fluffy language like "rewrote blockchain itself"
+   - Clear technical explanations:
+     - Kaspa: First since Bitcoin to change blockchain fundamentals (sequential → parallel)
+     - Bittensor: Potentially most consequential blockchain use case
+     - Toncoin: Tackles crypto's adoption problem
+   - Cut from ~130 words to ~90 words while adding clarity
+
+3. **Investor View Improvements** ✅
+   - Core Holdings now only shows projects with deep dives (Kaspa, Bittensor, Toncoin)
+   - Fixed allocation calculations when prices missing
+   - Excluded CURE Protocol completely from investor view
+   - Added Altcoin Season Index with mini chart visualization
+
+**Key Writing Principles Applied**:
+- Simple, direct language over fancy phrases
+- Technical accuracy over marketing speak
+- Each sentence must add value
+- Clear problem → solution narrative
+- "Most projects are iterations. These are breakthroughs that could change crypto forever"
+
+**Files Modified**:
+- `/src/components/InvestorDashboardComplete.tsx` - All market commentary updates
+- Created preview files for easier review (now cleaned up)
+
+## 🚀 PREVIOUS SESSION (June 25, 2025 - 10:00 PM)
 
 ### ✅ SESSION COMPLETED - TELEGRAM CONNECTION FIXED!
 **Status**: Successfully debugged and fixed the Telegram connection issue
