@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "Sunbeam Capital Management System - Portfolio tracking and reporting for crypto funds",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
