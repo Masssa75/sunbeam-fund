@@ -119,9 +119,23 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
   const portfolioMetrics = () => {
     let totalCost = 0
     let totalValue = 0
+    let actualTotalValue = 0 // Include ALL positions for percentage calculations
     const allocations: Record<string, number> = {}
     
-    // Filter out CURE Protocol from investor view
+    // Calculate ACTUAL total value including ALL positions (including CURE Protocol)
+    positions.forEach(pos => {
+      const price = prices[pos.project_id] || 0
+      let currentValue = pos.project_id.startsWith('custom-') ? pos.cost_basis : pos.amount * price
+      
+      // If no price and not custom, use cost basis as fallback
+      if (currentValue === 0 && !pos.project_id.startsWith('custom-')) {
+        currentValue = pos.cost_basis
+      }
+      
+      actualTotalValue += currentValue
+    })
+    
+    // Filter out CURE Protocol from investor view for display/return calculations
     const investorPositions = positions.filter(pos => pos.project_name !== 'CURE Protocol')
     
     investorPositions.forEach(pos => {
@@ -138,7 +152,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
       totalValue += currentValue
     })
     
-    // Recalculate allocations after we have the total
+    // Calculate allocations using ACTUAL total value (including CURE Protocol)
     investorPositions.forEach(pos => {
       const price = prices[pos.project_id] || 0
       let currentValue = pos.project_id.startsWith('custom-') ? pos.cost_basis : pos.amount * price
@@ -147,7 +161,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
         currentValue = pos.cost_basis
       }
       
-      allocations[pos.project_name] = totalValue > 0 ? (currentValue / totalValue) * 100 : 0
+      allocations[pos.project_name] = actualTotalValue > 0 ? (currentValue / actualTotalValue) * 100 : 0
     })
     
     const totalReturn = totalValue - totalCost
@@ -157,7 +171,8 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
       totalValue,
       totalReturn,
       totalReturnPercent,
-      allocations
+      allocations,
+      actualTotalValue
     }
   }
 
@@ -179,9 +194,9 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
         ? pos.cost_basis 
         : value
       
-      // Calculate allocation - handle division by zero
-      const allocation = (metrics.totalValue > 0) 
-        ? (fallbackValue / metrics.totalValue) * 100 
+      // Calculate allocation - handle division by zero (use actual total including CURE Protocol)
+      const allocation = (metrics.actualTotalValue > 0) 
+        ? (fallbackValue / metrics.actualTotalValue) * 100 
         : 0
       
       return {
@@ -196,12 +211,25 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
   
   const top4 = topHoldings.slice(0, 4)
   
-  // Calculate "others" as all positions not in the projects with explanations
+  // Calculate "others" as all positions not in the projects with explanations (including CURE Protocol)
   const allOtherPositions = positions.filter(pos => 
-    !projectsWithExplanations.includes(pos.project_name) && 
-    pos.project_name !== 'CURE Protocol'
+    !projectsWithExplanations.includes(pos.project_name)
   )
-  const othersTotal = 100 - topHoldings.reduce((sum, pos) => sum + pos.allocation, 0)
+  
+  // Calculate actual "others" percentage including CURE Protocol
+  let othersTotal = 0
+  allOtherPositions.forEach(pos => {
+    const price = prices[pos.project_id] || 0
+    let currentValue = pos.project_id.startsWith('custom-') ? pos.cost_basis : pos.amount * price
+    
+    if (currentValue === 0 && !pos.project_id.startsWith('custom-')) {
+      currentValue = pos.cost_basis
+    }
+    
+    if (metrics.actualTotalValue > 0) {
+      othersTotal += (currentValue / metrics.actualTotalValue) * 100
+    }
+  })
 
   if (!mounted) {
     return <div className="min-h-screen bg-white" />
