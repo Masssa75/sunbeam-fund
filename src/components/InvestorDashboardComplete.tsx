@@ -318,10 +318,6 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                   Let's be clear about where we are: <span className="font-medium text-black">Bitcoin dominance has reached extreme levels</span>. In past cycles, individual investors drove Bitcoin higher, then rotated profits into altcoins. This time is different—institutions, corporations, and governments are accumulating Bitcoin as a treasury asset. MicroStrategy, Tesla, entire nations building strategic reserves.
                 </p>
 
-                <p>
-                  But the capital rotation is beginning. The U.S. government is actively exploring various altcoins—including Ethereum, Solana, and others—as part of their strategic crypto reserve. A movement similar to MicroStrategy's Bitcoin accumulation is emerging around Ethereum, with multiple corporations now exploring altcoins for their treasuries. This June, Synaptogenix announced plans to allocate up to <span className="font-medium text-black">$100 million for Bittensor</span> in their strategic reserve. As geopolitical tensions ease and inflation stabilizes, we expect institutional discovery of our altcoins to accelerate. <span className="font-medium text-black">When it happens, the moves will be explosive</span>.
-                </p>
-
                 {/* Altcoin Season Indicator */}
                 <div className="bg-red-50 rounded-lg p-5 my-4">
                   <div className="flex items-center justify-between mb-3">
@@ -392,7 +388,11 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </div>
 
                 <p>
-                  But here's what experience teaches us: <span className="font-medium text-black">these drops are normal in crypto cycles</span>. Every major bull run has been preceded by periods just like this—when sentiment reaches maximum pessimism and only the strongest conviction survives.
+                  But the capital rotation is beginning. The U.S. government is actively exploring various altcoins—including Ethereum, Solana, and others—as part of their strategic crypto reserve. A movement similar to MicroStrategy's Bitcoin accumulation is emerging around Ethereum, with multiple corporations now exploring altcoins for their treasuries. This June, Synaptogenix announced <span className="font-medium text-black">$100 million for Bittensor</span> in their strategic reserve. As geopolitical tensions ease and inflation stabilizes, we expect institutional discovery of our altcoins to accelerate. <span className="font-medium text-black">When it happens, the moves will be explosive</span>.
+                </p>
+
+                <p>
+                  But here's what experience teaches us: <span className="font-medium text-black">these drops are normal in crypto cycles</span>. Every major bull run has been preceded by periods just like this—when sentiment reaches maximum pessimism and only the strongest conviction survives. Consider Ethereum dropping to $80 in 2018 before reaching $4,800. Or Solana falling to $0.50 before hitting $260. Polygon went from $0.003 to $2.92—a 973x return. <span className="font-medium text-black">The pattern is consistent: maximum pain precedes maximum gain</span>.
                 </p>
                 
                 {/* Historical Examples */}
@@ -466,13 +466,27 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                             <span className="text-green-500 font-semibold">(52x)</span>
                           </div>
                         </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="font-medium">BNB</span>
+                          <div className="flex items-center gap-2">
+                            <span>$6 → $690</span>
+                            <span className="text-green-500 font-semibold">(115x)</span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="font-medium">Axie Infinity</span>
+                          <div className="flex items-center gap-2">
+                            <span>$0.10 → $165</span>
+                            <span className="text-green-500 font-semibold">(1,650x)</span>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
                 </div>
                 
                 <p>
-                  We've carefully selected holdings we believe possess extraordinary value—projects solving fundamental problems that could define crypto's next decade. History shows that <span className="font-medium text-black">the greatest returns come to those who can hold through the darkest periods</span>. When this market finally turns, and institutional capital floods into quality altcoins, we expect the moves to be violent to the upside. The question isn't if, but when.
+                  We've carefully selected holdings we believe possess extraordinary value—projects solving fundamental problems that could define crypto's next decade. History shows that <span className="font-medium text-black">the greatest returns come to those who can hold through the darkest periods</span>. When this market finally turns, and institutional capital floods into quality altcoins, we expect extraordinary returns. We believe the question isn't if, but when.
                 </p>
               </div>
             </div>

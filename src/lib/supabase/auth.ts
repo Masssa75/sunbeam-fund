@@ -81,6 +81,27 @@ export const auth = {
     return { data, error }
   },
 
+  // Custom reset password (alternative method)
+  async customResetPassword(email: string) {
+    try {
+      const response = await fetch('/api/auth/custom-reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      
+      const result = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send reset email')
+      }
+      
+      return { data: result, error: null }
+    } catch (err: any) {
+      return { data: null, error: err }
+    }
+  },
+
   // Update password (after clicking reset link)
   async updatePassword(newPassword: string) {
     const supabase = getSupabaseClient()
