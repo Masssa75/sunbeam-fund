@@ -849,8 +849,11 @@ function BittensorDeepDive() {
       
       <div className="border-t border-gray-200 pt-6">
         <h4 className="font-semibold mb-4">Beyond Marketplaces: Running Real AI Networks</h4>
-        <p className="text-sm text-gray-600 leading-relaxed">
+        <p className="text-sm text-gray-600 leading-relaxed mb-4">
           Bittensor isn't just another "AI marketplace." It's building the infrastructure to run decentralized AI networks that can compete with OpenAI and Google. Anyone can contribute processing power, deploy AI systems, and these systems can communicate with each other—creating a truly decentralized alternative to Big Tech AI.
+        </p>
+        <p className="text-sm text-gray-600 leading-relaxed">
+          <span className="font-medium text-black">AI is going to completely change our future, and who owns it is extremely important</span>. Today's AI systems are already highly censored—companies decide what these systems can think and say. The possibility of having AI controlled by people rather than corporations may be one of the most critical developments for our future. Bittensor represents the path toward AI that serves humanity, not just shareholders.
         </p>
       </div>
     </div>
