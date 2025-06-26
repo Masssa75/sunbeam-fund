@@ -295,7 +295,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
               <div className="font-semibold mb-3 text-base">Current Market Perspective</div>
               <div className="space-y-3">
                 <p>
-                  Since November's peak, the crypto market has faced significant headwinds. While Bitcoin has remained relatively stable, the broader altcoin market has declined 70-80%, with meme coins experiencing even steeper losses.
+                  Since November's peak, the crypto market has faced strong headwinds. While Bitcoin has remained relatively stable, the broader altcoin market has declined 70-80%, with meme coins experiencing even steeper losses.
                 </p>
 
                 <p>
@@ -303,7 +303,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
                 
                 <p>
-                  Why? Multiple forces are keeping the market in check. Unprecedented tariff wars and Middle East conflicts directly impact inflation expectations. The Trump administration's willingness to pursue radical policies keeps markets constantly guessing. <span className="font-medium text-black">Together, these factors create a holding pattern</span>—everyone's waiting for clarity that hasn't arrived.
+                  Why? Multiple forces are creating unprecedented uncertainty. Tariff wars, Middle East conflicts, and the Trump administration's willingness to pursue radical policies—<span className="font-medium text-black">all of these keep markets constantly guessing</span>. Together, they've created a holding pattern where everyone's waiting for clarity that hasn't arrived.
                 </p>
 
                 <p>
@@ -311,7 +311,7 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
                 </p>
                 
                 <p>
-                  Our approach remains consistent: focus on infrastructure that matters. Kaspa processes transactions faster than any proof-of-work chain. Bittensor connects AI models in ways traditional tech can't. Toncoin leverages Telegram's billion users. <span className="font-medium text-black">We see these as foundational technologies</span>, not momentum trades. They're built to operate through cycles, not just ride them.
+                  When markets turn, we believe our holdings will capture exponential growth—because they solve real problems. Kaspa is the first project since Bitcoin to fundamentally change how blockchains work—replacing sequential chains with parallel processing. This solves crypto's biggest limitation: scale. Bittensor creates decentralized AI that no company controls—potentially the most consequential use of blockchain technology. Toncoin tackles crypto's adoption problem, able to onboard a billion users overnight. <span className="font-medium text-black">Most projects are iterations. These are breakthroughs</span>. Of 20,000 cryptocurrencies, perhaps a dozen matter. We own three.
                 </p>
 
                 <p>

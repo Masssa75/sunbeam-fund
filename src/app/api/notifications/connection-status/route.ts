@@ -7,33 +7,42 @@ export async function GET() {
     const authResult = await getServerAuth()
     
     if (!authResult.user) {
+      console.log('[connection-status] No authenticated user')
       return NextResponse.json({ is_connected: false })
     }
+    
+    console.log('[connection-status] Checking for user:', authResult.user.email)
     
     const supabase = supabaseAdmin
     
     // Check if user has an investor record
-    const { data: investor } = await supabase
+    const { data: investor, error: investorError } = await supabase
       .from('investors')
       .select('id')
       .eq('email', authResult.user.email)
       .single()
     
-    if (!investor) {
+    if (investorError || !investor) {
+      console.log('[connection-status] No investor record found:', investorError?.message)
       return NextResponse.json({ is_connected: false })
     }
     
+    console.log('[connection-status] Found investor:', investor.id)
+    
     // Check Telegram connection
-    const { data: telegramConnection } = await supabase
+    const { data: telegramConnection, error: telegramError } = await supabase
       .from('investor_telegram')
       .select('telegram_username, is_active')
       .eq('investor_id', investor.id)
       .eq('is_active', true)
       .single()
     
-    if (!telegramConnection) {
+    if (telegramError || !telegramConnection) {
+      console.log('[connection-status] No active Telegram connection:', telegramError?.message)
       return NextResponse.json({ is_connected: false })
     }
+    
+    console.log('[connection-status] Found Telegram connection:', telegramConnection)
     
     return NextResponse.json({
       is_connected: true,
@@ -41,7 +50,7 @@ export async function GET() {
     })
     
   } catch (error) {
-    console.error('Error checking connection status:', error)
+    console.error('[connection-status] Error:', error)
     return NextResponse.json({ is_connected: false })
   }
 }
