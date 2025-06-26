@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { getServerAuth } from '@/lib/supabase/server-auth'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 import { supabaseAdmin } from '@/lib/supabase/server-client'
 
 export async function GET() {
@@ -12,14 +13,35 @@ export async function GET() {
       errors: []
     }
 
-    // Step 1: Get auth
-    const authResult = await getServerAuth()
-    debug.user = authResult.user ? {
-      id: authResult.user.id,
-      email: authResult.user.email
+    // Step 1: Get auth using same approach as session API
+    const cookieStore = await cookies()
+    
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://gualxudgbmpuhjbumfeh.supabase.co',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YWx4dWRnYm1wdWhqYnVtZmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2NjI5MTMsImV4cCI6MjA2NjIzODkxM30.t0m-kBXkyAWogfnDLLyXY1pl4oegxRmcvaG3NSs6rVM',
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+          set(name: string, value: string, options: any) {
+            cookieStore.set({ name, value, ...options })
+          },
+          remove(name: string, options: any) {
+            cookieStore.set({ name, value: '', ...options, maxAge: 0 })
+          },
+        },
+      }
+    )
+
+    const { data: { session }, error } = await supabase.auth.getSession()
+    
+    debug.user = session?.user ? {
+      id: session.user.id,
+      email: session.user.email
     } : null
     
-    if (!authResult.user) {
+    if (error || !session) {
       debug.step = 'no-auth'
       return NextResponse.json(debug)
     }
@@ -30,7 +52,7 @@ export async function GET() {
     const { data: investor, error: investorError } = await supabaseAdmin
       .from('investors')
       .select('*')
-      .eq('email', authResult.user.email)
+      .eq('email', session.user.email)
       .single()
     
     if (investorError) {

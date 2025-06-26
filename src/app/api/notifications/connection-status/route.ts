@@ -39,7 +39,7 @@ export async function GET() {
     const { data: investor, error: investorError } = await supabaseAdmin
       .from('investors')
       .select('id')
-      .eq('email', authResult.user.email)
+      .eq('email', session.user.email)
       .single()
     
     if (investorError || !investor) {
