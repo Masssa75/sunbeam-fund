@@ -640,18 +640,9 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
         <div className="mt-20 pt-10 border-t border-gray-200">
           <h3 className="text-xl font-medium mb-8">Monthly Reports</h3>
           
-          <div className="space-y-0">
-            {getMonthlyReports().map((report, index) => (
-              <div key={index} className="border-b border-gray-200 py-4 flex justify-between items-center hover:bg-gray-50 -mx-5 px-5 rounded cursor-pointer transition-all">
-                <div className="flex items-center gap-5">
-                  <div className="font-semibold text-sm">{report.month}</div>
-                  <div className="text-sm text-gray-500">Portfolio value ${report.value.toLocaleString()}</div>
-                </div>
-                <div className={`font-semibold text-sm ${report.return >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {report.return >= 0 ? '+' : ''}{report.return.toFixed(1)}%
-                </div>
-              </div>
-            ))}
+          <div className="text-center py-12">
+            <div className="text-gray-400 text-lg mb-2">Coming Soon</div>
+            <div className="text-sm text-gray-500">Monthly performance reports will be available shortly</div>
           </div>
         </div>
 
