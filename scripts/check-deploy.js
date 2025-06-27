@@ -1,5 +1,6 @@
-const fetch = require('node-fetch')
-require('dotenv').config()
+import fetch from 'node-fetch'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const NETLIFY_TOKEN = process.env.NETLIFY_TOKEN
 const SITE_NAME = 'starlit-mousse-8fa18a'

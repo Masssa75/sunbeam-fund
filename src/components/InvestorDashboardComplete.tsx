@@ -651,13 +651,13 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
           <p className="text-sm text-gray-500 mb-5">
             Initial investment ${investorStanding ? investorStanding.initialInvestment.toLocaleString() : '74,000'} · {investorStanding ? investorStanding.sharePercentage.toFixed(2) : '47.28'}% ownership · 3-5 year horizon
           </p>
-          <div className="flex justify-center gap-8">
-            <a href="#" className="text-sm text-black border-b border-gray-300 hover:border-black pb-1 transition-colors">
-              Investment Philosophy
-            </a>
-            <a href="#" className="text-sm text-black border-b border-gray-300 hover:border-black pb-1 transition-colors">
-              Contact Team
-            </a>
+          <div className="flex justify-center">
+            <div className="text-center">
+              <div className="text-sm text-black font-medium mb-2">Contact Team</div>
+              <a href="https://t.me/cyrator007" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:text-blue-800 underline">
+                @cyrator007 on Telegram
+              </a>
+            </div>
           </div>
         </div>
       </main>
