@@ -28,12 +28,16 @@ interface InvestorStanding {
   accountNumber: string
   sharePercentage: number
   initialInvestment: number
-  currentValue: number
-  totalReturn: number
-  totalReturnPercent: number
-  monthlyReturn: number
-  monthlyReturnPercent: number
+  currentValue: number | null
+  totalReturn: number | null
+  totalReturnPercent: number | null
+  monthlyReturn: number | null
+  monthlyReturnPercent: number | null
   status: string
+  fundTotalCurrentValue?: number | null
+  priceDataAvailable?: boolean
+  positionsWithPrices?: number
+  nonCustomPositions?: number
 }
 
 interface Props {

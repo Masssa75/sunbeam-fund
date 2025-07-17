@@ -1568,6 +1568,14 @@ CREATE TABLE reports (
 - `node scripts/test-supabase.js` - Test database connection
 - `node scripts/update-version.js` - Update version badge
 
+### Netlify Deployment Check Method:
+```bash
+# Check Netlify deployment status (requires NETLIFY_AUTH_TOKEN)
+export NETLIFY_AUTH_TOKEN=nfp_v2g4caqv2EtM2XetjeLLQoGcF1TVHdny92af
+# For sunbeam site (site ID: f4f02cc0-7275-4b0c-97eb-340df38f4292)
+curl -s -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" "https://api.netlify.com/api/v1/sites/f4f02cc0-7275-4b0c-97eb-340df38f4292/deploys?per_page=1" | jq '.[0] | {state: .state, created_at: .created_at, commit_ref: .commit_ref, error_message: .error_message}'
+```
+
 ## 🔧 AUTONOMOUS CAPABILITIES YOU HAVE
 
 ### Supabase Management:
