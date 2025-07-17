@@ -90,7 +90,16 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
         const standingRes = await fetch(standingUrl)
         if (standingRes.ok) {
           const standingData = await standingRes.json()
-          setInvestorStanding(standingData.standing)
+          // Check if we have a warning about price data
+          if (standingData.warning) {
+            console.warn('Price data warning:', standingData.warning)
+            // Handle the partial data case
+            if (standingData.data) {
+              setInvestorStanding(standingData.data)
+            }
+          } else {
+            setInvestorStanding(standingData.standing)
+          }
         }
       } catch (err) {
         console.log('Could not load investor standing:', err)
@@ -272,25 +281,59 @@ export default function InvestorDashboardComplete({ viewAsId }: Props) {
           </p>
         </div>
 
+        {/* Price Data Warning */}
+        {investorStanding?.priceDataAvailable === false && (
+          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <p className="text-sm text-yellow-800">
+                Unable to fetch current market prices. Portfolio values may not be up to date.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Performance Section */}
         <div className="mb-16">
           <div className="relative bg-gray-50 rounded-lg p-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
               <div>
                 <span className="block text-2xl font-medium mb-1">
-                  ${investorStanding ? investorStanding.currentValue.toLocaleString() : metrics.totalValue.toLocaleString()}
+                  {investorStanding?.currentValue !== null && investorStanding?.currentValue !== undefined
+                    ? `$${investorStanding.currentValue.toLocaleString()}`
+                    : investorStanding?.priceDataAvailable === false
+                    ? 'Price data unavailable'
+                    : `$${metrics.totalValue.toLocaleString()}`}
                 </span>
                 <span className="text-xs text-gray-400 uppercase tracking-wide">Current Value</span>
               </div>
               <div>
-                <span className={`block text-2xl font-medium mb-1 ${(investorStanding ? investorStanding.totalReturnPercent : metrics.totalReturnPercent) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {(investorStanding ? investorStanding.totalReturnPercent : metrics.totalReturnPercent) >= 0 ? '+' : ''}{(investorStanding ? investorStanding.totalReturnPercent : metrics.totalReturnPercent).toFixed(1)}%
+                <span className={`block text-2xl font-medium mb-1 ${
+                  investorStanding?.totalReturnPercent !== null && investorStanding?.totalReturnPercent !== undefined
+                    ? investorStanding.totalReturnPercent >= 0 ? 'text-green-500' : 'text-red-500'
+                    : metrics.totalReturnPercent >= 0 ? 'text-green-500' : 'text-red-500'
+                }`}>
+                  {investorStanding?.totalReturnPercent !== null && investorStanding?.totalReturnPercent !== undefined
+                    ? `${investorStanding.totalReturnPercent >= 0 ? '+' : ''}${investorStanding.totalReturnPercent.toFixed(1)}%`
+                    : investorStanding?.priceDataAvailable === false
+                    ? '-'
+                    : `${metrics.totalReturnPercent >= 0 ? '+' : ''}${metrics.totalReturnPercent.toFixed(1)}%`}
                 </span>
                 <span className="text-xs text-gray-400 uppercase tracking-wide">Total Return</span>
               </div>
               <div>
-                <span className={`block text-2xl font-medium mb-1 ${(investorStanding ? investorStanding.monthlyReturnPercent : 3.8) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {(investorStanding ? investorStanding.monthlyReturnPercent : 3.8) >= 0 ? '+' : ''}{(investorStanding ? investorStanding.monthlyReturnPercent : 3.8).toFixed(1)}%
+                <span className={`block text-2xl font-medium mb-1 ${
+                  investorStanding?.monthlyReturnPercent !== null && investorStanding?.monthlyReturnPercent !== undefined
+                    ? investorStanding.monthlyReturnPercent >= 0 ? 'text-green-500' : 'text-red-500'
+                    : 'text-green-500'
+                }`}>
+                  {investorStanding?.monthlyReturnPercent !== null && investorStanding?.monthlyReturnPercent !== undefined
+                    ? `${investorStanding.monthlyReturnPercent >= 0 ? '+' : ''}${investorStanding.monthlyReturnPercent.toFixed(1)}%`
+                    : investorStanding?.priceDataAvailable === false
+                    ? '-'
+                    : '+3.8%'}
                 </span>
                 <span className="text-xs text-gray-400 uppercase tracking-wide">This Month</span>
               </div>

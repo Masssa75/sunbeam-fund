@@ -116,13 +116,38 @@ export async function GET(request: NextRequest) {
       pricesData: prices
     });
     
-    // If we couldn't get enough prices or value seems unrealistic, 
-    // use a realistic estimate based on known portfolio performance
+    // Check if we have sufficient price data
     const nonCustomPositions = positions.filter(p => !p.project_id.startsWith('custom-')).length;
-    if (successfulPriceCount < nonCustomPositions * 0.5 || fundTotalCurrentValue < 50000) {
-      console.log('[Investor Standing] Price data insufficient, using realistic portfolio estimate');
-      // Based on user feedback: 38.34% should equal ~$38K, so total fund ≈ $100K
-      fundTotalCurrentValue = 100000;
+    const priceSuccessRate = nonCustomPositions > 0 ? (successfulPriceCount / nonCustomPositions) : 0;
+    
+    // If we couldn't get enough prices, return an error or partial data indicator
+    if (priceSuccessRate < 0.5) {
+      console.log('[Investor Standing] Insufficient price data:', {
+        successfulPriceCount,
+        nonCustomPositions,
+        successRate: `${(priceSuccessRate * 100).toFixed(1)}%`
+      });
+      
+      // Return partial data with a warning flag
+      return NextResponse.json({
+        warning: 'Unable to fetch current market prices. Showing partial data only.',
+        data: {
+          name: investor.name || investor.email,
+          accountNumber: investor.account_number,
+          sharePercentage: investor.share_percentage,
+          initialInvestment: investor.initial_investment || 0,
+          currentValue: null, // Don't show inaccurate values
+          totalReturn: null,
+          totalReturnPercent: null,
+          monthlyReturn: null,
+          monthlyReturnPercent: null,
+          status: investor.status || 'active',
+          fundTotalCurrentValue: null,
+          priceDataAvailable: false,
+          positionsWithPrices: successfulPriceCount,
+          nonCustomPositions: nonCustomPositions
+        }
+      });
     }
     
     // If still no value, return error
