@@ -69,18 +69,24 @@ export async function GET(request: NextRequest) {
     let prices: Record<string, number> = {};
     try {
       if (coinIds.length > 0) {
-        // Use the internal API route for price fetching
-        const priceResponse = await fetch('https://sunbeam.capital/api/coingecko/price', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ projectIds: coinIds })
-        });
+        // Fetch prices directly from CoinGecko API instead of using absolute URL
+        const idsString = coinIds.join(',');
+        const cgResponse = await fetch(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${idsString}&vs_currencies=usd`,
+          { next: { revalidate: 60 } } // Cache for 60 seconds
+        );
         
-        if (priceResponse.ok) {
-          prices = await priceResponse.json();
+        if (cgResponse.ok) {
+          const data = await cgResponse.json();
+          // Transform the response to match expected format
+          for (const coinId of coinIds) {
+            if (data[coinId] && data[coinId].usd) {
+              prices[coinId] = data[coinId].usd;
+            }
+          }
           console.log('[Investor Standing] Prices fetched successfully:', Object.keys(prices).length);
         } else {
-          console.log('[Investor Standing] Failed to fetch prices:', priceResponse.status);
+          console.log('[Investor Standing] Failed to fetch prices from CoinGecko:', cgResponse.status);
         }
       }
     } catch (error) {

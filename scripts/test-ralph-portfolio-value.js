@@ -91,9 +91,18 @@ async function testRalphPortfolioValue() {
     
     // Get the displayed portfolio value
     console.log('6. Getting displayed portfolio value...');
-    const portfolioValueElement = await page.locator('div:has-text("Portfolio Value") + div').first();
-    const displayedValue = await portfolioValueElement.textContent();
-    console.log(`Displayed portfolio value: ${displayedValue}\n`);
+    
+    // Check if there's a warning about price data
+    const warningElement = await page.locator('text=Unable to fetch current market prices');
+    if (await warningElement.count() > 0) {
+      console.log('✅ Warning message is displayed about price data being unavailable');
+    }
+    
+    // Look for the current value display
+    const currentValueLabel = await page.locator('text=Current Value').first();
+    const currentValueContainer = await currentValueLabel.locator('..'); // Get parent
+    const displayedValue = await currentValueContainer.textContent();
+    console.log(`Current value section shows: ${displayedValue}\n`);
     
     // Also check if there's a total fund value shown
     const totalFundElement = await page.locator('text=Total Fund Value');
